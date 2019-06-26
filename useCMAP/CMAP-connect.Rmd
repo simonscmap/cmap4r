@@ -1,0 +1,123 @@
+---
+title: <center> <h1> CMAP for R users </h1> </center> 
+# author: Aditya Kumar Mishra
+# date: March 22, 2005
+output: html_document
+# output: github_document
+# output: md_document
+  # fig_width: 10
+  # fig_height: 10
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,fig.width=12, fig.height=8,fig.align = "center",
+                      out.width = "100%")
+```
+
+## Overview
+
+[Simons CMAP](https://cmap.readthedocs.io/en/latest/index.html) is an initiative from the  [CBIOMES](https://cbiomes.org/) collaboration of the Simons Foundation to provide open source database service for the ocean datasets collected from several studies. 
+
+
+Currently,  [CMAP](https://cmap.readthedocs.io/en/latest/index.html) hosts examples and functions to download and visualize data for Python users. In order to make R users familiar to the database, we develop an R package  to connect, process, analyze and visualize the data. 
+
+
+
+
+## Installation
+
+CMAP hosts data on a Microsoft SQL Server. An R user will need the following package to connect to the database: a) “DBI”, for database interface; b) “odbc” for connecting to the database using **DBI** interface.
+
+But before that, for the Mac operating system, a user needs to install the unixODBC library and database drivers. We suggest using SQL Server ODBC drivers (Free TDS). Using Homebrew, run the following commands to install the suggested module.
+
+
++ brew install unixodbc
++ brew install freetds
+
+
+In case of Linux operating system, first, install [Anaconda distribition](https://www.anaconda.com/distribution/#linux), and then run the following commands to install suggested module.
+
++ conda install -c anaconda unixodbc
++ conda install -c anaconda freetds
+
+
+Please follow the [link](https://db.rstudio.com/best-practices/drivers/) to see other drivers available for installation.
+
+
+In addition, a user may require some additional R package for downloading, processing and visualizing the data. Run the following commands to install some of the essential packages.
+
+
+
+
+
+```{r eval = FALSE}
+## Package "DBI" provide interface to the database
+install.packages("DBI")
+
+## Driver for the database
+install.packages("odbc")
+
+## Package for data processing:
+install.packages("dbplyr")  
+install.packages("plyr")
+
+## Package for visualization:
+install.packages("ggplot2")
+install.packages("plotly")
+
+```
+
+## Connecting to the database
+
+User can connect to the database using the login credentials (**Direct connect**) suggested in the examples. In case if a data source name is available, use it for making the required connection.  
+
+
+#### Approach I: Direct connection
+```{r results='hide', message=FALSE, warning=FALSE}
+library(DBI)
+library(odbc)
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+dbDisconnect(con)
+```
+
+#### Approach II: Data source name
+
+Please follow the [link](https://db.rstudio.com/best-practices/drivers/) to learn about creating the data source name. 
+
+Examples suggested below use the **DSN**, “CMAP-MSSQL”, to connect to the CMAP database. 
+
+
+```{r results='hide', message=FALSE, warning=FALSE}
+con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+dbDisconnect(con)
+```
+
+
+
+
+## Data catalog
+
+```{r  message=FALSE, warning=FALSE, echo=FALSE}
+library(DBI,odbc)
+con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+fileName <- file.path(getwd(),"catalogquery.txt")
+singleString <- readChar(fileName, file.info(fileName)$size)
+catalog_query <- gsub("\n","",singleString)
+df <- dbGetQuery(con,catalog_query)
+catVar <- c('Dataset Name', 'Table Name' ,'Sensor', 'Make','Spatial Resolution', 'Temporal Resolution','Start Date','End Date')
+df <- df[,catVar]
+tblindex <- which(!duplicated(df$`Dataset Name`))
+tbl.catelog <- df[tblindex,1:8]
+rownames(tbl.catelog) <- NULL
+library(knitr)
+kable(tbl.catelog)
+dbDisconnect(con)
+```

@@ -1,0 +1,526 @@
+---
+title: <center> <h1> HANDS on CMAP for R users </h1> </center> 
+author: "Aditya Mishra"
+# output: github_document
+# always_allow_html: yes
+output: html_document
+#date: "5/29/2019"
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,fig.width=12, fig.height=8,fig.align = "center",
+                      out.width = "100%")
+library(DBI)
+library(dplyr)
+library(cmap4r)
+```
+
+
+# Installation
+
+CMAP hosts data on a Microsoft SQL Server. An R user will need the following package to connect to the database: a) “DBI”, for database interface; b) “odbc” for connecting to the database using **DBI** interface.
+
+But before that, for the Mac operating system, a user needs to install the unixODBC library and database drivers. We suggest using SQL Server ODBC drivers (Free TDS). Using Homebrew, run the following commands to install the suggested module.
+
+
++ brew install unixodbc
++ brew install freetds
+
+
+In case of Linux operating system, first, install [Anaconda distribition](https://www.anaconda.com/distribution/#linux), and then run the following commands to install suggested module.
+
++ conda install -c anaconda unixodbc
++ conda install -c anaconda freetds
+
+
+Please follow the [link](https://db.rstudio.com/best-practices/drivers/) to see other drivers available for installation.
+
+
+In addition, a user may require some additional R package for downloading, processing and visualizing the data. Run the following commands to install some of the essential packages.
+
+
+
+
+
+```{r eval = FALSE}
+## Package "DBI" provide interface to the database
+install.packages("DBI")
+
+## Driver for the database
+install.packages("odbc")
+
+## Package for data processing:
+install.packages("dbplyr")  
+install.packages("plyr")
+
+## Package for visualization:
+install.packages("ggplot2")
+install.packages("plotly")
+
+```
+
+# Connecting to the database
+
+User can connect to the database using the login credentials (**Direct connect**) suggested in the examples. 
+
+
+#### Direct connection
+```{r results='hide', message=FALSE, warning=FALSE}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+dbDisconnect(con)
+```
+
+
+
+# Peeking into the table
+
+Attributes of a table includes:
+
++ name of variables 
++ type of variables, i.e., quantitative, qualitative, time, 
++ size of the table
++ space-time range information
++ numerical variable range summary
+
+```{r  message=FALSE, warning=FALSE, echo=TRUE}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+## connect to database
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+
+## Choose table:
+table.name <-  "tblsst_AVHRR_OI_NRT"
+
+
+## Variable name in the table
+# tbl.fields <- dbListFields(con,table.name)
+# print(tbl.fields)
+
+
+## collect sample data 
+tbl.fields <- getDataSample(con,table.name,n=5)
+print(tbl.fields) 
+
+
+## Class of each column in the table
+tbl.colClass <- getColClass(con,table.name)
+print(tbl.colClass)
+
+
+## Number of observations
+nObs <- getObservationCount(con,table.name)
+nObs
+
+
+## Space/time information of the table
+# tbl.spaceTimeInfo <- getSpaceTimeRange(con,table.name)
+# print(tbl.spaceTimeInfo)
+
+
+
+## Numeric variable range:
+# tbl.rangeNumVar <- getRangeNumVar(con,table.name)
+# print(tbl.rangeNumVar)
+  
+
+dbDisconnect(con)
+```
+
+
+# Attributes - Subset of a table
+    
+```{r  message=FALSE, warning=FALSE, echo=TRUE}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+## connect to database
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+
+
+## Input: Table name; variable name, space time range information
+table.name = 'tblsst_AVHRR_OI_NRT'                    # table name
+
+sel.var = 'sst'                                       # choose variable 
+range.var <- list()                                   # Range variable information 
+range.var$time <- c('2016-04-30', '2016-04-30')
+range.var$lat <- c(10,70)
+range.var$lon <- c(-180,-80)
+
+
+
+## Space/time/number of observations/summary
+tbl.subsetSpaceTimeSummary <- getSubsetSpaceTimeRange(con,table.name,range.var)
+print(tbl.subsetSpaceTimeSummary)
+
+
+
+# Summary of the data:
+tbl.subsetSummary <- getSubsetRangeNumVar(con, table.name, range.var)
+print(tbl.subsetSummary)
+
+dbDisconnect(con)
+```
+
+# Data retrieval and preprocessing
+
+
+
+
+To retrieve the data from **CMAP**, a user need to specify following parameters:
+
++ Table Name (table.name)
++ Variables to be extracted (sel.var)
++ Range variable includes (latitude, longitude, depth, time)
+
+Use **getTableData** function to download the data as data frame. 
+
+
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+## connect to database
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+
+
+## Input: Table name; variable name, space time range information
+table.name = 'tblsst_AVHRR_OI_NRT'      # table name
+sel.var = 'sst'                         # choose variable 
+range.var <- list()                     # Range variable [lat,lon,time]
+range.var$lat <- c(10,70)
+range.var$lon <- c(-180,-80)
+range.var$time <- c('2016-04-30', '2016-04-30')
+
+
+## Subset selection:
+tbl.subset <- getTableData(con, table.name, sel.var, range.var)
+head(tbl.subset)
+
+
+
+## Ordering of the numeric variable:
+# orderby <- c('time','lat','lon')        # Specify orderby variable
+# tbl.subset <- getTableData(con, table.name, sel.var, range.var,orderby)
+# head(tbl.subset)
+
+
+dbDisconnect(con)
+```
+
+
+
+#### Aggregate data
+To avoid pulling large dataset from the CMAP server, especially when not required,  user may be interested in pulling aggregated data. In addition to the essential input variables, a user need to specify the aggregate variable(**agg.var**). 
+
+
+
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+## connect to database
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+
+## Input: Table name; variable name, space time range information
+table.name = 'tblsst_AVHRR_OI_NRT'      # table name
+sel.var = 'sst'                         # choose variable 
+range.var <- list()                     # Range variable [lat,lon,time]
+range.var$lat <- c(25,30)
+range.var$lon <- c(-160,-155)
+range.var$time <- c('2016-03-29', '2016-05-29')   
+
+
+## Aggregate
+agg.var <- 'time'                       # Specify aggregate variable
+tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+head(tbl.subset)
+
+dbDisconnect(con)
+```
+
+
+
+
+#### Colocalization
+
+```{r}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+## connect to database
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+
+## Setup
+# source = './MGL1704.csv'
+# table.name = "tblSST_AVHRR_OI_NRT"
+# sel.var = "sst"
+# latMargin = 0.3
+# lonMargin = 0.3
+# timeMargin = 1
+
+
+## For the desired table, query a variable therein
+# res = matchSource_onetable(con, source, table.name, sel.var,
+#                            latMargin, lonMargin, timeMargin)
+dbDisconnect(con)
+```
+
+
+# Visualization
+
+
+### Depth profile
+
+Call **plot_depth** function to obtain **plot_ly/ggplot** object.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+## connect to database
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+#
+# Inpit variable:
+table.list <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Chl_Climatology') 
+var.list <-  c('argo_merge_chl_adj', 'CHL', 'chl01_darwin_clim')  
+#
+selIndex <- 1                                    # selected argo_merge_chl_adj from tblArgoMerge_REP 
+table.name <- table.list[selIndex]
+sel.var <- var.list[selIndex]  
+#
+range.var <- list()
+range.var$lat <- c(20,24)
+range.var$lon <- c( -170, -150)
+range.var$depth <- c(0, 1500)
+range.var$time <- c('2016-04-30', '2016-04-30')
+
+
+## Subset selection: data retrieval
+agg.var <- 'depth' 
+tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+head(tbl.subset)
+
+
+## Plot -- Depth profiles:
+p <- plot_depth(tbl.subset, 'plotly',sel.var)
+p
+
+dbDisconnect(con)
+```
+
+
+
+
+### Regional map
+Call **plot_regMap** function to obtain **plot_ly/ggplot** object.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+## connect to database
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+
+# Inpit variable:
+table.name = 'tblsst_AVHRR_OI_NRT'   
+sel.var = 'sst'                 
+range.var <- list()
+range.var$lat <- c(10,70)
+range.var$lon <- c(-180,-80)
+range.var$time <- c('2016-04-30', '2016-04-30')
+
+
+## Data retrieval
+tbl.subset <- getTableData(con, table.name, sel.var, range.var, order.var=  c('lat','lon'))
+head(tbl.subset)
+
+
+## Plot - regional map 
+# out <- plot_regMap(con, table.name,sel.var,range.var, type = 'ggplot')
+out <- plot_regMap(con, table.name,sel.var,range.var, type = 'plotly')
+out$plot
+
+dbDisconnect(con)
+```
+
+
+
+
+### Time series plot
+
+Call **plot_ts** function to obtain **plot_ly/ggplot** object.
+
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+## connect to database
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+
+# Input variable:
+table.list <- c('tblSST_AVHRR_OI_NRT', 'tblAltimetry_REP', 'tblPisces_NRT')  
+var.list <- c('sst', 'sla', 'NO3')   
+
+selIndex <- 1                              # selected "sst" from the table "tblSST_AVHRR_OI_NRT"
+table.name <- table.list[selIndex]
+sel.var <- var.list[selIndex]   
+
+
+## Example I:
+range.var <- list()
+range.var$lat <- c(25,30)
+range.var$lon <- c(-160,-155)
+range.var$time <- c('2016-03-29', '2016-05-29')
+
+
+## Subset selection: data retrieval
+agg.var <- 'time' 
+tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+head(tbl.subset,20)   
+
+
+
+## Plot -- Time series:
+p <- plot_ts(tbl.subset,'plotly',sel.var)
+p
+
+
+dbDisconnect(con)
+```
+
+
+
+
+### XY plot
+
+**plot_xy** function download the data, and output a list which contain a) plot object: **plot_ly/ggplot**; b) corresponding data tables. 
+
+
+
+
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+library(DBI)
+library(odbc)
+library(dplyr)
+library(cmap4r)
+## connect to database
+con <- DBI::dbConnect(odbc(),
+                      Driver = "libtdsodbc.so",     ## Free TDS driver used
+                      Server = "128.208.239.15",    ## IP address of the server
+                      Database = "Opedia",          ## Database name
+                      UID = "ArmLab",               ## User ID
+                      PWD = "ArmLab2018",           ## Password
+                      Port = 1433)                  ## Port number
+
+# Inpit variable:
+# 
+table.list <- c('tblSST_AVHRR_OI_NRT', 'tblAltimetry_REP') 
+var.list <-  c('sst', 'sla')  
+#
+range.var <- list()
+range.var$lat <- c(25,30)
+range.var$lon <- c(-160, -155)
+range.var$time <- c('2016-03-29', '2016-05-29')
+#
+agg.var <- 'time' 
+
+## -----------------------------------
+## Dataset from table II
+selIndex <- 1
+table.name <- table.list[selIndex]                       # Specify table name I
+sel.var <- var.list[selIndex]                            # Variable from table name I  
+
+tbl.subset.x <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+head(tbl.subset.x)
+
+
+## Dataset from table II
+selIndex <- 2
+table.name <- table.list[selIndex]                       # Specify table name II
+sel.var <- var.list[selIndex]                            # Variable from table name II
+
+
+tbl.subset.y <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+head(tbl.subset.y)
+
+
+
+## Plot - XY
+# out <- plot_xy(con, table.list,var.list,range.var,agg.var,type = 'ggplot')
+out <- plot_xy(con, table.list,var.list,range.var,agg.var,type = 'plotly')
+out$plot
+dbDisconnect(con)
+```
+
+
+
+

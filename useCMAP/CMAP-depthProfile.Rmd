@@ -1,0 +1,78 @@
+---
+title: <center> <h1> Depth profiles map </h1> </center>   
+# author: Aditya Kumar Mishra
+output: html_document
+# output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,fig.width=15, fig.height=7,
+                      fig.align = "center",
+                      out.width = "100%")
+rm(list = ls())
+# source('~/Dropbox (Simons Foundation)/CMAP/dataAccess/CMAP-Access/cmap4r/R/cmap4r.R')
+library(cmap4r)
+# library(dplyr)
+library(DBI)
+# library(plotly)
+# library(ggplot2)
+# library(dbplyr)
+# library(magrittr)
+# library(purrr)
+```
+
+
+ 
+
+
+
+<!-- To creat depth profile plot, we aggregate data at the depth level on the database (avoiding download of large dataset), and then retrieve the data from the database.  -->
+
+Specify the following parameters to retrieve the required data from **CMAP**. Here we download variable of interest aggregated at varying depth.
+
+
+
++ Table Name (table.name)
++ Variables to be extracted (sel.var)
++ Range variable includes (latitude, longitude, depth, time)
++ Depth will be used as an aggregate variable
+
+Use **getAggregatedTableData** to download required data.
+
+
+Call **plot_depth** function to obtain **plot_ly/ggplot** object. 
+
+## Example I
+
+
+```{r message=FALSE, warning=FALSE, echo=TRUE}
+con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+#
+# Inpit variable:
+table.list <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Chl_Climatology') 
+var.list <-  c('argo_merge_chl_adj', 'CHL', 'chl01_darwin_clim')  
+#
+selIndex <- 1                                    # selected argo_merge_chl_adj from tblArgoMerge_REP 
+table.name <- table.list[selIndex]
+sel.var <- var.list[selIndex]  
+#
+range.var <- list()
+range.var$lat <- c(20,24)
+range.var$lon <- c( -170, -150)
+range.var$depth <- c(0, 1500)
+range.var$time <- c('2016-04-30', '2016-04-30')
+
+
+## Subset selection: data retrieval
+agg.var <- 'depth' 
+tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+head(tbl.subset)
+
+
+## Plot -- Depth profiles:
+p <- plot_depth(tbl.subset, 'plotly',sel.var)
+p
+
+dbDisconnect(con)
+```
+
