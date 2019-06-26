@@ -1,0 +1,9 @@
+---
+site: "bookdown::bookdown_site"
+output:
+  bookdown::gitbook:
+    lib_dir: "book_assets"
+  bookdown::html_book:
+    keep_tex: yes
+delete_merged_file: true
+---

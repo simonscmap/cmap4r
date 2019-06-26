@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="catalog-of-data.html">
+<link rel="next" href="faq.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About the ‘cmap4r’ R package</a></li>
+<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting Started</a><ul>
+<li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
+<li class="chapter" data-level="2.2" data-path="getting-started.html"><a href="getting-started.html#one-useful-demo"><i class="fa fa-check"></i><b>2.2</b> One useful demo</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="catalog-of-data.html"><a href="catalog-of-data.html"><i class="fa fa-check"></i><b>3</b> Catalog of data</a></li>
+<li class="chapter" data-level="4" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html"><i class="fa fa-check"></i><b>4</b> Functions in our R package</a><ul>
+<li class="chapter" data-level="4.1" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#download-table"><i class="fa fa-check"></i><b>4.1</b> Download table</a></li>
+<li class="chapter" data-level="4.2" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#summarize-table"><i class="fa fa-check"></i><b>4.2</b> Summarize table</a></li>
+<li class="chapter" data-level="4.3" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#visualization"><i class="fa fa-check"></i><b>4.3</b> Visualization</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#scatterplots"><i class="fa fa-check"></i><b>4.3.1</b> Scatterplots</a></li>
+<li class="chapter" data-level="4.3.2" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#histograms"><i class="fa fa-check"></i><b>4.3.2</b> Histograms</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#colocalize-data"><i class="fa fa-check"></i><b>4.4</b> Colocalize data</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="faq.html"><a href="faq.html"><i class="fa fa-check"></i><b>5</b> FAQ</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="functions-in-our-r-package" class="section level1">
+<h1><span class="header-section-number">4</span> Functions in our R package</h1>
+<p>The full set of functions available are here.</p>
+<div id="download-table" class="section level2">
+<h2><span class="header-section-number">4.1</span> Download table</h2>
+<p>The user can process the data, a) by downloading the data as <strong>data frame</strong> to the local computer; or b) using the functions from the <strong>dbplyr</strong> package which facilitates data preparation (like mutation, aggregation) on the database itself. To ensure optimal usage of the hardware resources (Justin’s comment: don’t we mean “to minimize communication costs incurred with the server”?), we recommend downloading the data to the local computer and then processing it for further analysis.</p>
+<p>To retrieve the data from <strong>CMAP</strong>, a user need to specify following parameters:</p>
+<ul>
+<li>Table Name (table.name)</li>
+<li>Variables to be extracted (sel.var)</li>
+<li>Range variable includes (latitude, longitude, depth, time)</li>
+</ul>
+<p>Use <strong>getTableData</strong> function to download the data as data frame.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
+
+## Input: Table name; variable name, space time range information
+table.name =<span class="st"> &#39;tblsst_AVHRR_OI_NRT&#39;</span>      <span class="co"># table name</span>
+sel.var =<span class="st"> &#39;sst&#39;</span>                         <span class="co"># choose variable </span>
+range.var &lt;-<span class="st"> </span><span class="kw">list</span>()                     <span class="co"># Range variable [lat,lon,time]</span>
+range.var<span class="op">$</span>lat &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">70</span>)
+range.var<span class="op">$</span>lon &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">180</span>,<span class="op">-</span><span class="dv">80</span>)
+range.var<span class="op">$</span>time &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;2016-04-30&#39;</span>, <span class="st">&#39;2016-04-30&#39;</span>)
+
+## Subset selection:
+tbl.subset &lt;-<span class="st"> </span><span class="kw">getTableData</span>(con, table.name, sel.var, range.var)
+<span class="kw">head</span>(tbl.subset)
+
+<span class="kw">dbDisconnect</span>(con)</code></pre></div>
+</div>
+<div id="summarize-table" class="section level2">
+<h2><span class="header-section-number">4.2</span> Summarize table</h2>
+<p>We explain how to get attributes of a table. A typical table’s attributes include:</p>
+<ul>
+<li>name of variables</li>
+<li>type of variables, i.e., quantitative, qualitative, time,</li>
+<li>size of the table</li>
+<li>space-time range information</li>
+<li>numerical variable range summary</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
+
+## Choose table:
+table.name &lt;-<span class="st">  &quot;tblsst_AVHRR_OI_NRT&quot;</span>
+
+
+  
+<span class="co"># Variable name in the table</span>
+tbl.fields &lt;-<span class="st"> </span><span class="kw">dbListFields</span>(con,table.name)
+<span class="kw">print</span>(tbl.fields)
+
+
+## collect sample data 
+tbl.fields &lt;-<span class="st"> </span><span class="kw">getDataSample</span>(con,table.name,<span class="dt">n=</span><span class="dv">5</span>)
+<span class="kw">print</span>(tbl.fields) 
+
+
+<span class="co"># Class of each column in the table</span>
+tbl.colClass &lt;-<span class="st"> </span><span class="kw">getColClass</span>(con,table.name)
+<span class="kw">print</span>(tbl.colClass)
+
+
+<span class="co"># Number of observations</span>
+nObs &lt;-<span class="st"> </span><span class="kw">getObservationCount</span>(con,table.name)
+nObs
+
+
+<span class="co"># Space/time information of the table</span>
+tbl.spaceTimeInfo &lt;-<span class="st"> </span><span class="kw">getSpaceTimeRange</span>(con,table.name)
+<span class="kw">print</span>(tbl.spaceTimeInfo)
+
+
+
+<span class="co"># Numeric variable range:</span>
+tbl.rangeNumVar &lt;-<span class="st"> </span><span class="kw">getRangeNumVar</span>(con,table.name)
+<span class="kw">print</span>(tbl.rangeNumVar)
+  
+
+<span class="kw">dbDisconnect</span>(con)</code></pre></div>
+</div>
+<div id="visualization" class="section level2">
+<h2><span class="header-section-number">4.3</span> Visualization</h2>
+<p>You have two built-in options for making plots – scatter plots to compare two variable of interest, or histograms.</p>
+<div id="scatterplots" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Scatterplots</h3>
+<p>Specify following parameters to retrieve required data.</p>
+<ul>
+<li>Table Name (table.name)</li>
+<li>Variables to be extracted (sel.var)</li>
+<li>Range variable includes (latitude, longitude, depth, time)</li>
+</ul>
+<p>In addition to this, specify “agg.var” parameter to aggregate the variable of interest, and align the data from the two tables. For example, we select agg.var = “time”.</p>
+<!-- In addition to this, specify aggregate variable. For example, we select agg.var = "time". We use this variable to allign the data from the two table downloaded from the CMAP.  -->
+<p><strong>plot_xy</strong> function download the data, and output a list which contain a) plot object: <strong>plot_ly/ggplot</strong>; b) corresponding data tables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
+<span class="co"># Inpit variable:</span>
+<span class="co"># </span>
+table.list &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tblSST_AVHRR_OI_NRT&#39;</span>, <span class="st">&#39;tblAltimetry_REP&#39;</span>) 
+var.list &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&#39;sst&#39;</span>, <span class="st">&#39;sla&#39;</span>)  
+<span class="co">#</span>
+range.var &lt;-<span class="st"> </span><span class="kw">list</span>()
+range.var<span class="op">$</span>lat &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">25</span>,<span class="dv">30</span>)
+range.var<span class="op">$</span>lon &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">160</span>, <span class="dv">-155</span>)
+range.var<span class="op">$</span>time &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;2016-03-29&#39;</span>, <span class="st">&#39;2016-05-29&#39;</span>)
+<span class="co">#</span>
+agg.var &lt;-<span class="st"> &#39;time&#39;</span> 
+
+## -----------------------------------
+## Dataset from table II
+selIndex &lt;-<span class="st"> </span><span class="dv">1</span>
+table.name &lt;-<span class="st"> </span>table.list[selIndex]                       <span class="co"># Specify table name I</span>
+sel.var &lt;-<span class="st"> </span>var.list[selIndex]                            <span class="co"># Variable from table name I  </span>
+
+tbl.subset.x &lt;-<span class="st"> </span><span class="kw">getAggregatedTableData</span>(con, table.name, sel.var, range.var, agg.var)
+<span class="kw">head</span>(tbl.subset.x)
+
+
+## Dataset from table II
+selIndex &lt;-<span class="st"> </span><span class="dv">2</span>
+table.name &lt;-<span class="st"> </span>table.list[selIndex]                       <span class="co"># Specify table name II</span>
+sel.var &lt;-<span class="st"> </span>var.list[selIndex]                            <span class="co"># Variable from table name II</span>
+
+
+tbl.subset.y &lt;-<span class="st"> </span><span class="kw">getAggregatedTableData</span>(con, table.name, sel.var, range.var, agg.var)
+<span class="kw">head</span>(tbl.subset.y)
+
+
+
+## Plot - XY
+<span class="co"># out &lt;- plot_xy(con, table.list,var.list,range.var,agg.var,type = &#39;ggplot&#39;)</span>
+out &lt;-<span class="st"> </span><span class="kw">plot_xy</span>(con, table.list,var.list,range.var,agg.var,<span class="dt">type =</span> <span class="st">&#39;plotly&#39;</span>)
+out<span class="op">$</span>plot
+<span class="kw">dbDisconnect</span>(con)</code></pre></div>
+</div>
+<div id="histograms" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Histograms</h3>
+<p>To generate a histogram plot of a variable of interest, a user needs to specify the following parameters:</p>
+<ul>
+<li>Table Name (table.name)</li>
+<li>Variables to be extracted (sel.var)</li>
+<li>Range variable includes (latitude, longitude, depth, time)</li>
+</ul>
+<p>to retrieve data from <strong>CMAP</strong>.</p>
+<p>Call <strong>plot_depth</strong> function to obtain <strong>plot_ly/ggplot</strong> object.</p>
+<p>Take the following example</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
+
+<span class="co"># Inpit variable:</span>
+table.list &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tblSST_AVHRR_OI_NRT&#39;</span>, <span class="st">&#39;tblArgoMerge_REP&#39;</span>, <span class="st">&#39;tblArgoMerge_REP&#39;</span>) 
+var.list &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&#39;sst&#39;</span>, <span class="st">&#39;argo_merge_temperature_adj&#39;</span>, <span class="st">&#39;argo_merge_salinity_adj&#39;</span>)  
+
+<span class="co"># variable &quot;sst&quot; selected from &quot;tblSST_AVHRR_OI_NRT&quot;</span>
+selIndex &lt;-<span class="st"> </span><span class="dv">1</span>
+table.name &lt;-<span class="st"> </span>table.list[selIndex]
+sel.var &lt;-<span class="st"> </span>var.list[selIndex]   
+
+
+<span class="co"># Range variable</span>
+range.var &lt;-<span class="st"> </span><span class="kw">list</span>()
+range.var<span class="op">$</span>lat &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">24</span>)
+range.var<span class="op">$</span>lon &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">170</span>, <span class="dv">150</span>)
+range.var<span class="op">$</span>time &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;2016-04-30&#39;</span>, <span class="st">&#39;2016-04-30&#39;</span>)
+
+
+
+<span class="co"># Subset selection:</span>
+tbl.subset &lt;-<span class="st"> </span><span class="kw">getTableData</span>(con, table.name, sel.var, range.var)
+<span class="kw">head</span>(tbl.subset)
+
+
+## Plot function available for R User
+<span class="co"># p &lt;- plot_hist(tbl.subset,&#39;ggplot&#39;,sel.var)</span>
+p &lt;-<span class="st"> </span><span class="kw">plot_hist</span>(tbl.subset,<span class="st">&#39;plotly&#39;</span>,sel.var)
+p
+
+
+<span class="kw">dbDisconnect</span>(con)</code></pre></div>
+</div>
+</div>
+<div id="colocalize-data" class="section level2">
+<h2><span class="header-section-number">4.4</span> Colocalize data</h2>
+<p>First, what does it mean to <em>colocalize</em>? Imagine a ship moving along a trajectory, whose location in space and time is recorded in latitude/longitude/time. Then, we’d like to get ocean attributes, like sea surface temperature or salinity, <em>as if we were recording it along the ship’s trajectory</em>. Colocalization simply means getting such attributes <em>manually</em> from the database, by obtaining data from the <em>vicinity</em> of each lat/lon/time triplet and summarizing it (e.g. take mean or standard deviation). The vicinity is define by the user-specified slack in longitude, latitude and time. For instance, one could define vicinity by asking for 1/4 degrees of slack in longitude and latitude, and 6 hours of slack in time.</p>
+<p>Long story short, the basic idea is: query “rectangle” region’s subtable for every lat/lon/time triplet, for each variable.</p>
+<p>The main function to do this is <code>matchSource_onetable</code>, which colocalizes data for one table at a time (the <code>table.name</code> variable from the catalog), and one or more variables in that table (the <code>sel.var</code> variable, again from the catalog). The latitude/longitude/time triplets are to be in a CSV file whose path you’ll supply in the variable <code>source</code>. Here is a short example:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Setup 
+con =<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
+latMargin =<span class="st"> </span><span class="fl">0.3</span>
+lonMargin =<span class="st"> </span><span class="fl">0.3</span>
+timeMargin =<span class="st"> </span><span class="dv">1</span>
+source =<span class="st"> &#39;~/Desktop/MGL1704-veryshort.csv&#39;</span>
+table.name =<span class="st"> &quot;tblSST_AVHRR_OI_NRT&quot;</span>
+sel.var =<span class="st"> &quot;sst&quot;</span>
+res =<span class="st"> </span><span class="kw">matchSource_onetable</span>(con, source, table.name, sel.var, latMargin, lonMargin, timeMargin)
+<span class="kw">print</span>(<span class="kw">head</span>(res))</code></pre></div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="catalog-of-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="faq.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>

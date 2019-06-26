@@ -1,0 +1,15 @@
+# About the 'cmap4r' R package {-}
+
+
+`cmap4r` is an R package which contains methods to easily access and download
+from the "Simons CMAP", a database which contains openly available quantitative
+data about the ocean.  For further reading about Simons
+CMAP, refer to https://cmap.readthedocs.io/.
+
+
+```{r, out.width='50%', fig.align='center', echo=FALSE}
+knitr::include_graphics('caustics_grid.png')
+```
+
+
+
