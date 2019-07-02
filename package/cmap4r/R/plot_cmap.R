@@ -1,4 +1,4 @@
-#utils::globalVariables(c("..density.."))
+utils::globalVariables(c("..density.."))
 
 
 #' Plot variable of interest with varying depth
