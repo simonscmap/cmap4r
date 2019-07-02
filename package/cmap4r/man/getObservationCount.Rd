@@ -25,13 +25,13 @@ Number of observations
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 ## Choose table:
-table.name <-  "tblsst_AVHRR_OI_NRT"
+table.name <- "tblsst_AVHRR_OI_NRT"
 
 # Number of observations
-nObs <- getObservationCount(con,table.name)
+nObs <- getObservationCount(con, table.name)
 nObs
 #
 dbDisconnect(con)

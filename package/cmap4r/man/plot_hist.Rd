@@ -21,11 +21,11 @@ Histogram object of chosen type
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
-table.list <- c('tblSST_AVHRR_OI_NRT', 'tblArgoMerge_REP', 'tblArgoMerge_REP')
-var.list <-  c('sst', 'argo_merge_temperature_adj', 'argo_merge_salinity_adj')
+table.list <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
+var.list <- c("sst", "argo_merge_temperature_adj", "argo_merge_salinity_adj")
 #
 # variable "sst" selected from "tblSST_AVHRR_OI_NRT"
 selIndex <- 1
@@ -33,11 +33,11 @@ table.name <- table.list[selIndex]
 sel.var <- var.list[selIndex]
 #
 #
- # Range variable
+# Range variable
 range.var <- list()
 range.var$lat <- c(20, 24)
 range.var$lon <- c(-170, 150)
-range.var$time <- c('2016-04-30', '2016-04-30')
+range.var$time <- c("2016-04-30", "2016-04-30")
 #
 #
 #
@@ -47,8 +47,8 @@ head(tbl.subset)
 #
 #
 # Plot function available for R User
-p <- plot_hist(tbl.subset,'ggplot',sel.var)
-p <- plot_hist(tbl.subset,'plotly',sel.var)
+p <- plot_hist(tbl.subset, "ggplot", sel.var)
+p <- plot_hist(tbl.subset, "plotly", sel.var)
 p
 #
 #

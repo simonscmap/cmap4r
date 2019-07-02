@@ -19,13 +19,13 @@ Class of columns
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 ## Choose table:
-table.name <-  "tblsst_AVHRR_OI_NRT"
+table.name <- "tblsst_AVHRR_OI_NRT"
 #
 # Class of each column in the table
-tbl.colClass <- getColClass(con,table.name)
+tbl.colClass <- getColClass(con, table.name)
 print(tbl.colClass)
 #
 dbDisconnect(con)

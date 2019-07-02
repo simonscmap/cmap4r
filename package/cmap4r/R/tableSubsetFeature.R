@@ -39,15 +39,15 @@
 #' @importFrom stats sd
 #' @examples
 #' \dontrun{
-#' con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+#' con <- connect2cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Input: Table name; variable name, space time range information
-#' table.name = 'tblsst_AVHRR_OI_NRT'                    # table name
-#' sel.var = 'sst'                                       # choose variable
-#' range.var <- list()                                   # Range variable information
-#' range.var$time <- c('2016-04-30', '2016-04-30')
-#' range.var$lat <- c(10,70)
-#' range.var$lon <- c(-180,-80)
+#' table.name <- "tblsst_AVHRR_OI_NRT" # table name
+#' sel.var <- "sst" # choose variable
+#' range.var <- list() # Range variable information
+#' range.var$time <- c("2016-04-30", "2016-04-30")
+#' range.var$lat <- c(10, 70)
+#' range.var$lon <- c(-180, -80)
 #' #
 #' # Summary of the data:
 #' tbl.subsetSummary <- getSubsetRangeNumVar(con, table.name, range.var)
@@ -55,27 +55,30 @@
 #' #
 #' dbDisconnect(con)
 #' }
-getSubsetRangeNumVar = function(con, table.name, range.var){
-  tbl.connect <- dplyr::tbl(con,table.name)
+getSubsetRangeNumVar <- function(con, table.name, range.var) {
+  tbl.connect <- dplyr::tbl(con, table.name)
   indrv <- tableVarMatch(con, table.name, names(range.var))
-  if(any(is.na(indrv))){
+  if (any(is.na(indrv))) {
     stop("Check range variable;")
   }
   filt.query <- getFilterQuery(range.var)
-  tbl.query <- tbl.connect %>% dplyr::filter(filt.query)   %>%
-    dplyr::summarise_if( is.numeric,funs(min, max,sd),na.rm =T)
-  tbl.subset <-  tbl.query %>% dplyr::collect()
+  tbl.query <- tbl.connect %>%
+    dplyr::filter(filt.query) %>%
+    dplyr::summarise_if(is.numeric, funs(min, max, sd), na.rm = T)
+  tbl.subset <- tbl.query %>% dplyr::collect()
 
-  mnx <- grep("min",names(tbl.subset))
-  mny <- grep("max",names(tbl.subset))
-  msd <- grep("sd",names(tbl.subset))
-  varname <- gsub("_min","",names(tbl.subset)[mnx])
+  mnx <- grep("min", names(tbl.subset))
+  mny <- grep("max", names(tbl.subset))
+  msd <- grep("sd", names(tbl.subset))
+  varname <- gsub("_min", "", names(tbl.subset)[mnx])
 
-  outp <- data.frame(Variable= varname,
-                     min = as.numeric(tbl.subset[1,mnx]),
-                     max = as.numeric(tbl.subset[1,mny]),
-                     sd = as.numeric(tbl.subset[1,msd]))
-  outp <- outp[outp$Variable!='ID',]
+  outp <- data.frame(
+    Variable = varname,
+    min = as.numeric(tbl.subset[1, mnx]),
+    max = as.numeric(tbl.subset[1, mny]),
+    sd = as.numeric(tbl.subset[1, msd])
+  )
+  outp <- outp[outp$Variable != "ID", ]
   return(outp)
 }
 
@@ -97,15 +100,15 @@ getSubsetRangeNumVar = function(con, table.name, range.var){
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @examples
 #' \dontrun{
-#' con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+#' con <- connect2cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Input: Table name; variable name, space time range information
-#' table.name = 'tblsst_AVHRR_OI_NRT'                    # table name
-#' sel.var = 'sst'                                       # choose variable
-#' range.var <- list()                                   # Range variable information
-#' range.var$time <- c('2016-04-30', '2016-04-30')
-#' range.var$lat <- c(10,70)
-#' range.var$lon <- c(-180,-80)
+#' table.name <- "tblsst_AVHRR_OI_NRT" # table name
+#' sel.var <- "sst" # choose variable
+#' range.var <- list() # Range variable information
+#' range.var$time <- c("2016-04-30", "2016-04-30")
+#' range.var$lat <- c(10, 70)
+#' range.var$lon <- c(-180, -80)
 #' #
 #' # Summary of the data:
 #' tbl.subsetSummary <- getSubsetRangeNumVar(con, table.name, range.var)
@@ -113,22 +116,21 @@ getSubsetRangeNumVar = function(con, table.name, range.var){
 #' #
 #' dbDisconnect(con)
 #' }
-getSubsetSpaceTimeRange  = function(con,table.name,range.var){
-  tblxx <- getDataSample(con,table.name,n=5)
-  tbl.fields <- names(tblxx) #dbListFields(con,table.name)
-  range.varxx <- c('time','lat','lon','depth')
-  index <- match(range.varxx,tbl.fields)
+getSubsetSpaceTimeRange <- function(con, table.name, range.var) {
+  tblxx <- getDataSample(con, table.name, n = 5)
+  tbl.fields <- names(tblxx) # dbListFields(con,table.name)
+  range.varxx <- c("time", "lat", "lon", "depth")
+  index <- match(range.varxx, tbl.fields)
   range.var2 <- range.varxx[!is.na(index)]
   ab <- dplyr::tbl(con, table.name)
   filt.query <- getFilterQuery(range.var)
-  tbl.subsetSpaceTimeSummary <- ab %>% dplyr::filter(filt.query) %>%
+  tbl.subsetSpaceTimeSummary <- ab %>%
+    dplyr::filter(filt.query) %>%
     dplyr::select_at(range.var2) %>%
-    dplyr::summarise_at(range.var2,list(min = min,max = max),
-                                           na.rm=TRUE) %>%
+    dplyr::summarise_at(range.var2, list(min = min, max = max),
+      na.rm = TRUE
+    ) %>%
     dplyr::collect()
 
   return(tbl.subsetSpaceTimeSummary)
 }
-
-
-

@@ -21,11 +21,11 @@ times eries plot object
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 # Input variable:
-table.list <- c('tblSST_AVHRR_OI_NRT', 'tblAltimetry_REP', 'tblPisces_NRT')
-var.list <- c('sst', 'sla', 'NO3')
+table.list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
+var.list <- c("sst", "sla", "NO3")
 #
 # selected "sst" from the table "tblSST_AVHRR_OI_NRT"
 selIndex <- 1
@@ -34,17 +34,17 @@ sel.var <- var.list[selIndex]
 #
 # # Example I:
 range.var <- list()
-range.var$lat <- c(25,30)
-range.var$lon <- c(-160,-155)
-range.var$time <- c('2016-03-29', '2016-05-29')
+range.var$lat <- c(25, 30)
+range.var$lon <- c(-160, -155)
+range.var$time <- c("2016-03-29", "2016-05-29")
 #
- # Subset selection: data retrieval
-agg.var <- 'time'
+# Subset selection: data retrieval
+agg.var <- "time"
 tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
-head(tbl.subset,20)
+head(tbl.subset, 20)
 #
 # Plot -- Time series:
-p <- plot_ts(tbl.subset,'plotly',sel.var)
+p <- plot_ts(tbl.subset, "plotly", sel.var)
 p
 #
 dbDisconnect(con)

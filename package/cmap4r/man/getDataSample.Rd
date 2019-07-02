@@ -21,13 +21,13 @@ Retrieve data sample of size n
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 ## Choose table:
-table.name <-  "tblsst_AVHRR_OI_NRT"
+table.name <- "tblsst_AVHRR_OI_NRT"
 
 ## collect sample data
-tbl.fields <- getDataSample(con,table.name,n=10)
+tbl.fields <- getDataSample(con, table.name, n = 10)
 print(tbl.fields)
 
 dbDisconnect(con)

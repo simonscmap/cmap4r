@@ -30,20 +30,20 @@ Scatter plot of two variable of interest
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 # Inpit variable:
 #
-table.list <- c('tblSST_AVHRR_OI_NRT', 'tblAltimetry_REP')
-var.list <-  c('sst', 'sla')
+table.list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
+var.list <- c("sst", "sla")
 #
 range.var <- list()
-range.var$lat <- c(25,30)
+range.var$lat <- c(25, 30)
 range.var$lon <- c(-160, -155)
-range.var$time <- c('2016-03-29', '2016-05-29')
+range.var$time <- c("2016-03-29", "2016-05-29")
 #
-agg.var <- 'time'
+agg.var <- "time"
 
-out <- plot_xy(con, table.list,var.list,range.var,agg.var,type = 'plotly')
+out <- plot_xy(con, table.list, var.list, range.var, agg.var, type = "plotly")
 out$plot
 dbDisconnect(con)
 }

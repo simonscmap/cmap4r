@@ -27,19 +27,19 @@ Regional map of a variable of interest at varying range of latitude and longitud
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
-table.name = 'tblsst_AVHRR_OI_NRT'
-sel.var = 'sst'
+table.name <- "tblsst_AVHRR_OI_NRT"
+sel.var <- "sst"
 range.var <- list()
-range.var$lat <- c(10,70)
-range.var$lon <- c(-180,-80)
-range.var$time <- c('2016-04-30', '2016-04-30')
+range.var$lat <- c(10, 70)
+range.var$lon <- c(-180, -80)
+range.var$time <- c("2016-04-30", "2016-04-30")
 #
 ## Plot - regional map
 # out <- plot_regMap(con, table.name,sel.var,range.var, type = 'ggplot')
-out <- plot_regMap(con, table.name,sel.var,range.var, type = 'plotly')
+out <- plot_regMap(con, table.name, sel.var, range.var, type = "plotly")
 out$plot
 }
 }

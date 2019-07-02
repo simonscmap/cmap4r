@@ -28,18 +28,18 @@ Get aggregated subset of a table
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 ## Input: Table name; variable name, space time range information
-table.name = 'tblsst_AVHRR_OI_NRT'    # table name
-sel.var = 'sst'                         # choose variable
-range.var <- list()                     # Range variable [lat,lon,time]
-range.var$lat <- c(25,30)
-range.var$lon <- c(-160,-155)
-range.var$time <- c('2016-03-29', '2016-05-29')
+table.name <- "tblsst_AVHRR_OI_NRT" # table name
+sel.var <- "sst" # choose variable
+range.var <- list() # Range variable [lat,lon,time]
+range.var$lat <- c(25, 30)
+range.var$lon <- c(-160, -155)
+range.var$time <- c("2016-03-29", "2016-05-29")
 #
 # Aggregate
-agg.var <- 'time'                       # Specify aggregate variable
+agg.var <- "time" # Specify aggregate variable
 tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
 head(tbl.subset)
 #

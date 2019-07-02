@@ -43,14 +43,14 @@ determined by a user-input margin in lat, lon and time.
 \examples{
 \dontrun{
 ## Setup
-con = DBI::dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
-latMargin = 0.3
-lonMargin = 0.3
-timeMargin = 1
-source = 'somefile.csv'
-table.name = "tblSST_AVHRR_OI_NRT"
-sel.var = "sst"
-res = matchSourceOneTable(con, source, table.name, sel.var, latMargin, lonMargin, timeMargin)
+con <- connect2cmap(Driver = "libtdsodbc.so")
+latMargin <- 0.3
+lonMargin <- 0.3
+timeMargin <- 1
+source <- "somefile.csv"
+table.name <- "tblSST_AVHRR_OI_NRT"
+sel.var <- "sst"
+res <- matchSourceOneTable(con, source, table.name, sel.var, latMargin, lonMargin, timeMargin)
 print(head(res))
 }
 }

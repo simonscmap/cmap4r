@@ -21,11 +21,11 @@ Depth plot object
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
-table.list <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Chl_Climatology')
-var.list <-  c('argo_merge_chl_adj', 'CHL', 'chl01_darwin_clim')
+table.list <- c("tblArgoMerge_REP", "tblPisces_NRT", "tblDarwin_Chl_Climatology")
+var.list <- c("argo_merge_chl_adj", "CHL", "chl01_darwin_clim")
 #
 # selected argo_merge_chl_adj from tblArgoMerge_REP
 selIndex <- 1
@@ -33,20 +33,20 @@ table.name <- table.list[selIndex]
 sel.var <- var.list[selIndex]
 #
 range.var <- list()
-range.var$lat <- c(20,24)
-range.var$lon <- c( -170, -150)
+range.var$lat <- c(20, 24)
+range.var$lon <- c(-170, -150)
 range.var$depth <- c(0, 1500)
-range.var$time <- c('2016-04-30', '2016-04-30')
+range.var$time <- c("2016-04-30", "2016-04-30")
 #
 #
 # Subset selection: data retrieval
-agg.var <- 'depth'
+agg.var <- "depth"
 tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
 head(tbl.subset)
 #
 #
 # Plot -- Depth profiles:
-p <- plot_depth(tbl.subset, 'plotly',sel.var)
+p <- plot_depth(tbl.subset, "plotly", sel.var)
 #
 #
 dbDisconnect(con)

@@ -21,15 +21,15 @@ Space time range
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 ## Input: Table name; variable name, space time range information
-table.name = 'tblsst_AVHRR_OI_NRT'                    # table name
-sel.var = 'sst'                                       # choose variable
-range.var <- list()                                   # Range variable information
-range.var$time <- c('2016-04-30', '2016-04-30')
-range.var$lat <- c(10,70)
-range.var$lon <- c(-180,-80)
+table.name <- "tblsst_AVHRR_OI_NRT" # table name
+sel.var <- "sst" # choose variable
+range.var <- list() # Range variable information
+range.var$time <- c("2016-04-30", "2016-04-30")
+range.var$lat <- c(10, 70)
+range.var$lon <- c(-180, -80)
 #
 # Summary of the data:
 tbl.subsetSummary <- getSubsetRangeNumVar(con, table.name, range.var)

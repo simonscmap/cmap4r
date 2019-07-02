@@ -19,13 +19,13 @@ Range of numeric variables
 }
 \examples{
 \dontrun{
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+con <- connect2cmap(Driver = "libtdsodbc.so")
 #
 # Choose table:
-table.name <-  "tblsst_AVHRR_OI_NRT"
+table.name <- "tblsst_AVHRR_OI_NRT"
 #
 # Numeric variable range:
-tbl.rangeNumVar <- getRangeNumVar(con,table.name)
+tbl.rangeNumVar <- getRangeNumVar(con, table.name)
 print(tbl.rangeNumVar)
 #
 dbDisconnect(con)

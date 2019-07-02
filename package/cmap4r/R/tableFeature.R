@@ -14,40 +14,42 @@
 #' @importFrom DBI dbGetQuery dbClearResult
 #' @examples
 #' \dontrun{
-#' con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+#' con <- connect2cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Choose table:
-#' table.name <-  "tblsst_AVHRR_OI_NRT"
+#' table.name <- "tblsst_AVHRR_OI_NRT"
 #'
 #' # Number of observations
-#' nObs <- getObservationCount(con,table.name)
+#' nObs <- getObservationCount(con, table.name)
 #' nObs
 #' #
 #' dbDisconnect(con)
 #' }
-getObservationCount = function(con,table.name,
-                               type=c("approx","first-last","exact")[1],
-                               idvar = 'ID' ){
+getObservationCount <- function(con, table.name,
+                                type = c("approx", "first-last", "exact")[1],
+                                idvar = "ID") {
   # require(dbplyr,dplyr,DBI)
-  id <- match(type,c("approx","first-last","exact"))
-  if(id==1){
-    query <-  paste("SELECT CONVERT(bigint, rows) FROM sysindexes WHERE id = OBJECT_ID('", table.name,
-                    "') AND indid < 2", sep = "")
-    ab = DBI::dbGetQuery(con, query)
-    return(as.numeric(ab[1,]))
-  } else  if(id==2){
-    query0 <- paste("SELECT TOP 1 ",idvar, " FROM ", table.name, " ORDER BY ",idvar ,sep = '')
-    query <- paste(query0,"ASC")
-    ab = DBI::dbGetQuery(con, query)
-    fobs = as.numeric(ab$ID)
+  id <- match(type, c("approx", "first-last", "exact"))
+  if (id == 1) {
+    query <- paste("SELECT CONVERT(bigint, rows) FROM sysindexes WHERE id = OBJECT_ID('", table.name,
+      "') AND indid < 2",
+      sep = ""
+    )
+    ab <- DBI::dbGetQuery(con, query)
+    return(as.numeric(ab[1, ]))
+  } else if (id == 2) {
+    query0 <- paste("SELECT TOP 1 ", idvar, " FROM ", table.name, " ORDER BY ", idvar, sep = "")
+    query <- paste(query0, "ASC")
+    ab <- DBI::dbGetQuery(con, query)
+    fobs <- as.numeric(ab$ID)
 
-    query <- paste(query0,"DESC")
-    ab = DBI::dbGetQuery(con, query)
+    query <- paste(query0, "DESC")
+    ab <- DBI::dbGetQuery(con, query)
 
-    return(as.numeric(ab$ID) - fobs+1)
+    return(as.numeric(ab$ID) - fobs + 1)
   } else {
-    query <-  paste('SELECT COUNT_BIG(*) as nObservation FROM ',table.name,sep = '')
-    ab = DBI::dbGetQuery(con, query)
+    query <- paste("SELECT COUNT_BIG(*) as nObservation FROM ", table.name, sep = "")
+    ab <- DBI::dbGetQuery(con, query)
     nobs <- as.numeric(ab$nObservation)
     DBI::dbClearResult(ab)
     return(nobs)
@@ -72,27 +74,28 @@ getObservationCount = function(con,table.name,
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @examples
 #' \dontrun{
-#' con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+#' con <- connect2cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Choose table:
-#' table.name <-  "tblsst_AVHRR_OI_NRT"
+#' table.name <- "tblsst_AVHRR_OI_NRT"
 #' #
 #' #
 #' # Space/time information of the table
-#' tbl.spaceTimeInfo <- getSpaceTimeRange(con,table.name)
+#' tbl.spaceTimeInfo <- getSpaceTimeRange(con, table.name)
 #' print(tbl.spaceTimeInfo)
 #' #
 #' dbDisconnect(con)
 #' }
-getSpaceTimeRange = function(con,table.name){
-  tblxx <- getDataSample(con,table.name,n=5)
-  tbl.fields <- names(tblxx) #dbListFields(con,table.name)
-  range.var <- c('time','lat','lon','depth')
-  index <- match(range.var,tbl.fields)
+getSpaceTimeRange <- function(con, table.name) {
+  tblxx <- getDataSample(con, table.name, n = 5)
+  tbl.fields <- names(tblxx) # dbListFields(con,table.name)
+  range.var <- c("time", "lat", "lon", "depth")
+  index <- match(range.var, tbl.fields)
   range.var2 <- range.var[!is.na(index)]
   ab <- dplyr::tbl(con, table.name)
-  am <- ab %>% dplyr::select_at(range.var2) %>%
-    dplyr::summarise_at(range.var2,list(min = min,max = max),na.rm=TRUE) %>%
+  am <- ab %>%
+    dplyr::select_at(range.var2) %>%
+    dplyr::summarise_at(range.var2, list(min = min, max = max), na.rm = TRUE) %>%
     dplyr::collect()
   return(am)
 }
@@ -112,30 +115,33 @@ getSpaceTimeRange = function(con,table.name){
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @examples
 #' \dontrun{
-#' con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+#' con <- connect2cmap(Driver = "libtdsodbc.so")
 #' #
 #' # Choose table:
-#' table.name <-  "tblsst_AVHRR_OI_NRT"
+#' table.name <- "tblsst_AVHRR_OI_NRT"
 #' #
 #' # Numeric variable range:
-#' tbl.rangeNumVar <- getRangeNumVar(con,table.name)
+#' tbl.rangeNumVar <- getRangeNumVar(con, table.name)
 #' print(tbl.rangeNumVar)
 #' #
 #' dbDisconnect(con)
 #' }
-getRangeNumVar = function(con,table.name){
-  tbl.colClass <- getColClass(con,table.name)
-  var.name <- as.character(tbl.colClass$Variable[tbl.colClass$Type == 'numeric'])
+getRangeNumVar <- function(con, table.name) {
+  tbl.colClass <- getColClass(con, table.name)
+  var.name <- as.character(tbl.colClass$Variable[tbl.colClass$Type == "numeric"])
 
   ab <- dplyr::tbl(con, table.name)
-  am <- ab %>% dplyr::select_at(var.name) %>%
-    dplyr::summarise_at(var.name,list(min = min,max = max),na.rm=TRUE) %>%
+  am <- ab %>%
+    dplyr::select_at(var.name) %>%
+    dplyr::summarise_at(var.name, list(min = min, max = max), na.rm = TRUE) %>%
     dplyr::collect()
 
   p <- length(var.name)
-  outp <- data.frame(Variable= var.name,
-                     min = as.numeric(am[1,1:p]),
-                     max = as.numeric(am[1,-(1:p)]))
+  outp <- data.frame(
+    Variable = var.name,
+    min = as.numeric(am[1, 1:p]),
+    max = as.numeric(am[1, -(1:p)])
+  )
   return(outp)
 }
 
@@ -175,19 +181,19 @@ getRangeNumVar = function(con,table.name){
 #' @importFrom DBI dbSendQuery dbFetch dbClearResult
 #' @examples
 #' \dontrun{
-#' con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+#' con <- connect2cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Choose table:
-#' table.name <-  "tblsst_AVHRR_OI_NRT"
+#' table.name <- "tblsst_AVHRR_OI_NRT"
 #'
 #' ## collect sample data
-#' tbl.fields <- getDataSample(con,table.name,n=10)
+#' tbl.fields <- getDataSample(con, table.name, n = 10)
 #' print(tbl.fields)
 #'
 #' dbDisconnect(con)
 #' }
-getDataSample = function(con,table.name,n){
-  query <- paste("select * from",table.name)
+getDataSample <- function(con, table.name, n) {
+  query <- paste("select * from", table.name)
   rs <- DBI::dbSendQuery(con, query)
   tbl.sample <- DBI::dbFetch(rs, n)
   DBI::dbClearResult(rs)
@@ -213,28 +219,31 @@ getDataSample = function(con,table.name,n){
 #' @importFrom DBI dbSendQuery dbFetch dbClearResult
 #' @examples
 #' \dontrun{
-#' con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+#' con <- connect2cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Choose table:
-#' table.name <-  "tblsst_AVHRR_OI_NRT"
+#' table.name <- "tblsst_AVHRR_OI_NRT"
 #' #
 #' # Class of each column in the table
-#' tbl.colClass <- getColClass(con,table.name)
+#' tbl.colClass <- getColClass(con, table.name)
 #' print(tbl.colClass)
 #' #
 #' dbDisconnect(con)
 #' }
-getColClass = function(con,table.name){
-  query <- paste("select * from",table.name)
+getColClass <- function(con, table.name) {
+  query <- paste("select * from", table.name)
   rs <- DBI::dbSendQuery(con, query)
   tbl.sample <- DBI::dbFetch(rs, 10)
-  colClass = NULL
+  colClass <- NULL
   for (i in 1:ncol(tbl.sample)) {
-    colClass <- rbind(colClass,
-                      c(names(tbl.sample)[i] ,
-                        class(tbl.sample[,i]) ))
+    colClass <- rbind(
+      colClass,
+      c(
+        names(tbl.sample)[i],
+        class(tbl.sample[, i])
+      )
+    )
   }
-  colnames(colClass) <- c('Variable','Type')
+  colnames(colClass) <- c("Variable", "Type")
   return(data.frame(colClass))
 }
-
