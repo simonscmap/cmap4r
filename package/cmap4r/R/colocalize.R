@@ -23,18 +23,19 @@
 #'   time/lat/lon.
 #' @examples
 #' \dontrun{
+#' library(cmap4r)
 #' ## Setup
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' latMargin <- 0.3
 #' lonMargin <- 0.3
 #' timeMargin <- 1
 #' source <- "somefile.csv"
 #' table.name <- "tblSST_AVHRR_OI_NRT"
 #' sel.var <- "sst"
-#' res <- matchSourceOneTable(con, source, table.name, sel.var, latMargin, lonMargin, timeMargin)
+#' res <- match_table(con, source, table.name, sel.var, latMargin, lonMargin, timeMargin)
 #' print(head(res))
 #' }
-matchSourceOnetable <- function(con, source, table.name, sel.vars,
+match_table <- function(con, source, table.name, sel.vars,
                                 latMargin, lonMargin, timeMargin, depthRange = NULL,
                                 orderby = NULL, N = 1E5 ## TODO: Find a good number.
 ) {
@@ -65,7 +66,7 @@ matchSourceOnetable <- function(con, source, table.name, sel.vars,
     )
     ## n = getObservationCount(con, table.name, type="exact")
     ## if(n > N) stop("Query is too large!")
-    tbl <- getTableData(con, table.name, sel.var, range.var.all, orderby)
+    tbl <- get_table(con, table.name, sel.var, range.var.all, orderby)
 
     for (itriplet in 1:ntriplets) {
       ## printprogress(itriplet, ntriplets)

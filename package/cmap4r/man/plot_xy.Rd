@@ -30,7 +30,8 @@ Scatter plot of two variable of interest
 }
 \examples{
 \dontrun{
-con <- connect2cmap(Driver = "libtdsodbc.so")
+library(cmap4r)
+con <- connect_cmap(Driver = "libtdsodbc.so")
 # Inpit variable:
 #
 table.list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")

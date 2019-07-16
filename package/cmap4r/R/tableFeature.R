@@ -14,18 +14,19 @@
 #' @importFrom DBI dbGetQuery dbClearResult
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Choose table:
 #' table.name <- "tblsst_AVHRR_OI_NRT"
 #'
 #' # Number of observations
-#' nObs <- getObservationCount(con, table.name)
+#' nObs <- tbl_nobs(con, table.name)
 #' nObs
 #' #
 #' dbDisconnect(con)
 #' }
-getObservationCount <- function(con, table.name,
+tbl_nobs <- function(con, table.name,
                                 type = c("approx", "first-last", "exact")[1],
                                 idvar = "ID") {
   # require(dbplyr,dplyr,DBI)
@@ -74,20 +75,21 @@ getObservationCount <- function(con, table.name,
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Choose table:
 #' table.name <- "tblsst_AVHRR_OI_NRT"
 #' #
 #' #
 #' # Space/time information of the table
-#' tbl.spaceTimeInfo <- getSpaceTimeRange(con, table.name)
+#' tbl.spaceTimeInfo <- tbl_spacetime_range(con, table.name)
 #' print(tbl.spaceTimeInfo)
 #' #
 #' dbDisconnect(con)
 #' }
-getSpaceTimeRange <- function(con, table.name) {
-  tblxx <- getDataSample(con, table.name, n = 5)
+tbl_spacetime_range <- function(con, table.name) {
+  tblxx <- tbl_sample(con, table.name, n = 5)
   tbl.fields <- names(tblxx) # dbListFields(con,table.name)
   range.var <- c("time", "lat", "lon", "depth")
   index <- match(range.var, tbl.fields)
@@ -115,19 +117,20 @@ getSpaceTimeRange <- function(con, table.name) {
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' # Choose table:
 #' table.name <- "tblsst_AVHRR_OI_NRT"
 #' #
 #' # Numeric variable range:
-#' tbl.rangeNumVar <- getRangeNumVar(con, table.name)
+#' tbl.rangeNumVar <- tbl_numvar_range(con, table.name)
 #' print(tbl.rangeNumVar)
 #' #
 #' dbDisconnect(con)
 #' }
-getRangeNumVar <- function(con, table.name) {
-  tbl.colClass <- getColClass(con, table.name)
+tbl_numvar_range <- function(con, table.name) {
+  tbl.colClass <- tbl_vartype(con, table.name)
   var.name <- as.character(tbl.colClass$Variable[tbl.colClass$Type == "numeric"])
 
   ab <- dplyr::tbl(con, table.name)
@@ -151,7 +154,7 @@ getRangeNumVar <- function(con, table.name) {
 
 
 # ## Range of the numerical variable
-# getRangeNumVar1 = function(con,table.name,var.name){
+# tbl_numvar_range1 = function(con,table.name,var.name){
 #   query.range <- vector('list',length = length(var.name))
 #   var.range <- NULL
 #   for(i in 1:length(var.name)){
@@ -181,18 +184,19 @@ getRangeNumVar <- function(con, table.name) {
 #' @importFrom DBI dbSendQuery dbFetch dbClearResult
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Choose table:
 #' table.name <- "tblsst_AVHRR_OI_NRT"
 #'
 #' ## collect sample data
-#' tbl.fields <- getDataSample(con, table.name, n = 10)
+#' tbl.fields <- tbl_sample(con, table.name, n = 10)
 #' print(tbl.fields)
 #'
 #' dbDisconnect(con)
 #' }
-getDataSample <- function(con, table.name, n) {
+tbl_sample <- function(con, table.name, n) {
   query <- paste("select * from", table.name)
   rs <- DBI::dbSendQuery(con, query)
   tbl.sample <- DBI::dbFetch(rs, n)
@@ -219,18 +223,19 @@ getDataSample <- function(con, table.name, n) {
 #' @importFrom DBI dbSendQuery dbFetch dbClearResult
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Choose table:
 #' table.name <- "tblsst_AVHRR_OI_NRT"
 #' #
 #' # Class of each column in the table
-#' tbl.colClass <- getColClass(con, table.name)
+#' tbl.colClass <- tbl_vartype(con, table.name)
 #' print(tbl.colClass)
 #' #
 #' dbDisconnect(con)
 #' }
-getColClass <- function(con, table.name) {
+tbl_vartype <- function(con, table.name) {
   query <- paste("select * from", table.name)
   rs <- DBI::dbSendQuery(con, query)
   tbl.sample <- DBI::dbFetch(rs, 10)

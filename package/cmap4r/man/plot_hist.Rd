@@ -21,7 +21,8 @@ Histogram object of chosen type
 }
 \examples{
 \dontrun{
-con <- connect2cmap(Driver = "libtdsodbc.so")
+library(cmap4r)
+con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
 table.list <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
@@ -42,7 +43,7 @@ range.var$time <- c("2016-04-30", "2016-04-30")
 #
 #
 # Subset selection:
-tbl.subset <- getTableData(con, table.name, sel.var, range.var)
+tbl.subset <- get_table(con, table.name, sel.var, range.var)
 head(tbl.subset)
 #
 #

@@ -5,7 +5,7 @@ Version: 0.1.0
 Author: Aditya Mishra [aut, cre], Christian Mueller [aut], Jacob Bien [aut], Sangwon Hyun [aut, cre]
 Maintainer: Aditya Mishra <amishra@flatironinstitute.org>
 Description: The paclage facilitates user to  download, visualize and process data from CMAP database. 
-Depends: R (>= 3.3.1) , stats , utils 
+Depends: R (>= 3.3.0) , stats , utils 
 Imports: plotly , ggplot2  , odbc , dbplyr  , dplyr , purrr , rlang , DBI, magrittr, keyring
 License: GPL (>= 3.0)
 Encoding: UTF-8

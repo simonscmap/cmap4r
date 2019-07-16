@@ -21,7 +21,8 @@ Depth plot object
 }
 \examples{
 \dontrun{
-con <- connect2cmap(Driver = "libtdsodbc.so")
+library(cmap4r)
+con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
 table.list <- c("tblArgoMerge_REP", "tblPisces_NRT", "tblDarwin_Chl_Climatology")
@@ -41,7 +42,7 @@ range.var$time <- c("2016-04-30", "2016-04-30")
 #
 # Subset selection: data retrieval
 agg.var <- "depth"
-tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+tbl.subset <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
 head(tbl.subset)
 #
 #

@@ -1,4 +1,4 @@
-utils::globalVariables(c("..density.."))
+
 
 
 #' Plot variable of interest with varying depth
@@ -15,7 +15,8 @@ utils::globalVariables(c("..density.."))
 #' @importFrom ggplot2 ggtitle ggplot geom_point theme xlab ylab aes_string element_text
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' # Inpit variable:
 #' table.list <- c("tblArgoMerge_REP", "tblPisces_NRT", "tblDarwin_Chl_Climatology")
@@ -35,7 +36,7 @@ utils::globalVariables(c("..density.."))
 #' #
 #' # Subset selection: data retrieval
 #' agg.var <- "depth"
-#' tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+#' tbl.subset <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
 #' head(tbl.subset)
 #' #
 #' #
@@ -92,7 +93,8 @@ plot_depth <- function(tbl.subset, type = c("plotly", "ggplot")[1], sel.var) {
 #' @importFrom ggplot2 ggtitle ggplot geom_point geom_line theme xlab ylab aes_string element_text
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' # Input variable:
 #' table.list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
@@ -111,7 +113,7 @@ plot_depth <- function(tbl.subset, type = c("plotly", "ggplot")[1], sel.var) {
 #' #
 #' # Subset selection: data retrieval
 #' agg.var <- "time"
-#' tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+#' tbl.subset <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
 #' head(tbl.subset, 20)
 #' #
 #' # Plot -- Time series:
@@ -152,7 +154,7 @@ plot_ts <- function(tbl.subset, type = c("plotly", "ggplot")[1], sel.var) {
 
 
 
-
+utils::globalVariables(c("..density.."))
 #' Plot histogram of the variable of interest
 #'
 #' Histogram object of chosen type
@@ -166,7 +168,8 @@ plot_ts <- function(tbl.subset, type = c("plotly", "ggplot")[1], sel.var) {
 #' @importFrom ggplot2 ggtitle ggplot xlab ylab theme geom_histogram geom_density aes_string element_text aes
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' # Inpit variable:
 #' table.list <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
@@ -187,7 +190,7 @@ plot_ts <- function(tbl.subset, type = c("plotly", "ggplot")[1], sel.var) {
 #' #
 #' #
 #' # Subset selection:
-#' tbl.subset <- getTableData(con, table.name, sel.var, range.var)
+#' tbl.subset <- get_table(con, table.name, sel.var, range.var)
 #' head(tbl.subset)
 #' #
 #' #
@@ -251,7 +254,8 @@ plot_hist <- function(tbl.subset, type = c("plotly", "ggplot")[1], sel.var) {
 #' @importFrom ggplot2 ggtitle ggplot xlab ylab theme geom_point geom_density aes_string element_text
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' # Inpit variable:
 #' #
 #' table.list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
@@ -273,12 +277,12 @@ plot_xy <- function(con, table.list, var.list, range.var, agg.var,
   selIndex <- 1
   table.name <- table.list[selIndex] # Specify table name I
   sel.var <- var.list[selIndex] # Variable from table name I
-  tbl.subset.x <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+  tbl.subset.x <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
 
   selIndex <- 2
   table.name <- table.list[selIndex] # Specify table name II
   sel.var <- var.list[selIndex] # Variable from table name II
-  tbl.subset.y <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+  tbl.subset.y <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
   df.plot <- merge(tbl.subset.x, tbl.subset.y, agg.var)
 
   if (type == "plotly") {
@@ -322,7 +326,8 @@ plot_xy <- function(con, table.list, var.list, range.var, agg.var,
 #' @importFrom ggplot2 ggtitle ggplot xlab ylab theme geom_point geom_tile aes_string element_text
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' # Inpit variable:
 #' table.name <- "tblsst_AVHRR_OI_NRT"
@@ -333,13 +338,13 @@ plot_xy <- function(con, table.list, var.list, range.var, agg.var,
 #' range.var$time <- c("2016-04-30", "2016-04-30")
 #' #
 #' ## Plot - regional map
-#' # out <- plot_regMap(con, table.name,sel.var,range.var, type = 'ggplot')
-#' out <- plot_regMap(con, table.name, sel.var, range.var, type = "plotly")
+#' # out <- plot_regmap(con, table.name,sel.var,range.var, type = 'ggplot')
+#' out <- plot_regmap(con, table.name, sel.var, range.var, type = "plotly")
 #' out$plot
 #' }
-plot_regMap <- function(con, table.name, sel.var, range.var,
+plot_regmap <- function(con, table.name, sel.var, range.var,
                         type = c("plotly", "ggplot")[1]) {
-  tbl.subset <- getTableData(con, table.name, sel.var, range.var,
+  tbl.subset <- get_table(con, table.name, sel.var, range.var,
     order.var = c("lat", "lon")
   )
 

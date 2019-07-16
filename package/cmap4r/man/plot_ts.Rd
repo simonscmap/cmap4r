@@ -21,7 +21,8 @@ times eries plot object
 }
 \examples{
 \dontrun{
-con <- connect2cmap(Driver = "libtdsodbc.so")
+library(cmap4r)
+con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Input variable:
 table.list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
@@ -40,7 +41,7 @@ range.var$time <- c("2016-03-29", "2016-05-29")
 #
 # Subset selection: data retrieval
 agg.var <- "time"
-tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+tbl.subset <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
 head(tbl.subset, 20)
 #
 # Plot -- Time series:

@@ -15,7 +15,8 @@
 #' @importFrom dplyr tbl collect filter select arrange sql desc
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Input: Table name; variable name, space time range information
 #' table.name <- "tblsst_AVHRR_OI_NRT" # table name
@@ -26,12 +27,12 @@
 #' range.var$time <- c("2016-04-30", "2016-04-30")
 #' #
 #' ## Subset selection:
-#' tbl.subset <- getTableData(con, table.name, sel.var, range.var)
+#' tbl.subset <- get_table(con, table.name, sel.var, range.var)
 #' head(tbl.subset)
 #' #
 #' dbDisconnect(con)
 #' }
-getTableData <- function(con, table.name, sel.var, range.var, order.var = NULL) {
+get_table <- function(con, table.name, sel.var, range.var, order.var = NULL) {
   tbl.connect <- dplyr::tbl(con, table.name)
   indrv <- tableVarMatch(con, table.name, names(range.var))
   if (any(is.na(indrv))) {
@@ -72,7 +73,7 @@ getTableData <- function(con, table.name, sel.var, range.var, order.var = NULL) 
 
 
 # # Table connect:
-# getAggregatedTableDataxx = function(con, table.name, sel.var, range.var, agg.var, order.var= NULL){
+# get_aggtablexx = function(con, table.name, sel.var, range.var, agg.var, order.var= NULL){
 #   tbl.connect <- tbl(con,table.name)
 #   indrv <- tableVarMatch(con, table.name, names(range.var))
 #   if(any(is.na(indrv))){
@@ -133,7 +134,8 @@ getTableData <- function(con, table.name, sel.var, range.var, order.var = NULL) 
 #' @importFrom dplyr tbl collect filter select arrange summarise_at group_by_at sql desc
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Input: Table name; variable name, space time range information
 #' table.name <- "tblsst_AVHRR_OI_NRT" # table name
@@ -145,12 +147,12 @@ getTableData <- function(con, table.name, sel.var, range.var, order.var = NULL) 
 #' #
 #' # Aggregate
 #' agg.var <- "time" # Specify aggregate variable
-#' tbl.subset <- getAggregatedTableData(con, table.name, sel.var, range.var, agg.var)
+#' tbl.subset <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
 #' head(tbl.subset)
 #' #
 #' dbDisconnect(con)
 #' }
-getAggregatedTableData <- function(con, table.name, sel.var, range.var,
+get_aggtable <- function(con, table.name, sel.var, range.var,
                                    agg.var, order.var = NULL) {
   tbl.connect <- dplyr::tbl(con, table.name)
   indrv <- tableVarMatch(con, table.name, names(range.var))

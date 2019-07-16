@@ -39,7 +39,8 @@
 #' @importFrom stats sd
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Input: Table name; variable name, space time range information
 #' table.name <- "tblsst_AVHRR_OI_NRT" # table name
@@ -50,12 +51,12 @@
 #' range.var$lon <- c(-180, -80)
 #' #
 #' # Summary of the data:
-#' tbl.subsetSummary <- getSubsetRangeNumVar(con, table.name, range.var)
+#' tbl.subsetSummary <- susetsummary_numvar(con, table.name, range.var)
 #' print(tbl.subsetSummary)
 #' #
 #' dbDisconnect(con)
 #' }
-getSubsetRangeNumVar <- function(con, table.name, range.var) {
+susetsummary_numvar <- function(con, table.name, range.var) {
   tbl.connect <- dplyr::tbl(con, table.name)
   indrv <- tableVarMatch(con, table.name, names(range.var))
   if (any(is.na(indrv))) {
@@ -100,7 +101,8 @@ getSubsetRangeNumVar <- function(con, table.name, range.var) {
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @examples
 #' \dontrun{
-#' con <- connect2cmap(Driver = "libtdsodbc.so")
+#' library(cmap4r)
+#' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Input: Table name; variable name, space time range information
 #' table.name <- "tblsst_AVHRR_OI_NRT" # table name
@@ -111,13 +113,13 @@ getSubsetRangeNumVar <- function(con, table.name, range.var) {
 #' range.var$lon <- c(-180, -80)
 #' #
 #' # Summary of the data:
-#' tbl.subsetSummary <- getSubsetRangeNumVar(con, table.name, range.var)
+#' tbl.subsetSummary <- subsetrange_spacetime(con, table.name, range.var)
 #' print(tbl.subsetSummary)
 #' #
 #' dbDisconnect(con)
 #' }
-getSubsetSpaceTimeRange <- function(con, table.name, range.var) {
-  tblxx <- getDataSample(con, table.name, n = 5)
+subsetrange_spacetime <- function(con, table.name, range.var) {
+  tblxx <- tbl_sample(con, table.name, n = 5)
   tbl.fields <- names(tblxx) # dbListFields(con,table.name)
   range.varxx <- c("time", "lat", "lon", "depth")
   index <- match(range.varxx, tbl.fields)

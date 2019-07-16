@@ -10,7 +10,7 @@
 rangeVarCheck <- function(con, table.name, range.var) {
   # tbl.connect <- dplyr::tbl(con,table.name)
   rvarName <- names(range.var)
-  tblxx <- getDataSample(con, table.name, n = 5)
+  tblxx <- tbl_sample(con, table.name, n = 5)
   inde <- match(rvarName, names(tblxx))
   if (any(is.na(inde))) {
     print("Check speccified range variable:")
@@ -32,7 +32,7 @@ rangeVarCheck <- function(con, table.name, range.var) {
 #' @importFrom DBI dbSendQuery dbFetch dbClearResult
 tableVarMatch <- function(con, table.name, varname) {
   # tbl.connect <- dplyr::tbl(con,table.name)
-  tblxx <- getDataSample(con, table.name, n = 5)
+  tblxx <- tbl_sample(con, table.name, n = 5)
 
   inde <- match(varname, names(tblxx))
   if (any(is.na(inde))) {
