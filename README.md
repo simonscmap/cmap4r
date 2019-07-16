@@ -50,9 +50,11 @@ install.packages("ggplot2")
 install.packages("plotly")
 
 ```
+## R package
 
+Functions in the *cmap4r* package facilitates downloading, preprocessing and visualizing the data from the CMAP database. 
 
-## Connecting to the database
+### Connecting to the database
 
 *connect_cmap* function the *cmap4r* package returns connection object to the database. 
 
@@ -65,8 +67,9 @@ dbDisconnect(con)
 ```
 
 
-## Example 
-Functions in the cmap4r package facilitates downloading, preprocessing and visualizing the data from the CMAP database. 
+### Example:
+
+Use *get_table* function to download data from a table on CMAP database in given range of space and time.
 
 ```
 library(cmap4r)
