@@ -89,4 +89,4 @@ head(tbl.subset)
 #
 dbDisconnect(con)
 ```
-
+Refer **bookdown** to learn more about using functions available in **cmap4r**.
