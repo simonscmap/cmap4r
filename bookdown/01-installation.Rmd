@@ -1,0 +1,27 @@
+# Installation
+
+CMAP hosts data on a Microsoft SQL Server. An R user will need the following
+package to connect to the database: a) “DBI”, for database interface; b) “odbc”
+for connecting to the database using **DBI** interface.
+
+**Mac OS** First install the unixODBC library and database drivers. We suggest
+using SQL Server ODBC drivers (Free TDS). Using Homebrew, run the following
+commands to install the suggested module.
+
+
++ brew install unixodbc
++ brew install freetds
+
+
+**Linux OS** First, install [Anaconda
+distribution](https://www.anaconda.com/distribution/#linux), and then run the
+following commands to install suggested module.
+
++ conda install -c anaconda unixodbc
++ conda install -c anaconda freetds
+
+
+Please follow the [link](https://db.rstudio.com/best-practices/drivers/) to see
+other drivers available for installation.
+
+**Windows OS** Not written yet.

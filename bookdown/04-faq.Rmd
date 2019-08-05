@@ -1,0 +1,37 @@
+# FAQ
+
+**Q:** How does this differ from the Python package?
+
+**A:** This is better. Use this.
+
+
+**Q:** My ODBC and FreeTDS setup doesn't work.
+
+**A:** If you set up the DSN files (the odbc.ini file and odbcinst.ini file,
+both located in /etc/odbc.ini or /opt/local/etc/odbc.ini) as directed, it should
+initiate a connection correctly. One possibility is that there are local DSN
+files in your home directory (~/.odbc.inst and ~/.odbcinst.ini). Your database
+connection will check for these files first. If these exist, either delete them
+or modify these as instructed, and use these as your primary DSN files.
+
+A bit more about ODBC and ODBCINST:
+1. Basically, we need to modify the ~ODBCINST.INI~ and ~ODBC.INI~ files to
+   contain information about the CMAP database, in order to connect to it.
+2. The system file ~odbcinst.ini~ contains information about ODBC drivers
+   available to all users, and
+3. The ~odbc.ini~ file contains information about DSN's available to all users.
+4. In short, ~odbcinst.ini~ defines driver options, while ~odbc.ini~ defines
+connection options. ~ODBCINST.INI~ should contain a pointer:
+
+```{}
+[FreeTDS]
+Description=FreeTDS Driver for MSSQL (unix users)
+Driver=/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+Setup=/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
+UsageCount=1
+```
+
+Your ODBCINST.INI should contain the driver to use i.e. ~Driver = FreeTDS~, and
+optionally the credentials to connecting to the server (the server address, the
+UID and PWD, and Port). You can also specify these at run time, in your R
+script.

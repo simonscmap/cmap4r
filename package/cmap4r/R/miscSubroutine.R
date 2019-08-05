@@ -1,16 +1,16 @@
 #' Check if the specified range variable is present in the table or not
 #'
 #' @param con connection object to the database
-#' @param table.name table name in the database
-#' @param range.var range variable
+#' @param table_name table name in the database
+#' @param range_var range variable
 #' @return 0 or index of range variable
 #' @import magrittr
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @importFrom DBI dbSendQuery dbFetch dbClearResult
-rangeVarCheck <- function(con, table.name, range.var) {
-  # tbl.connect <- dplyr::tbl(con,table.name)
-  rvarName <- names(range.var)
-  tblxx <- tbl_sample(con, table.name, n = 5)
+rangeVarCheck <- function(con, table_name, range_var) {
+  # tbl_connect <- dplyr::tbl(con,table_name)
+  rvarName <- names(range_var)
+  tblxx <- tbl_sample(con, table_name, n = 5)
   inde <- match(rvarName, names(tblxx))
   if (any(is.na(inde))) {
     print("Check speccified range variable:")
@@ -24,15 +24,15 @@ rangeVarCheck <- function(con, table.name, range.var) {
 #'  Check if the specified variables are present in the table or not
 #'
 #' @param con connection object to the database
-#' @param table.name table name in the database
+#' @param table_name table name in the database
 #' @param varname names of variables
 #' @return 0 or index of range variable
 #' @import magrittr
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @importFrom DBI dbSendQuery dbFetch dbClearResult
-tableVarMatch <- function(con, table.name, varname) {
-  # tbl.connect <- dplyr::tbl(con,table.name)
-  tblxx <- tbl_sample(con, table.name, n = 5)
+tableVarMatch <- function(con, table_name, varname) {
+  # tbl_connect <- dplyr::tbl(con,table_name)
+  tblxx <- tbl_sample(con, table_name, n = 5)
 
   inde <- match(varname, names(tblxx))
   if (any(is.na(inde))) {
@@ -72,26 +72,26 @@ tableVarMatch <- function(con, table.name, varname) {
 
 #'  Convert range object to list object: It will be used latter for creating query.
 #'
-#' @param range.var range variable
+#' @param range_var range variable
 #' @return list object from range variable
 #' @import magrittr
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @importFrom DBI dbSendQuery dbFetch dbClearResult
-range2list <- function(range.var) {
-  range.varx <- data.frame(range.var)
-  if (any(names(range.var) == "time")) {
-    range.varx$time <- as.character(range.varx$time)
+range2list <- function(range_var) {
+  range_varx <- data.frame(range_var)
+  if (any(names(range_var) == "time")) {
+    range_varx$time <- as.character(range_varx$time)
   }
-  if (any(names(range.var) == "date")) {
-    range.varx$date <- as.character(range.varx$date)
+  if (any(names(range_var) == "date")) {
+    range_varx$date <- as.character(range_varx$date)
   }
-  varname <- names(range.var)
+  varname <- names(range_var)
   out <- vector("list", 2)
   out[[2]] <- out[[1]] <- vector("list", length = length(varname))
   names(out[[1]]) <- names(out[[2]]) <- varname
   for (i in 1:2) {
     for (j in 1:length(varname)) {
-      out[[i]][[j]] <- range.varx[i, j]
+      out[[i]][[j]] <- range_varx[i, j]
     }
   }
   return(out)
@@ -103,14 +103,14 @@ range2list <- function(range.var) {
 
 #'  Create filter query with equality condition
 #'
-#' @param range.var range variable
+#' @param range_var range variable
 #' @return list object from range variable
 #' @import magrittr
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @importFrom purrr map imap reduce
 #' @importFrom rlang sym expr
-getEqualQuery <- function(range.var) {
-  out <- range2list(range.var)[1]
+getEqualQuery <- function(range_var) {
+  out <- range2list(range_var)[1]
   ab <- vector("list", 1)
   ab[1] <- out[1] %>%
     # iterate through each row
@@ -128,14 +128,14 @@ getEqualQuery <- function(range.var) {
 
 #'  Create filter query using specified range variable
 #'
-#' @param range.var range variable
+#' @param range_var range variable
 #' @return list object from range variable
 #' @import magrittr
 #' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
 #' @importFrom purrr map imap reduce
 #' @importFrom rlang sym expr
-getFilterQuery <- function(range.var) {
-  out <- range2list(range.var)
+getFilterQuery <- function(range_var) {
+  out <- range2list(range_var)
 
   ab <- vector("list", 2)
   ab[1] <- out[1] %>%
@@ -167,81 +167,99 @@ getFilterQuery <- function(range.var) {
 #   reduce(function(x, y) expr((!!x & !!y)))
 
 
+##' Takes in date (can be a string) and returns TRUE of only date exists, and no
+##' time information.
+##' @param mydate Date
+##' @return \code{TRUE} if the time-of-day information does not exist.
+only_has_date <- function(mydate){
+  mydate2 = lubridate::as_datetime(mydate, tz = "UTC")
+  mydate2 = hms::as.hms(mydate2, tz="UTC")
+  return(toString(mydate2) == "00:00:00")
+}
+
+
 ##' Subsets a subtble from an OFFLINE table (3 columns called "lat" "lon" and
 ##' "time").
 ##' @param tbl 3 column matrix.
-##' @param range.var Data frame containing information about the "rectangle" of
+##' @param range_var Data frame containing information about the "rectangle" of
 ##'   interest.
 ##' @return 3 column matrix with only a subset of the table.
-subset_from_tbl <- function(tbl, range.var) {
+subset_from_tbl <- function(tbl, range_var) {
+
+  ## Check if time-of-day information exists. If not, discard time altogether
+  ## from ranges prior to comparison.
+  one_random_time = sample(tbl$time, 1)
+  if(only_has_date(one_random_time)){
+    range_var$time = lubridate::as_date(range_var$time)
+  }
 
   ## Handle Lat/lon
-  lat.ind <- which(tbl[, "lat"] >= range.var$lat[1] &
-    tbl[, "lat"] <= range.var$lat[2])
-  lon.ind <- which(tbl[, "lon"] >= range.var$lon[1] &
-    tbl[, "lon"] <= range.var$lon[2])
+  lat_ind <- which(tbl[, "lat"] >= range_var$lat[1] &
+    tbl[, "lat"] <= range_var$lat[2])
+  lon_ind <- which(tbl[, "lon"] >= range_var$lon[1] &
+    tbl[, "lon"] <= range_var$lon[2])
 
   ## Handle time
   times <- tbl[["time"]]
   times <- as.POSIXct(times)
-  dt.range <- as.POSIXct(sub("T", " ", range.var$time))
-  time.ind <- which(times >= dt.range[1] &
-    times <= dt.range[2])
+  dt_range <- as.POSIXct(sub("T", " ", range_var$time))
+  time_ind <- which(times >= dt_range[1] &
+                    times <= dt_range[2])
 
   ## Intersect and return
-  joint.ind <- Reduce(intersect, list(lat.ind, lon.ind, time.ind))
-  return(tbl[joint.ind, ])
+  joint_ind <- Reduce(intersect, list(lat_ind, lon_ind, time_ind))
+  return(tbl[joint_ind, ])
 }
 
 
 ##' Helper for matchSource() that takes in many lat/lon/date triplets and the
 ##' margins of error for query, and returns a "range" variable for all triplets
 ##' (with margin).
-##' @param source.table a matrix with 3 columns which each are: lat (center
+##' @param source_table a matrix with 3 columns which each are: lat (center
 ##'   latitude), lon (center longitude) dt (center date).
 ##' @param latMargin margin for latitude, around the center.
 ##' @param lonMargin margin for longitude, around the center.
 ##' @param timeMargin margin for time, around the center (\code{dt}).
 ##' @param depthRange Range of depth of interest
 ##' @return A list containing the desired lat/lon/time ranges.
-return_range_from_all_triplets <- function(source.table, latMargin, lonMargin,
+return_range_from_all_triplets <- function(source_table, latMargin, lonMargin,
                                            timeMargin, depthRange) {
 
   ## Subset lat lon and tiem
-  lat.all <- source.table[, "lat"]
-  lon.all <- source.table[, "lon"]
-  dt.all <- source.table[, "time"]
+  lat_all <- source_table[, "lat"]
+  lon_all <- source_table[, "lon"]
+  dt_all <- source_table[, "time"]
 
   ## Grab ranges of Everything.
-  lat <- range(lat.all)
-  lon <- range(lon.all)
+  lat <- range(lat_all)
+  lon <- range(lon_all)
   range_dat <- function(dats) {
     ## For now, assume that the dates are sorted
     return(c(toString(dats[1]), toString(dats[length(dats)])))
   }
-  dt <- range_dat(dt.all) ## Assume time is sorted
+  dt <- range_dat(dt_all) ## Assume time is sorted
 
   ## Add and subtract date
   dt <- sub("T", " ", dt)
-  dt.min <- as.POSIXlt(dt[1]) + (-1) * 60 * 60 * 24 * timeMargin
-  dt.max <- as.POSIXlt(dt[2]) + (+1) * 60 * 60 * 24 * timeMargin
-  dt.range <- c(dt.min, dt.max)
-  dt.range <- sub(" ", "T", dt.range)
+  dt_min <- as.POSIXlt(dt[1]) + (-1) * 60 * 60 * 24 * timeMargin
+  dt_max <- as.POSIXlt(dt[2]) + (+1) * 60 * 60 * 24 * timeMargin
+  dt_range <- c(dt_min, dt_max)
+  dt_range <- sub(" ", "T", dt_range)
 
   ## Create the range of times and latitude and longitudes (a box)
-  lat.min <- lat[1] + c(-1) * latMargin
-  lat.max <- lat[2] + c(+1) * latMargin
+  lat_min <- lat[1] + c(-1) * latMargin
+  lat_max <- lat[2] + c(+1) * latMargin
 
-  lon.min <- lon[1] + c(-1) * lonMargin
-  lon.max <- lon[2] + c(+1) * lonMargin
+  lon_min <- lon[1] + c(-1) * lonMargin
+  lon_max <- lon[2] + c(+1) * lonMargin
 
-  range.var <- list()
-  range.var$lat <- c(lat.min, lat.max)
-  range.var$lon <- c(lon.min, lon.max)
-  range.var$time <- dt.range
+  range_var <- list()
+  range_var$lat <- c(lat_min, lat_max)
+  range_var$lon <- c(lon_min, lon_max)
+  range_var$time <- dt_range
 
-  if (!is.null(depthRange)) range.var$depth <- depthRange # recently added
-  return(range.var)
+  if (!is.null(depthRange)) range_var$depth <- depthRange # recently added
+  return(range_var)
 }
 
 
@@ -261,17 +279,17 @@ return_range <- function(lat, lon, dt, latMargin, lonMargin, timeMargin,
 
   ## Add and subtract date
   dt <- sub("T", " ", dt)
-  dt.range <- as.POSIXlt(dt) + c(-1, +1) * 60 * 60 * 24 * timeMargin
-  dt.range <- sub(" ", "T", dt.range)
+  dt_range <- as.POSIXlt(dt) + c(-1, +1) * 60 * 60 * 24 * timeMargin
+  dt_range <- sub(" ", "T", dt_range)
 
 
   ## Create the range of times and latitude and longitudes (a box)
-  range.var <- list()
-  range.var$lat <- lat + c(-1, +1) * latMargin ## lat.range##c(25,30) ## lat.range
-  range.var$lon <- lon + c(-1, +1) * lonMargin ## c(-160,-155) ## lon.range
-  range.var$time <- dt.range
-  if (!is.null(depthRange)) range.var$depth <- depthRange # recently added
-  return(range.var)
+  range_var <- list()
+  range_var$lat <- lat + c(-1, +1) * latMargin ## lat_range##c(25,30) ## lat.range
+  range_var$lon <- lon + c(-1, +1) * lonMargin ## c(-160,-155) ## lon.range
+  range_var$time <- dt_range
+  if (!is.null(depthRange)) range_var$depth <- depthRange # recently added
+  return(range_var)
 }
 
 
@@ -300,52 +318,52 @@ range_tibble_to_table <- function(myrange) {
 
 
 ##' Matches range of tables.
-##' @param range.tables tables containing ranges of each ta.
+##' @param range_tables tables containing ranges.
 ##' @param source csv file name.
 ##' @return names of the tables whose lat/lon/time ranges have /any/ match with
 ##'   the cruise trajectory in \code{source}.
-match.ranges <- function(range.tables, source) {
+match_ranges <- function(range_tables, source) {
 
   ## For each entry in the source, get the range
-  source.tab <- read.csv(source, colClasses = c("POSIXct", "numeric", "numeric"))
+  source_tab <- read.csv(source, colClasses = c("POSIXct", "numeric", "numeric"))
   stopifnot(all(names(source) == c("time", "lat", "lon")))
-  source.range <- lapply(1:ncol(source.tab), function(icol) {
-    var <- source.tab[, icol]
+  source_range <- lapply(1:ncol(source_tab), function(icol) {
+    var <- source_tab[, icol]
     var <- var[which(!is.na(var))]
     range(var)
   })
-  source.range <- data.frame(
-    time = source.range[[1]],
-    lat = source.range[[2]],
-    lon = source.range[[3]]
+  source_range <- data.frame(
+    time = source_range[[1]],
+    lat = source_range[[2]],
+    lon = source_range[[3]]
   )
 
   ## Check overlap
   ## overlaps = sapply(range.tables, function(table.range){
-  overlaps <- sapply(1:length(range.tables), function(ii) {
-    table.range <- range.tables[[ii]]
-    verdict <- any.overlap(table.range, source.range)
+  overlaps <- sapply(1:length(range_tables), function(ii) {
+    table_range <- range_tables[[ii]]
+    verdict <- any_overlap(table_range, source_range)
     return(verdict)
   })
-  return(names(range.tables)[overlaps])
+  return(names(range_tables)[overlaps])
 }
 
-##' Helper to identify overlap between one range (table.range) and the reference
-##' (source.range).
-##' @param table.range Lat/lon/time range of target table.
-##' @param source.range Lat/lon/time range of source.
+##' Helper to identify overlap between one range (table_range) and the reference
+##' (source_range).
+##' @param table_range Lat/lon/time range of target table.
+##' @param source_range Lat/lon/time range of source.
 ##' @return \code{TRUE} if any overlap exists in lat/lon/time.
-any.overlap <- function(table.range, source.range) {
+any_overlap <- function(table_range, source_range) {
 
   ## Manually check column names, so they are time/lat/lon, in that order.
-  table.range <- table.range[, which(names(table.range) %in% c("time", "lat", "lon"))]
-  stopifnot(all(names(table.range) == names(source.range)))
-  stopifnot(all(names(table.range) == c("time", "lat", "lon")))
+  table_range <- table_range[, which(names(table_range) %in% c("time", "lat", "lon"))]
+  stopifnot(all(names(table_range) == names(source_range)))
+  stopifnot(all(names(table_range) == c("time", "lat", "lon")))
 
   ## Make the comparison
-  combined.range <- rbind(table.range, source.range)
-  overlaps <- sapply(combined.range, function(myvar) {
-    one.overlap(myvar[1], myvar[2], myvar[3], myvar[4])
+  combined_range <- rbind(table_range, source_range)
+  overlaps <- sapply(combined_range, function(myvar) {
+    one_overlap(myvar[1], myvar[2], myvar[3], myvar[4])
   })
   return(all(overlaps))
 }
@@ -356,7 +374,7 @@ any.overlap <- function(table.range, source.range) {
 ##' @param min2 minimum of second range.
 ##' @param max2 maximum of second range.
 ##' @return \code{TRUE} if there is overlap.
-one.overlap <- function(min1, max1, min2, max2) {
+one_overlap <- function(min1, max1, min2, max2) {
   return((min1 <= max2) & (max1 >= min2))
 }
 

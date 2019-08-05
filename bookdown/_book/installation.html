@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="index.html">
-<link rel="next" href="getting-started.html">
+<link rel="next" href="catalog-of-data.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -98,22 +98,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <ul class="summary">
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About the ‘cmap4r’ R package</a></li>
-<li class="chapter" data-level="1" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>2</b> Getting Started</a><ul>
-<li class="chapter" data-level="2.1" data-path="getting-started.html"><a href="getting-started.html#installation"><i class="fa fa-check"></i><b>2.1</b> Installation</a></li>
-<li class="chapter" data-level="2.2" data-path="getting-started.html"><a href="getting-started.html#one-useful-demo"><i class="fa fa-check"></i><b>2.2</b> One useful demo</a></li>
+<li class="chapter" data-level="1" data-path="installation.html"><a href="installation.html"><i class="fa fa-check"></i><b>1</b> Installation</a></li>
+<li class="chapter" data-level="2" data-path="catalog-of-data.html"><a href="catalog-of-data.html"><i class="fa fa-check"></i><b>2</b> Catalog of data</a></li>
+<li class="chapter" data-level="3" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>3</b> Functions</a><ul>
+<li class="chapter" data-level="3.1" data-path="functions.html"><a href="functions.html#getting-started"><i class="fa fa-check"></i><b>3.1</b> Getting started</a></li>
+<li class="chapter" data-level="3.2" data-path="functions.html"><a href="functions.html#download-data"><i class="fa fa-check"></i><b>3.2</b> Download data</a></li>
+<li class="chapter" data-level="3.3" data-path="functions.html"><a href="functions.html#summarize-data"><i class="fa fa-check"></i><b>3.3</b> Summarize data</a></li>
+<li class="chapter" data-level="3.4" data-path="functions.html"><a href="functions.html#visualization"><i class="fa fa-check"></i><b>3.4</b> Visualization</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="functions.html"><a href="functions.html#scatterplot-of-two-variables"><i class="fa fa-check"></i><b>3.4.1</b> Scatterplot of two variables</a></li>
+<li class="chapter" data-level="3.4.2" data-path="functions.html"><a href="functions.html#histograms"><i class="fa fa-check"></i><b>3.4.2</b> Histograms</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="catalog-of-data.html"><a href="catalog-of-data.html"><i class="fa fa-check"></i><b>3</b> Catalog of data</a></li>
-<li class="chapter" data-level="4" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html"><i class="fa fa-check"></i><b>4</b> Functions in our R package</a><ul>
-<li class="chapter" data-level="4.1" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#download-table"><i class="fa fa-check"></i><b>4.1</b> Download table</a></li>
-<li class="chapter" data-level="4.2" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#summarize-table"><i class="fa fa-check"></i><b>4.2</b> Summarize table</a></li>
-<li class="chapter" data-level="4.3" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#visualization"><i class="fa fa-check"></i><b>4.3</b> Visualization</a><ul>
-<li class="chapter" data-level="4.3.1" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#scatterplots"><i class="fa fa-check"></i><b>4.3.1</b> Scatterplots</a></li>
-<li class="chapter" data-level="4.3.2" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#histograms"><i class="fa fa-check"></i><b>4.3.2</b> Histograms</a></li>
+<li class="chapter" data-level="3.5" data-path="functions.html"><a href="functions.html#colocalize-data"><i class="fa fa-check"></i><b>3.5</b> Colocalize data</a></li>
+<li class="chapter" data-level="3.6" data-path="functions.html"><a href="functions.html#other-useful-functions"><i class="fa fa-check"></i><b>3.6</b> Other useful functions</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="functions-in-our-r-package.html"><a href="functions-in-our-r-package.html#colocalize-data"><i class="fa fa-check"></i><b>4.4</b> Colocalize data</a></li>
-</ul></li>
-<li class="chapter" data-level="5" data-path="faq.html"><a href="faq.html"><i class="fa fa-check"></i><b>5</b> FAQ</a></li>
+<li class="chapter" data-level="4" data-path="faq.html"><a href="faq.html"><i class="fa fa-check"></i><b>4</b> FAQ</a></li>
 </ul>
 
       </nav>
@@ -131,10 +129,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">1</span> Introduction</h1>
-<p><code>cmap4r</code> is an R package which contains methods to easily access and download from the “Simons CMAP”, a database which contains openly available quantitative data about the ocean. For further reading about Simons CMAP, refer to <a href="https://cmap.readthedocs.io/" class="uri">https://cmap.readthedocs.io/</a>.</p>
-<p><img src="caustics_grid.png" width="50%" style="display: block; margin: auto;" /></p>
+<div id="installation" class="section level1">
+<h1><span class="header-section-number">1</span> Installation</h1>
+<p>CMAP hosts data on a Microsoft SQL Server. An R user will need the following package to connect to the database: a) “DBI”, for database interface; b) “odbc” for connecting to the database using <strong>DBI</strong> interface.</p>
+<p><strong>Mac OS</strong> First install the unixODBC library and database drivers. We suggest using SQL Server ODBC drivers (Free TDS). Using Homebrew, run the following commands to install the suggested module.</p>
+<ul>
+<li>brew install unixodbc</li>
+<li>brew install freetds</li>
+</ul>
+<p><strong>Linux OS</strong> First, install <a href="https://www.anaconda.com/distribution/#linux">Anaconda distribution</a>, and then run the following commands to install suggested module.</p>
+<ul>
+<li>conda install -c anaconda unixodbc</li>
+<li>conda install -c anaconda freetds</li>
+</ul>
+<p>Please follow the <a href="https://db.rstudio.com/best-practices/drivers/">link</a> to see other drivers available for installation.</p>
+<p><strong>Windows OS</strong> Not written yet.</p>
 
 </div>
             </section>
@@ -143,7 +152,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
         </div>
       </div>
 <a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="getting-started.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="catalog-of-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

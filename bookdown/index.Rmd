@@ -11,5 +11,5 @@ CMAP, refer to https://cmap.readthedocs.io/.
 knitr::include_graphics('caustics_grid.png')
 ```
 
-
-
+There is a counterpart python package here:
+https://github.com/mdashkezari/opedia/tree/master/pypi

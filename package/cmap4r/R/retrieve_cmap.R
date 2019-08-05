@@ -5,10 +5,10 @@
 #' Get subset of a table as data frame
 #'
 #' @param con connection object to the database
-#' @param table.name table name in the database
-#' @param sel.var select a variable in the table
-#' @param range.var range of time, latitude, longitude, depth
-#' @param order.var retrieve data with order by variable
+#' @param table_name table name in the database
+#' @param sel_var select a variable in the table
+#' @param range_var range of time, latitude, longitude, depth
+#' @param order_var retrieve data with order by variable
 #' @return subset of a table as data frame
 #' @export
 #' @import magrittr
@@ -19,49 +19,54 @@
 #' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Input: Table name; variable name, space time range information
-#' table.name <- "tblsst_AVHRR_OI_NRT" # table name
-#' sel.var <- "sst" # choose variable
-#' range.var <- list() # Range variable [lat,lon,time]
-#' range.var$lat <- c(10, 70)
-#' range.var$lon <- c(-180, -80)
-#' range.var$time <- c("2016-04-30", "2016-04-30")
+#' table_name <- "tblsst_AVHRR_OI_NRT" # table name
+#' sel_var <- "sst" # choose variable
+#' range_var <- list() # Range variable [lat,lon,time]
+#' range_var$lat <- c(10, 70)
+#' range_var$lon <- c(-180, -80)
+#' range_var$time <- c("2016-04-30", "2016-04-30")
 #' #
 #' ## Subset selection:
-#' tbl.subset <- get_table(con, table.name, sel.var, range.var)
+#' tbl.subset <- get_table(con, table_name, sel_var, range_var)
 #' head(tbl.subset)
 #' #
 #' dbDisconnect(con)
 #' }
-get_table <- function(con, table.name, sel.var, range.var, order.var = NULL) {
-  tbl.connect <- dplyr::tbl(con, table.name)
-  indrv <- tableVarMatch(con, table.name, names(range.var))
+get_table <- function(con, table_name, sel_var, range_var, order_var = NULL) {
+  tbl_connect <- dplyr::tbl(con, table_name)
+  indrv <- tableVarMatch(con, table_name, names(range_var))
   if (any(is.na(indrv))) {
     stop("Check range variable;")
   }
-  indse <- tableVarMatch(con, table.name, sel.var)
+  indse <- tableVarMatch(con, table_name, sel_var)
   if (any(is.na(indse))) {
     stop("Check selected variable;")
   }
   indsel <- c(indrv, indse)
-  filt.query <- getFilterQuery(range.var)
-  if (is.null(order.var)) {
-    tbl.query <- tbl.connect %>%
-      dplyr::filter(filt.query) %>%
+  filt_queary <- getFilterQuery(range_var)
+    print(filt_queary)
+
+  ## Assign some default ordering
+  if (is.null(order_var)) {
+    tbl_query <- tbl_connect %>%
+      dplyr::filter(filt_queary) %>%
       dplyr::select(indsel)
-    tbl.subset <- tbl.query %>% dplyr::collect()
-    return(tbl.subset)
+    tbl_subset <- tbl_query %>% dplyr::collect()
+    return(tbl_subset)
+
+  ## Else,
   } else {
-    indrv <- tableVarMatch(con, table.name, order.var)
+    indrv <- tableVarMatch(con, table_name, order_var)
     if (any(is.na(indrv))) {
       stop("Check order variable;")
     }
-    tempOrd <- paste0(order.var, collapse = ",")
-    tbl.query <- tbl.connect %>%
-      dplyr::filter(filt.query) %>%
+    tempOrd <- paste0(order_var, collapse = ",")
+    tbl_query <- tbl_connect %>%
+      dplyr::filter(filt_queary) %>%
       dplyr::select(indsel) %>%
       dplyr::arrange(dplyr::desc(dplyr::sql(tempOrd)))
-    tbl.subset <- tbl.query %>% dplyr::collect()
-    return(tbl.subset)
+    tbl_subset <- tbl_query %>% dplyr::collect()
+    return(tbl_subset)
   }
 }
 
@@ -123,11 +128,11 @@ get_table <- function(con, table.name, sel.var, range.var, order.var = NULL) {
 #' Get aggregated subset of a table
 #'
 #' @param con connection object to the database
-#' @param table.name table name in the database
-#' @param sel.var select a variable in the table
-#' @param range.var range of time, latitude, longitude, depth
-#' @param agg.var aggregate variable
-#' @param order.var retrieve data with order by variable
+#' @param table_name table name in the database
+#' @param sel_var select a variable in the table
+#' @param range_var range of time, latitude, longitude, depth
+#' @param agg_var aggregate variable
+#' @param order_var retrieve data with order by variable
 #' @return aggregated subset of a table
 #' @export
 #' @import magrittr
@@ -138,63 +143,63 @@ get_table <- function(con, table.name, sel.var, range.var, order.var = NULL) {
 #' con <- connect_cmap(Driver = "libtdsodbc.so")
 #' #
 #' ## Input: Table name; variable name, space time range information
-#' table.name <- "tblsst_AVHRR_OI_NRT" # table name
-#' sel.var <- "sst" # choose variable
-#' range.var <- list() # Range variable [lat,lon,time]
-#' range.var$lat <- c(25, 30)
-#' range.var$lon <- c(-160, -155)
-#' range.var$time <- c("2016-03-29", "2016-05-29")
+#' table_name <- "tblsst_AVHRR_OI_NRT" # table name
+#' sel_var <- "sst" # choose variable
+#' range_var <- list() # Range variable [lat,lon,time]
+#' range_var$lat <- c(25, 30)
+#' range_var$lon <- c(-160, -155)
+#' range_var$time <- c("2016-03-29", "2016-05-29")
 #' #
 #' # Aggregate
-#' agg.var <- "time" # Specify aggregate variable
-#' tbl.subset <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
-#' head(tbl.subset)
+#' agg_var <- "time" # Specify aggregate variable
+#' tbl_subset <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
+#' head(tbl_subset)
 #' #
 #' dbDisconnect(con)
 #' }
-get_aggtable <- function(con, table.name, sel.var, range.var,
-                                   agg.var, order.var = NULL) {
-  tbl.connect <- dplyr::tbl(con, table.name)
-  indrv <- tableVarMatch(con, table.name, names(range.var))
+get_aggtable <- function(con, table_name, sel_var, range_var,
+                                   agg_var, order_var = NULL) {
+  tbl_connect <- dplyr::tbl(con, table_name)
+  indrv <- tableVarMatch(con, table_name, names(range_var))
   if (any(is.na(indrv))) {
     stop("Check range variable;")
   }
-  indse <- tableVarMatch(con, table.name, sel.var)
+  indse <- tableVarMatch(con, table_name, sel_var)
   if (any(is.na(indse))) {
     stop("Check selected variable;")
   }
-  indag <- tableVarMatch(con, table.name, agg.var)
+  indag <- tableVarMatch(con, table_name, agg_var)
   if (any(is.na(indag))) {
     stop("Check aggregate variable;")
   }
   indsel <- c(indrv, indse)
-  tbl.var <- c(names(range.var), sel.var)
+  tbl_var <- c(names(range_var), sel_var)
   summariseIndex <- match(setdiff(indsel, indag), indsel)
-  filt.query <- getFilterQuery(range.var)
-  if (is.null(order.var)) {
-    tbl.query <- tbl.connect %>%
+  filt_query <- getFilterQuery(range_var)
+  if (is.null(order_var)) {
+    tbl_query <- tbl_connect %>%
       dplyr::select(indsel) %>%
-      dplyr::filter(filt.query) %>%
-      dplyr::group_by_at(sql(agg.var)) %>%
-      dplyr::summarise_at(dplyr::sql(sel.var), mean, na.rm = TRUE) %>%
-      dplyr::arrange((dplyr::sql(agg.var)))
+      dplyr::filter(filt_query) %>%
+      dplyr::group_by_at(sql(agg_var)) %>%
+      dplyr::summarise_at(dplyr::sql(sel_var), mean, na.rm = TRUE) %>%
+      dplyr::arrange((dplyr::sql(agg_var)))
 
-    tbl.subset <- tbl.query %>% dplyr::collect()
-    return(tbl.subset)
+    tbl_subset <- tbl_query %>% dplyr::collect()
+    return(tbl_subset)
   } else {
-    indrv <- tableVarMatch(con, table.name, order.var)
+    indrv <- tableVarMatch(con, table_name, order_var)
     if (any(is.na(indrv))) {
       stop("Check order variable;")
     }
-    tempOrd <- paste(agg.var, paste0(order.var, collapse = ","), sep = ",")
-    tbl.query <- tbl.connect %>%
+    tempOrd <- paste(agg_var, paste0(order_var, collapse = ","), sep = ",")
+    tbl_query <- tbl_connect %>%
       dplyr::select(indsel) %>%
-      dplyr::filter(filt.query) %>%
-      dplyr::group_by_at(dplyr::sql(agg.var)) %>%
-      dplyr::summarise_at(dplyr::sql(sel.var), mean, na.rm = TRUE) %>%
+      dplyr::filter(filt_query) %>%
+      dplyr::group_by_at(dplyr::sql(agg_var)) %>%
+      dplyr::summarise_at(dplyr::sql(sel_var), mean, na.rm = TRUE) %>%
       dplyr::arrange(dplyr::desc(dplyr::sql(tempOrd)))
 
-    tbl.subset <- tbl.query %>% dplyr::collect()
-    return(tbl.subset)
+    tbl_subset <- tbl_query %>% dplyr::collect()
+    return(tbl_subset)
   }
 }
