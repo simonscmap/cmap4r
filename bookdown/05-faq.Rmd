@@ -1,5 +1,0 @@
-# FAQ
-
-**Q:** How does this differ from the Python package?
-
-**A:** This is better. Use this.

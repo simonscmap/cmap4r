@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title></title>
   <meta name="description" content="" />
-  <meta name="generator" content="bookdown 0.11 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
 
   <meta property="og:title" content="" />
   <meta property="og:type" content="book" />
@@ -147,7 +147,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Names of variables in that table (<code>sel_var</code>)</li>
 <li>“Range” variable (list containing ranges of <code>latitude</code>, <code>longitude</code>, <code>depth</code>, and <code>time</code>)</li>
 </ul>
-<p>These are used in the <code>getTableData()</code> function, which downloads the data as a data frame.</p>
+<p>These are used in the <code>get_table()</code> function, which downloads the data as a data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
 
 ## Input: Table name; variable name, space time range information
@@ -193,7 +193,6 @@ tbl_colClass =<span class="st"> </span><span class="kw">tbl_vartype</span>(con, 
 <span class="kw">print</span>(tbl_colClass)
 
 <span class="co"># Number of observations</span>
-<span class="kw">la</span>(<span class="st">&quot;~/repos/cmap4r/package/cmap4r&quot;</span>)
 nObs =<span class="st"> </span><span class="kw">tbl_nobs</span>(con, table_name)
 <span class="kw">print</span>(nObs)
 
@@ -261,7 +260,7 @@ range_var<span class="op">$</span>lon &lt;-<span class="st"> </span><span class=
 range_var<span class="op">$</span>time &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;2016-04-30&#39;</span>, <span class="st">&#39;2016-04-30&#39;</span>)
 
 ## Obtain a data table:
-tbl_subset &lt;-<span class="st"> </span><span class="kw">getTableData</span>(con, table_name, sel_var, range_var)
+tbl_subset &lt;-<span class="st"> </span><span class="kw">get_table</span>(con, table_name, sel_var, range_var)
 <span class="kw">head</span>(tbl_subset)
 
 ## Make plot

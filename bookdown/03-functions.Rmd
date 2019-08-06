@@ -35,7 +35,7 @@ When retrieving the data from **CMAP**, the user specifies the following:
 + "Range" variable (list containing ranges of `latitude`, `longitude`, `depth`,
   and `time`)
 
-These are used in the `getTableData()` function, which downloads the data as a
+These are used in the `get_table()` function, which downloads the data as a
 data frame.
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
@@ -90,7 +90,6 @@ tbl_colClass = tbl_vartype(con, table_name)
 print(tbl_colClass)
 
 # Number of observations
-la("~/repos/cmap4r/package/cmap4r")
 nObs = tbl_nobs(con, table_name)
 print(nObs)
 
@@ -175,7 +174,7 @@ range_var$lon <- c(-170, 150)
 range_var$time <- c('2016-04-30', '2016-04-30')
 
 ## Obtain a data table:
-tbl_subset <- getTableData(con, table_name, sel_var, range_var)
+tbl_subset <- get_table(con, table_name, sel_var, range_var)
 head(tbl_subset)
 
 ## Make plot
