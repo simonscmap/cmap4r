@@ -131,9 +131,13 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="faq" class="section level1">
 <h1><span class="header-section-number">4</span> FAQ</h1>
-<p><strong>Q:</strong> How does this differ from the Python package?</p>
-<p><strong>A:</strong> This is better. Use this.</p>
-<p><strong>Q:</strong> My ODBC and FreeTDS setup doesn’t work.</p>
+<p><strong>Q:</strong> I get an error that looks like this:</p>
+<p><code>nanodbc/nanodbc.cpp:1587: 42000: [FreeTDS][SQL Server]Incorrect syntax near 'tblSST_AVHRR_OI_NRT'.</code></p>
+<p><strong>A:</strong> This likely means the version of TDS (the connection protocol to the database) is not of the correct version.</p>
+<p><a href="https://www.gitmemory.com/issue/r-dbi/odbc/209/492571028" class="uri">https://www.gitmemory.com/issue/r-dbi/odbc/209/492571028</a></p>
+<p>One way you can check this is by running <code>tsql -C</code> and seeing whether the TDS version is lower than 7.0. If it is lower than 7.0, then you can manually set it using the environmental variable <code>TDSVER</code>. We recommend adding the line <code>TDSVER=8.0</code> in the file <code>/etc/environment</code>, to permanently set the environmental variable system-wide.</p>
+<p>Some useful discussions: 1. <a href="https://github.com/r-dbi/odbc/issues/209" class="uri">https://github.com/r-dbi/odbc/issues/209</a> 2. <a href="https://stackoverflow.com/questions/13066716/freetds-not-using-its-config?rq=1" class="uri">https://stackoverflow.com/questions/13066716/freetds-not-using-its-config?rq=1</a> 3. Examples 3.6-3.8 in <a href="https://www.freetds.org/userguide/confirminstall.htm" class="uri">https://www.freetds.org/userguide/confirminstall.htm</a> Basically, this shows at that the right TDS version needs to be used, otherwise the server will complain, with a message such as “There was a problem connecting to the server.” You might be able to set the environment variable <code>TDSVER</code> in order to bypass this. For instance, in your .bashrc or your 4. Even more useful is this: <a href="https://www.freetds.org/userguide/envvar.htm" class="uri">https://www.freetds.org/userguide/envvar.htm</a> It tells you exactly what TDSVER does and how FreeTDS uses it. 5. You can also set the versin of TDS in your settings file <code>odbc.ini</code>, by adding the line “[CMAP-MSSQL] TDS_Version = 8.0”. However, this won’t take effect unless you are using the option <code>DSN=CMAP-MSSQL</code> in <code>DBI::dbConnect()</code>.&quot;</p>
+<p><strong>Q:</strong> My ODBC and FreeTDS setup doesn’t work. (Obsolete, once <code>connect_cmap()</code> is fully tested.)</p>
 <p><strong>A:</strong> If you set up the DSN files (the odbc.ini file and odbcinst.ini file, both located in /etc/odbc.ini or /opt/local/etc/odbc.ini) as directed, it should initiate a connection correctly. One possibility is that there are local DSN files in your home directory (~/.odbc.inst and ~/.odbcinst.ini). Your database connection will check for these files first. If these exist, either delete them or modify these as instructed, and use these as your primary DSN files.</p>
 <p>A bit more about ODBC and ODBCINST: 1. Basically, we need to modify the <sub>ODBCINST.INI</sub> and <sub>ODBC.INI</sub> files to contain information about the CMAP database, in order to connect to it. 2. The system file <sub>odbcinst.ini</sub> contains information about ODBC drivers available to all users, and 3. The <sub>odbc.ini</sub> file contains information about DSN’s available to all users. 4. In short, <sub>odbcinst.ini</sub> defines driver options, while <sub>odbc.ini</sub> defines connection options. <sub>ODBCINST.INI</sub> should contain a pointer:</p>
 <pre><code>[FreeTDS]
@@ -141,7 +145,7 @@ Description=FreeTDS Driver for MSSQL (unix users)
 Driver=/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
 Setup=/usr/lib/x86_64-linux-gnu/odbc/libtdsodbc.so
 UsageCount=1</code></pre>
-<p>Your ODBCINST.INI should contain the driver to use i.e. ~Driver = FreeTDS~, and optionally the credentials to connecting to the server (the server address, the UID and PWD, and Port). You can also specify these at run time, in your R script.</p>
+<p>Your ODBCINST.INI should contain the driver to use i.e. <code>Driver = FreeTDS</code>, and optionally the credentials to connecting to the server (the server address, the UID and PWD, and Port). You can also specify these at run time, in your R script.</p>
 
 </div>
             </section>
