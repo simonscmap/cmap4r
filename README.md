@@ -1,8 +1,8 @@
 # CMAP for R users
 
-[Simons CMAP](https://cmap.readthedocs.io/en/latest/index.html) is an initiative from [CBIOMES](https://cbiomes.org/) collaboration to provide open source database service for to unify, visualize, and analyze ocean data sets such as field campaign observations, remote sensing satellite data, and model outputs. The project is supported by the Simons Foundation .
+[Simons CMAP](https://cmap.readthedocs.io/en/latest/index.html) is an initiative from [CBIOMES](https://cbiomes.org/) collaboration that provide open source database service to unify, visualize, and analyze ocean data sets from the  field campaign observations, remote sensing satellite, and model outputs. The project is supported by the Simons Foundation .
 
-Currently, [CMAP](https://cmap.readthedocs.io/en/latest/index.html) host examples and function to analyze and process data for Python users. In order to make R users familiar to the data base, we provide examples in R to connect, process, analyze and visualize the data.
+Currently, [CMAP](https://cmap.readthedocs.io/en/latest/index.html) host examples and functions to analyze and process the data for Python users. In order to make R users familiar to the database, we provide examples in R to connect, process, analyze and visualize the data.
 
 
 ## Getting Started
