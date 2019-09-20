@@ -39,7 +39,7 @@
 atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
                          dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2,
                          temporalTolerance, latTolerance, lonTolerance,
-                         depthTolerance){
+                         depthTolerance, apiKey){
 
   ## Stringify all arguments and form Query
   args = list(spName, sourceTable, sourceVar, targetTable, targetVar, dt1,
@@ -74,7 +74,7 @@ atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
                     args[13], args[14], args[15], args[16], args[17])
 
   ## Issue query
-  return(query(myquery)) ## query is API().query in Python
+  return(query(myquery, apiKey)) ## query is API().query in Python
 }
 
 ##' Takes a custom query, issues a request to the API, and returns the results
@@ -82,9 +82,9 @@ atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
 ##' @param myquery An "EXEC ..." string.
 ##' @param apiKey The API Key.
 ##' @param ... Rest of arguments to \code{query_url()}.
-query <- function(myquery){
+query <- function(myquery, apiKey){
 
   ## Form query
   payload = list(query = myquery)
-  request(payload, route="/api/data/query?")
+  request(payload, route="/api/data/query?", apiKey)
 }

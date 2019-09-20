@@ -9,10 +9,12 @@ test_that("Testing several functions", {
   ## stopifnot(identical(url, url_python))
 
   ## Simpler functions ####################
+  la()
+  apiKey = "31095550-d3d9-11e9-9174-fdf4e45bb057"
   cruiseName = "KOK1606"
-  cruise_by_name(cruisename)
-  cruise_bounds(cruisename)
-  get_catalog()
+  cruise_by_name(cruisename, apiKey)
+  cruise_bounds(cruisename, apiKey)
+  get_catalog(apiKey)
 
   ## Subset ###############################
   subset(spName="uspSpaceTime",
@@ -25,7 +27,8 @@ test_that("Testing several functions", {
          lon1=-52,
          lon2=-11,
          depth1=0,
-         depth2=240)
+         depth2=240,
+         apiKey=apiKey)
 
 
   ## Atomic match #########################
@@ -51,5 +54,5 @@ test_that("Testing several functions", {
   depthTolerance=0
   atomic_match(spName, sourceTable, sourceVar, targetTable, targetVar, dt1, dt2,
                lat1, lat2, lon1, lon2, depth1, depth2, temporalTolerance,
-               latTolerance, lonTolerance, depthTolerance)
+               latTolerance, lonTolerance, depthTolerance, apiKey)
 })

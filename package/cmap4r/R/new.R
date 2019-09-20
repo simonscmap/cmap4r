@@ -7,7 +7,7 @@ check_error <- function(response){
 
 ##' Helper to get response to tibble.
 process_response_to_tibble <- function(response){
-  a = content(response, "raw")
+  a = httr::content(response, "raw")
   a = readr::read_csv(a)
   return(a)
 }
@@ -21,52 +21,52 @@ validate_sp_args <- function(table,
 }
 
 ##' Identical function in python.
-cruises <- function(){
+cruises <- function(apiKey){
   myquery = "EXEC uspCruises"
-  df = query(myquery)
+  df = query(myquery, apiKey)
   return(df)
 }
 
 ##' Identical function in python.
-get_catalog <- function(){
+get_catalog <- function(apikey){
   myquery = 'EXEC uspCatalog'
-  df = query(myquery)
+  df = query(myquery, apiKey)
 }
 
 
 
 ##' Identical function in python.
-cruise_by_name <- function(cruisename){
+cruise_by_name <- function(cruisename, apiKey){
 
   ## Form EXEC statement.
   myquery = sprintf("EXEC uspCruiseByName '%s' ", cruiseName)
 
   ## Issue query
-  df = query(myquery)
+  df = query(myquery, apiKey)
   return(df)
   ## TODO: check the response for multiple cruises or invalid names.
 }
 
 ##' Identical function in python.
-cruise_bounds <- function(cruisename){
+cruise_bounds <- function(cruisename, apiKey){
 
-  df = cruise_by_name(cruisename)
+  df = cruise_by_name(cruisename, apiKey)
   myquery = sprintf("EXEC uspCruiseBounds %d", df[['ID']][1])
-  df = query(myquery)
+  df = query(myquery, apiKey)
   return(df)
 }
 
 ##' Identical function in python. (Returns a subset of data according to space-time constraints.)
 subset <- function(self, spName, table, variable, dt1, dt2, lat1, lat2, lon1,
-                   lon2, depth1, depth2){
+                   lon2, depth1, depth2, apiKey){
         query = sprintf('EXEC %s ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', spName)
         args = list(table, variable, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
-        return(stored_proc(self, query, args))
+        return(stored_proc(self, query, args, apiKey))
 }
 
 ##' Near-identical function in python. Executes a strored-procedure and returns
 ##' the results in form of a dataframe. Similar to query()
-stored_proc <- function(self, query, args){
+stored_proc <- function(self, query, args, apiKey){
         payload =list(tableName = args[1],
                       fields = args[2],
                       dt1 = args[3],
@@ -85,11 +85,11 @@ stored_proc <- function(self, query, args){
 
         assert_that(validate_sp_args(args[1], args[2], args[3], args[4], args[5],
                                      args[6], args[7], args[8], args[9], args[10]))
-        request(payload, route= "/api/data/sp?")
+        request(payload, route= "/api/data/sp?", apiKey)
 }
 
 ##' Going from (payload -> response -> df). Near-identical function in Python.
-request <- function(payload, route, old=FALSE){
+request <- function(payload, route, apiKey){
 
   ## Hard coded
   baseURL = 'https://simonscmap.com'
@@ -98,7 +98,6 @@ request <- function(payload, route, old=FALSE){
   ## } else {
   ##   route = "/api/data/sp?"
   ## }
-  apiKey = "31095550-d3d9-11e9-9174-fdf4e45bb057"
 
   ## Form query and send + retrieve
   url_safe_query = urlencode_python(payload)
@@ -106,7 +105,7 @@ request <- function(payload, route, old=FALSE){
                route,
                url_safe_query)
 
-  response = httr::GET(url, add_headers(Authorization = paste0("Api-Key ", apiKey)))
+  response = httr::GET(url, httr::add_headers(Authorization = paste0("Api-Key ", apiKey)))
   stopifnot(check_error(response))
   return(process_response_to_tibble(response))
 }
