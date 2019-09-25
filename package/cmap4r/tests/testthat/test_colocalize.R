@@ -9,10 +9,9 @@ test_that("Testing several functions", {
   ## stopifnot(identical(url, url_python))
 
 
-  load_all("~/repos/cmap4r/package/cmap4r") ## Temporary
+  ## load_all("~/repos/cmap4r/package/cmap4r") ## Temporary
 
   ## Simpler functions ####################
-  apiKey = "31095550-d3d9-11e9-9174-fdf4e45bb057"
   cruisename = "KOK1606"
   cruise_by_name(cruisename, apiKey)
   cruise_bounds(cruisename, apiKey)
@@ -60,8 +59,6 @@ test_that("Testing several functions", {
 
 
   ## Try out match()
-  la("~/repos/cmap4r/package/cmap4r")
-  apiKey = "31095550-d3d9-11e9-9174-fdf4e45bb057"
   sourceTable='tblAMT13_Chisholm'
   sourceVar='MIT9313PCR_Chisholm'
   targetTables=c('tblAMT13_Chisholm', 'tblWOA_Climatology', 'tblChl_REP')
