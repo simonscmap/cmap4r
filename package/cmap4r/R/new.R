@@ -39,7 +39,7 @@ get_catalog <- function(apikey){
 cruise_by_name <- function(cruisename, apiKey){
 
   ## Form EXEC statement.
-  myquery = sprintf("EXEC uspCruiseByName '%s' ", cruiseName)
+  myquery = sprintf("EXEC uspCruiseByName '%s' ", cruisename)
 
   ## Issue query
   df = query(myquery, apiKey)
@@ -93,18 +93,12 @@ request <- function(payload, route, apiKey){
 
   ## Hard coded
   baseURL = 'https://simonscmap.com'
-  ## if(old){
-  ##   route = "/dataretrieval/sp?"
-  ## } else {
-  ##   route = "/api/data/sp?"
-  ## }
 
-  ## Form query and send + retrieve
+  ## Form URL query and send + retrieve
   url_safe_query = urlencode_python(payload)
   url = paste0(baseURL,
                route,
                url_safe_query)
-
   response = httr::GET(url, httr::add_headers(Authorization = paste0("Api-Key ", apiKey)))
   stopifnot(check_error(response))
   return(process_response_to_tibble(response))
@@ -117,7 +111,7 @@ urlencode_python <- function(payload){
   ## assert_that(length(payload)==1)
   all_items = Map(function(item, itemname){
     payload = paste0(itemname, "=", item)
-    payload = URLencode(payload, reserved=TRUE)
+    payload = utils::URLencode(payload, reserved=TRUE)
     payload = gsub("%3D", "=", payload)
   }, payload, names(payload))
   payload = paste(all_items, collapse="&")
@@ -128,8 +122,3 @@ urlencode_python <- function(payload){
 }
 
 
-##' Takes a cruise name and colocalizes the cruise track with the specified variable(s). Work in progress
-along_track <- function(self, cruise, targetTables, targetVars, depth1, depth2,
-                        temporalTolerance, latTolerance, lonTolerance, depthTolerance){
-
-}
