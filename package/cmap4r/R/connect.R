@@ -3,10 +3,11 @@
 #' User needs to provide CMAP databse login credentials once to connect to the database. Thereafter, call "connect2cmap" with driver inofrmation to connect to the database.
 #'
 #' @param Driver name of the database driver to be used to connect to the database
+#' @param reset TRUE if key_ring credentials needs to be deleted
 #' @return connection object for the database
 #' @export
 #' @import magrittr
-#' @importFrom keyring key_list key_set key_get
+#' @importFrom keyring key_list key_set key_get key_delete
 #' @importFrom DBI dbConnect
 #' @importFrom odbc odbc
 #' @examples
@@ -28,8 +29,11 @@
 #' #
 #' dbDisconnect(con)
 #' }
-connect_cmap <- function(Driver = "libtdsodbc.so") {
-  print("Getting database credential...")
+connect_cmap <- function(Driver = "libtdsodbc.so", reset = FALSE) {
+  if (reset){
+    print("Database credential deteted")
+    keyring::key_delete("cmap_con")
+  }
   if (nrow(keyring::key_list("cmap_con")) == 0) {
     print("Enter database credential ..")
     UID <- readline("Enter user name:")
@@ -38,6 +42,7 @@ connect_cmap <- function(Driver = "libtdsodbc.so") {
       username = UID
     )
   }
+  print("Getting database credential...")
   con <- DBI::dbConnect(odbc::odbc(),
     Driver = "libtdsodbc.so",
     Server = "128.208.239.15",
@@ -48,3 +53,7 @@ connect_cmap <- function(Driver = "libtdsodbc.so") {
   )
   con
 }
+
+
+
+

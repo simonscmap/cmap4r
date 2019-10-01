@@ -6,7 +6,7 @@ check_error <- function(response){
 }
 
 ##' Helper to get response to tibble.
-process_response_to_tibble <- function(response){
+process_response_to_tibble1 <- function(response){
   a = httr::content(response, "raw")
   a = readr::read_csv(a)
   return(a)
@@ -30,8 +30,22 @@ cruises <- function(apiKey){
 ##' Identical function in python.
 get_catalog <- function(apikey){
   myquery = 'EXEC uspCatalog'
-  df = query(myquery, apiKey)
+  df = query(myquery, apikey)
 }
+
+
+
+##' Takes a custom query, issues a request to the API, and returns the results
+##' in form of a dataframe.
+##' @param myquery An "EXEC ..." string.
+##' @param apiKey The API Key.
+##' @param ... Rest of arguments to \code{query_url()}.
+query <- function(myquery, apiKey){
+  ## Form query
+  payload = list(query = myquery)
+  request(payload, route="/dataretrieval/query?", apiKey)
+}
+
 
 
 
@@ -49,7 +63,6 @@ cruise_by_name <- function(cruisename, apiKey){
 
 ##' Identical function in python.
 cruise_bounds <- function(cruisename, apiKey){
-
   df = cruise_by_name(cruisename, apiKey)
   myquery = sprintf("EXEC uspCruiseBounds %d", df[['ID']][1])
   df = query(myquery, apiKey)
@@ -60,7 +73,8 @@ cruise_bounds <- function(cruisename, apiKey){
 subset <- function(self, spName, table, variable, dt1, dt2, lat1, lat2, lon1,
                    lon2, depth1, depth2, apiKey){
         query = sprintf('EXEC %s ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', spName)
-        args = list(table, variable, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
+        args = list(table, variable, dt1, dt2, lat1, lat2, lon1, lon2,
+                    depth1, depth2)
         return(stored_proc(self, query, args, apiKey))
 }
 
@@ -83,9 +97,11 @@ stored_proc <- function(self, query, args, apiKey){
         ## payload$dt1 = paste0(payload$dt1, " 00:00:00")
         ## payload$dt2 = paste0(payload$dt2, " 00:00:00")
 
-        assert_that(validate_sp_args(args[1], args[2], args[3], args[4], args[5],
-                                     args[6], args[7], args[8], args[9], args[10]))
-        request(payload, route= "/api/data/sp?", apiKey)
+        assert_that(validate_sp_args(args[1], args[2], args[3],
+                                     args[4], args[5],
+                                     args[6], args[7],
+                                     args[8], args[9], args[10]))
+        request(payload, route= "/api/data/query?", apiKey)
 }
 
 ##' Going from (payload -> response -> df). Near-identical function in Python.
@@ -99,11 +115,13 @@ request <- function(payload, route, apiKey){
   url = paste0(baseURL,
                route,
                url_safe_query)
+  print(url)
   response = httr::GET(url, httr::add_headers(Authorization = paste0("Api-Key ", apiKey)))
   stopifnot(check_error(response))
   return(process_response_to_tibble(response))
 }
 
+url =  "https://simonscmap.com/dataretrieval/query?query=SELECT+COL_LENGTH%28%27tblAltimetry_REP%27%2C+%27slaxx%27%29+AS+RESULT+"
 
 
 ##' Helper, UNTESTED!! Only works for match so far.
@@ -112,7 +130,7 @@ urlencode_python <- function(payload){
   all_items = Map(function(item, itemname){
     payload = paste0(itemname, "=", item)
     payload = utils::URLencode(payload, reserved=TRUE)
-    payload = gsub("%3D", "=", payload)
+    # payload = gsub("%3D", "=", payload)
   }, payload, names(payload))
   payload = paste(all_items, collapse="&")
 
