@@ -8,7 +8,7 @@ check_error <- function(response){
 ##' Helper to get response to tibble.
 process_response_to_tibble <- function(response){
   a = httr::content(response, "raw")
-  a = readr::read_csv(a)
+  a = suppressMessages(readr::read_csv(a))
   return(a)
 }
 
@@ -57,16 +57,16 @@ cruise_bounds <- function(cruisename, apiKey){
 }
 
 ##' Identical function in python. (Returns a subset of data according to space-time constraints.)
-subset <- function(self, spName, table, variable, dt1, dt2, lat1, lat2, lon1,
+subset <- function(spName, table, variable, dt1, dt2, lat1, lat2, lon1,
                    lon2, depth1, depth2, apiKey){
         query = sprintf('EXEC %s ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', spName)
         args = list(table, variable, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
-        return(stored_proc(self, query, args, apiKey))
+        return(stored_proc(query, args, apiKey))
 }
 
 ##' Near-identical function in python. Executes a strored-procedure and returns
 ##' the results in form of a dataframe. Similar to query()
-stored_proc <- function(self, query, args, apiKey){
+stored_proc <- function(query, args, apiKey){
         payload =list(tableName = args[1],
                       fields = args[2],
                       dt1 = args[3],
