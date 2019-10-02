@@ -6,7 +6,7 @@ check_error <- function(response){
 }
 
 ##' Helper to get response to tibble.
-process_response_to_tibble1 <- function(response){
+process_response_to_tibble <- function(response){
   a = httr::content(response, "raw")
   a = readr::read_csv(a)
   return(a)
@@ -39,12 +39,14 @@ get_catalog <- function(apikey){
 ##' in form of a dataframe.
 ##' @param myquery An "EXEC ..." string.
 ##' @param apiKey The API Key.
-##' @param ... Rest of arguments to \code{query_url()}.
 query <- function(myquery, apiKey){
   ## Form query
   payload = list(query = myquery)
-  request(payload, route="/dataretrieval/query?", apiKey)
+  # route = '/dataretrieval/query?'     # JSON format, deprecated
+  route = '/api/data/query?'     # CSV format
+  request(payload, route, apiKey)
 }
+
 
 
 
@@ -115,7 +117,7 @@ request <- function(payload, route, apiKey){
   url = paste0(baseURL,
                route,
                url_safe_query)
-  print(url)
+  # print(url)
   response = httr::GET(url, httr::add_headers(Authorization = paste0("Api-Key ", apiKey)))
   stopifnot(check_error(response))
   return(process_response_to_tibble(response))
@@ -130,10 +132,9 @@ urlencode_python <- function(payload){
   all_items = Map(function(item, itemname){
     payload = paste0(itemname, "=", item)
     payload = utils::URLencode(payload, reserved=TRUE)
-    # payload = gsub("%3D", "=", payload)
+    payload = gsub("%3D", "=", payload)
   }, payload, names(payload))
   payload = paste(all_items, collapse="&")
-
   ## One step too far; the spaces " " are converted to "+"
   payload = gsub("%20", "+", payload)
   return(payload)
