@@ -30,8 +30,24 @@ cruises <- function(apiKey){
 ##' Identical function in python.
 get_catalog <- function(apikey){
   myquery = 'EXEC uspCatalog'
-  df = query(myquery, apiKey)
+  df = query(myquery, apikey)
 }
+
+
+
+##' Takes a custom query, issues a request to the API, and returns the results
+##' in form of a dataframe.
+##' @param myquery An "EXEC ..." string.
+##' @param apiKey The API Key.
+query <- function(myquery, apiKey){
+  ## Form query
+  payload = list(query = myquery)
+  # route = '/dataretrieval/query?'     # JSON format, deprecated
+  route = '/api/data/query?'     # CSV format
+  request(payload, route, apiKey)
+}
+
+
 
 
 
@@ -49,7 +65,6 @@ cruise_by_name <- function(cruisename, apiKey){
 
 ##' Identical function in python.
 cruise_bounds <- function(cruisename, apiKey){
-
   df = cruise_by_name(cruisename, apiKey)
   myquery = sprintf("EXEC uspCruiseBounds %d", df[['ID']][1])
   df = query(myquery, apiKey)
@@ -83,9 +98,11 @@ stored_proc <- function(query, args, apiKey){
         ## payload$dt1 = paste0(payload$dt1, " 00:00:00")
         ## payload$dt2 = paste0(payload$dt2, " 00:00:00")
 
-        assert_that(validate_sp_args(args[1], args[2], args[3], args[4], args[5],
-                                     args[6], args[7], args[8], args[9], args[10]))
-        request(payload, route= "/api/data/sp?", apiKey)
+        assert_that(validate_sp_args(args[1], args[2], args[3],
+                                     args[4], args[5],
+                                     args[6], args[7],
+                                     args[8], args[9], args[10]))
+        request(payload, route= "/api/data/query?", apiKey)
 }
 
 ##' Going from (payload -> response -> df). Near-identical function in Python.
@@ -99,12 +116,11 @@ request <- function(payload, route, apiKey){
   url = paste0(baseURL,
                route,
                url_safe_query)
+  # print(url)
   response = httr::GET(url, httr::add_headers(Authorization = paste0("Api-Key ", apiKey)))
   stopifnot(check_error(response))
   return(process_response_to_tibble(response))
 }
-
-
 
 ##' Helper, UNTESTED!! Only works for match so far.
 urlencode_python <- function(payload){
@@ -115,7 +131,6 @@ urlencode_python <- function(payload){
     payload = gsub("%3D", "=", payload)
   }, payload, names(payload))
   payload = paste(all_items, collapse="&")
-
   ## One step too far; the spaces " " are converted to "+"
   payload = gsub("%20", "+", payload)
   return(payload)

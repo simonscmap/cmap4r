@@ -75,17 +75,6 @@ atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
   return(query(myquery, apiKey)) ## query is API().query in Python
 }
 
-##' Takes a custom query, issues a request to the API, and returns the results
-##' in form of a dataframe.
-##' @param myquery An "EXEC ..." string.
-##' @param apiKey The API Key.
-##' @param ... Rest of arguments to \code{query_url()}.
-query <- function(myquery, apiKey){
-
-  ## Form query
-  payload = list(query = myquery)
-  request(payload, route="/api/data/query?", apiKey)
-}
 
 ##' Compile
 
