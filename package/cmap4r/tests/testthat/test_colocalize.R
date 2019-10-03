@@ -100,5 +100,5 @@ test_that("Testing several functions", {
                     lonTolerance,
                     depthTolerance,
                     apiKey)
-  ## Expect a warning in NO3!
+  ## Expect a warning/error in NO3!
 })

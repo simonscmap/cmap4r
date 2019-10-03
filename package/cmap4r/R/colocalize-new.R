@@ -160,7 +160,7 @@ compile <- function(sourceTable,
       df[[targetVars[ii]]] = cbind(data[[targetVars[ii]]])
       df[[paste0(targetVars[ii],'_std')]] = cbind(data[[paste0(targetVars[ii],'_std')]])
     } else {
-      warning(sprintf('The matched data frame associated with %s does not have the same size as the first target variable. Please change the tolerance variable.',
+      stop(sprintf('The matched data frame associated with %s does not have the same size as the first target variable. Please change the tolerance variable.',
                       targetVars[ii]))
     }
   }
