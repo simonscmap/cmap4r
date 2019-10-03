@@ -577,7 +577,6 @@ get_var_attr = function(table_name, var_name){
 #' #
 #' }
 get_var_catalog = function(table_name, var_name){
-  #
   exequery = sprintf(
     "SELECT * FROM [dbo].udfCatalog() WHERE Table_Name='%s' AND Variable='%s'",table_name,var_name)
   payload = inti_cmap()
@@ -775,5 +774,43 @@ has_field  = function (table_name, var_name){
 #     ////  grid = False
 #   return(grid)
 # }
+
+
+
+# get_references = function(datasetID){
+#   # Returns a dataframe containing refrences associated with a data set.
+#   exequery = sprintf("SELECT Reference FROM dbo.udfDatasetReferences(%d)",datasetID)
+#   return(query(exequery))
+# }
+#
+#
+#
+# get_metadata_noref = function(table, variable){
+#   exequery = sprintf("SELECT * FROM dbo.udfCatalog() WHERE Variable='%s' AND Table_Name='%s'",variable, table)
+#   return(query(exequery))
+# }
+#
+#
+#
+# get_metadata =  function(table, variable){
+#   # Returns a dataframe containing the associated metadata.
+#   # The inputs can be string literals (if only one table, and variable is passed)
+#   # or a list of string literals.
+#
+# }
+#
+# if isinstance(table, str): table = [table]
+# if isinstance(variable, str): variable = [variable]
+# metadata = pd.DataFrame({})
+# for i in range(len(table)):
+#   df = self.get_metadata_noref(table[i], variable[i])
+# datasetID = df.iloc[0]['Dataset_ID']
+# refs = self.get_references(datasetID)
+# df = pd.concat([df, refs], axis=1)
+# if i == 0:
+#   metadata = df
+# else:
+#   metadata = pd.concat([metadata, df], axis=0, sort=False)
+# return metadata
 
 
