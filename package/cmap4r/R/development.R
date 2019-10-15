@@ -170,6 +170,26 @@ process_response_to_tibble1 <- function(getdata){
 }
 
 
+#' internal function
+get_references = function(datasetID){
+  # Returns a dataframe containing refrences associated with a data set.
+  exequery = sprintf("SELECT Reference FROM dbo.udfDatasetReferences(%d)",datasetID)
+  payload = inti_cmap()
+  apiKey = payload$api_key
+  apiKey = strsplit(apiKey," ")[[1]][2]
+  return(query(exequery,apiKey))
+}
+
+
+
+#' internal function
+get_metadata_noref = function(table_name,var_name){
+  exequery = sprintf("SELECT * FROM dbo.udfCatalog() WHERE Variable='%s' AND Table_Name='%s'",var_name, table_name)
+  payload = inti_cmap()
+  apiKey = payload$api_key
+  apiKey = strsplit(apiKey," ")[[1]][2]
+  return(query(exequery,apiKey))
+}
 
 
 
@@ -742,7 +762,7 @@ get_var_stat = function(table_name, var_name){
 #' var_exist
 #' #
 #' }
-has_field  = function (table_name, var_name){
+has_field  = function(table_name, var_name){
   # table_name = 'tblAltimetry_REP'; var_name = 'slas'
   exequery = sprintf("SELECT COL_LENGTH('%s', '%s') AS RESULT ",
                      table_name,var_name)
@@ -752,65 +772,140 @@ has_field  = function (table_name, var_name){
   out <- query(exequery,apiKey)
   df <- out$RESULT
   hasField = FALSE
-  if (length(df)>0) hasField = TRUE
+  if (length(df) > 0) hasField = TRUE
   return(hasField)
 }
 
 
 
+#' Returns a dataframe containing metadata associated the specified tables and  variables.
+#'
+#'
+#' Multiple table and variable name can be passed by the user.
+#'
+#' @param table table names in the database
+#' @param variable name of variables
+#' @return subset of a table as data frame
+#' @export
+#' @examples
+#' \dontrun{
+#' library(cmap4r)
+#' #
+#' ## Input: Table name; variable name
+#' table <- c("tblArgoMerge_REP") # table name
+#' variable <- c("argo_merge_chl_adj") # variable name
+#' #
+#' ## Metadata:
+#' metadata <- get_metadata(table, variable)
+#' metadata
+#' #
+#' }
+get_metadata =  function(table, variable){
+  metadata = data.frame()
+  for(i in 1:length(table)){
+    df <- get_metadata_noref(table[i], variable[i])
+    datasetID = df$Dataset_ID[1]
+    refs = get_references(datasetID)
+    df <- cbind(df,Reference = t(refs$Reference))
+    if(i ==1){
+      metadata <- df
+    } else {
+      metadata <- rbind(metadata,df)
+    }
+  }
+  return(metadata)
+}
 
-# is_grid  = function (tableName, varName){
-#   # Returns a boolean indicating whether the variable is a gridded product or has irregular spatial resolution.
-#   grid = TRUE
-#   exequery = "SELECT Spatial_Res_ID, RTRIM(LTRIM(Spatial_Resolution)) AS Spatial_Resolution FROM tblVariables "
-#   exequery = paste(exequery, "JOIN tblSpatial_Resolutions ON [tblVariables].Spatial_Res_ID=[tblSpatial_Resolutions].ID ", sep="")
-#   exequery = paste(exequery,sprintf("WHERE Table_Name='%s' AND Short_Name='%s' ",tableName,varName), sep="")
-#   payload = inti_cmap()
-#   apiKey = payload$api_key
-#   apiKey = strsplit(apiKey," ")[[1]][2]
-#   df <- query(exequery,apiKey)
-#   if (length(df)<1) return(NULL)
-#   ////if df.Spatial_Resolution[0].lower().find('irregular') != -1:
-#     ////  grid = False
-#   return(grid)
-# }
 
 
 
-# get_references = function(datasetID){
-#   # Returns a dataframe containing refrences associated with a data set.
-#   exequery = sprintf("SELECT Reference FROM dbo.udfDatasetReferences(%d)",datasetID)
-#   return(query(exequery))
-# }
-#
-#
-#
-# get_metadata_noref = function(table, variable){
-#   exequery = sprintf("SELECT * FROM dbo.udfCatalog() WHERE Variable='%s' AND Table_Name='%s'",variable, table)
-#   return(query(exequery))
-# }
-#
-#
-#
-# get_metadata =  function(table, variable){
-#   # Returns a dataframe containing the associated metadata.
-#   # The inputs can be string literals (if only one table, and variable is passed)
-#   # or a list of string literals.
-#
-# }
-#
-# if isinstance(table, str): table = [table]
-# if isinstance(variable, str): variable = [variable]
-# metadata = pd.DataFrame({})
-# for i in range(len(table)):
-#   df = self.get_metadata_noref(table[i], variable[i])
-# datasetID = df.iloc[0]['Dataset_ID']
-# refs = self.get_references(datasetID)
-# df = pd.concat([df, refs], axis=1)
-# if i == 0:
-#   metadata = df
-# else:
-#   metadata = pd.concat([metadata, df], axis=0, sort=False)
-# return metadata
+# Returns a boolean indicating whether the variable is a gridded product or has irregular spatial resolution.
+is_grid  = function(table_name, var_name){
+  grid = TRUE
+  exequery = "SELECT Spatial_Res_ID, RTRIM(LTRIM(Spatial_Resolution)) AS Spatial_Resolution FROM tblVariables "
+  exequery = paste(exequery, "JOIN tblSpatial_Resolutions ON [tblVariables].Spatial_Res_ID=[tblSpatial_Resolutions].ID ", sep = "")
+  exequery = paste(exequery,sprintf("WHERE Table_Name='%s' AND Short_Name='%s' ",table_name,var_name), sep = "")
+  payload = inti_cmap()
+  apiKey = payload$api_key
+  apiKey = strsplit(apiKey," ")[[1]][2]
+  df <- query(exequery,apiKey)
+  if (nrow(df)<1) return(NULL)
+  if (tolower(df$Spatial_Resolution[1])=='irregular'){
+    grid = FALSE
+  }
+  return(grid)
+}
+
+
+
+# ---------------- cruise related function  -------------------
+
+#' Returns a dataframe containing a list of all of the hosted cruise names.
+cruises = function(){
+  exequery <- 'EXEC uspCruises'
+  payload = inti_cmap()
+  apiKey = payload$api_key
+  apiKey = strsplit(apiKey," ")[[1]][2]
+  return(query(exequery,apiKey))
+}
+
+cruiseName <- ab$Name[1]
+#' Returns a dataframe containing cruise info using cruise name.
+cruise_by_name = function(cruiseName){
+  payload = inti_cmap()
+  apiKey = payload$api_key
+  apiKey = strsplit(apiKey," ")[[1]][2]
+  exequery <- sprintf("EXEC uspCruiseByName '%s' ",cruiseName)
+  df <- query(exequery,apiKey)
+  if(nrow(df)<1){
+    stop(sprintf('Invalid cruise name: %s' , cruiseName))
+  }
+  if(nrow(df)>1){
+    df$Keywords <- NULL
+    print(df)
+    message('More than one cruise found. Please provide a more specific cruise name: ')
+  }
+  return(df)
+}
+
+
+
+#' Returns a dataframe containing cruise boundaries in space and time.
+cruise_bounds = function(cruiseName){
+  df = cruise_by_name(cruiseName)
+  exequery <- sprintf('EXEC uspCruiseBounds %d ', df$ID[1])
+  payload = inti_cmap()
+  apiKey = payload$api_key
+  apiKey = strsplit(apiKey," ")[[1]][2]
+  df <- query(exequery,apiKey)
+  return(df)
+}
+
+
+
+#' Returns a dataframe containing the cruise trajectory.
+cruise_trajectory = function(cruiseName){
+  df = cruise_by_name(cruiseName)
+  exequery <- sprintf('EXEC uspCruiseTrajectory %d ', df$ID[1])
+  payload = inti_cmap()
+  apiKey = payload$api_key
+  apiKey = strsplit(apiKey," ")[[1]][2]
+  df <- query(exequery,apiKey)
+  return(df)
+}
+
+
+
+#' Returns a dataframe containing all registered variables (at Simons CMAP) during a cruise.
+cruise_variables = function(cruiseName){
+  df = cruise_by_name(cruiseName)
+  exequery <- sprintf('SELECT * FROM dbo.udfCruiseVariables(%d) ', df$ID[1])
+  payload = inti_cmap()
+  apiKey = payload$api_key
+  apiKey = strsplit(apiKey," ")[[1]][2]
+  df <- query(exequery,apiKey)
+  return(df)
+}
+
 
 
