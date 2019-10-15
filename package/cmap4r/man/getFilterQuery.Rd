@@ -4,10 +4,10 @@
 \alias{getFilterQuery}
 \title{Create filter query using specified range variable}
 \usage{
-getFilterQuery(range.var)
+getFilterQuery(range_var)
 }
 \arguments{
-\item{range.var}{range variable}
+\item{range_var}{range variable}
 }
 \value{
 list object from range variable

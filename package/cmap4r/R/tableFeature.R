@@ -99,7 +99,28 @@ tbl_spacetime_range <- function(con, table_name) {
     dplyr::select_at(range.var2) %>%
     dplyr::summarise_at(range.var2, list(min = min, max = max), na.rm = TRUE) %>%
     dplyr::collect()
+
   return(am)
+
+
+  ## ## Temporary
+  ## range.var <- c("time")
+  ## index <- match(range.var, tbl.fields)
+  ## range.var2 <- range.var[!is.na(index)]
+  ## ab <- dplyr::tbl(con, table_name)
+  ## am <- ab %>% dplyr::select_at(range.var2) %>%
+  ## browser()
+  ## am <- ab %>%
+  ##   dplyr::select_at(range.var2) %>% summarise_at(range.var2, class) %>% collect()
+
+  ##   dplyr::summarise_at(range.var2, list(min = min, max = max), na.rm = TRUE) %>%
+  ##   dplyr::collect()
+
+
+  ## ## An important question: what is the time zone when time-of-day information
+  ## ## is missing? Should we infer it from the latitude and longitude?
+  ## ## End of temporary
+
 }
 
 

@@ -4,14 +4,14 @@
 \alias{plot_ts}
 \title{Plot variable of interest with varying time}
 \usage{
-plot_ts(tbl.subset, type = c("plotly", "ggplot")[1], sel.var)
+plot_ts(tbl_subset, type = c("plotly", "ggplot")[1], sel_var)
 }
 \arguments{
-\item{tbl.subset}{table with depth and variable of interest}
+\item{tbl_subset}{table with depth and variable of interest}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
 
-\item{sel.var}{select a variable in the table}
+\item{sel_var}{select a variable in the table}
 }
 \value{
 plot object of the chosen type
@@ -25,27 +25,27 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Input variable:
-table.list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
-var.list <- c("sst", "sla", "NO3")
+table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
+var_list <- c("sst", "sla", "NO3")
 #
 # selected "sst" from the table "tblSST_AVHRR_OI_NRT"
 selIndex <- 1
-table.name <- table.list[selIndex]
-sel.var <- var.list[selIndex]
+table_name <- table_list[selIndex]
+sel_var <- var_list[selIndex]
 #
 # # Example I:
-range.var <- list()
-range.var$lat <- c(25, 30)
-range.var$lon <- c(-160, -155)
-range.var$time <- c("2016-03-29", "2016-05-29")
+range_var <- list()
+range_var$lat <- c(25, 30)
+range_var$lon <- c(-160, -155)
+range_var$time <- c("2016-03-29", "2016-05-29")
 #
 # Subset selection: data retrieval
-agg.var <- "time"
-tbl.subset <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
-head(tbl.subset, 20)
+agg_var <- "time"
+tbl_subset <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
+head(tbl_subset, 20)
 #
 # Plot -- Time series:
-p <- plot_ts(tbl.subset, "plotly", sel.var)
+p <- plot_ts(tbl_subset, "plotly", sel_var)
 p
 #
 dbDisconnect(con)

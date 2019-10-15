@@ -4,14 +4,14 @@
 \alias{plot_depth}
 \title{Plot variable of interest with varying depth}
 \usage{
-plot_depth(tbl.subset, type = c("plotly", "ggplot")[1], sel.var)
+plot_depth(tbl_subset, type = c("plotly", "ggplot")[1], sel_var)
 }
 \arguments{
-\item{tbl.subset}{table with depth and variable of interest}
+\item{tbl_subset}{table with depth and variable of interest}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
 
-\item{sel.var}{select a variable in the table}
+\item{sel_var}{select a variable in the table}
 }
 \value{
 plot object of the chosen type
@@ -25,29 +25,29 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
-table.list <- c("tblArgoMerge_REP", "tblPisces_NRT", "tblDarwin_Chl_Climatology")
-var.list <- c("argo_merge_chl_adj", "CHL", "chl01_darwin_clim")
+table_list <- c("tblArgoMerge_REP", "tblPisces_NRT", "tblDarwin_Chl_Climatology")
+var_list <- c("argo_merge_chl_adj", "CHL", "chl01_darwin_clim")
 #
 # selected argo_merge_chl_adj from tblArgoMerge_REP
 selIndex <- 1
-table.name <- table.list[selIndex]
-sel.var <- var.list[selIndex]
+table_name <- table_list[selIndex]
+sel_var <- var_list[selIndex]
 #
-range.var <- list()
-range.var$lat <- c(20, 24)
-range.var$lon <- c(-170, -150)
-range.var$depth <- c(0, 1500)
-range.var$time <- c("2016-04-30", "2016-04-30")
+range_var <- list()
+range_var$lat <- c(20, 24)
+range_var$lon <- c(-170, -150)
+range_var$depth <- c(0, 1500)
+range_var$time <- c("2016-04-30", "2016-04-30")
 #
 #
 # Subset selection: data retrieval
-agg.var <- "depth"
-tbl.subset <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
-head(tbl.subset)
+agg_var <- "depth"
+tbl_subset <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
+head(tbl_subset)
 #
 #
 # Plot -- Depth profiles:
-p <- plot_depth(tbl.subset, "plotly", sel.var)
+p <- plot_depth(tbl_subset, "plotly", sel_var)
 #
 #
 dbDisconnect(con)

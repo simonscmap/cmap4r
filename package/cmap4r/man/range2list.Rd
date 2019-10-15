@@ -4,10 +4,10 @@
 \alias{range2list}
 \title{Convert range object to list object: It will be used latter for creating query.}
 \usage{
-range2list(range.var)
+range2list(range_var)
 }
 \arguments{
-\item{range.var}{range variable}
+\item{range_var}{range variable}
 }
 \value{
 list object from range variable

@@ -4,13 +4,13 @@
 \alias{tbl_nobs}
 \title{Get the number of observations in the table}
 \usage{
-tbl_nobs(con, table.name, type = c("approx", "first-last", "exact")[1],
+tbl_nobs(con, table_name, type = c("approx", "first-last", "exact")[1],
   idvar = "ID")
 }
 \arguments{
 \item{con}{connection object to the database}
 
-\item{table.name}{table name in the database}
+\item{table_name}{table name in the database}
 
 \item{type}{method of getting number of observation: a) "approx" - fast retrieval but inaccurate;
 b) "first-last"- using ID of first and last observation; c) "exact" - use COUNT_BIG to get exact count}
@@ -29,10 +29,10 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 ## Choose table:
-table.name <- "tblsst_AVHRR_OI_NRT"
+table_name <- "tblsst_AVHRR_OI_NRT"
 
 # Number of observations
-nObs <- tbl_nobs(con, table.name)
+nObs <- tbl_nobs(con, table_name)
 nObs
 #
 dbDisconnect(con)

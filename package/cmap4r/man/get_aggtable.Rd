@@ -4,21 +4,21 @@
 \alias{get_aggtable}
 \title{Retrieve aggregated subset of table on CMAP}
 \usage{
-get_aggtable(con, table.name, sel.var, range.var, agg.var,
-  order.var = NULL)
+get_aggtable(con, table_name, sel_var, range_var, agg_var,
+  order_var = NULL)
 }
 \arguments{
 \item{con}{connection object to the database}
 
-\item{table.name}{table name in the database}
+\item{table_name}{table name in the database}
 
-\item{sel.var}{select a variable in the table}
+\item{sel_var}{select a variable in the table}
 
-\item{range.var}{range of time, latitude, longitude, depth}
+\item{range_var}{range of time, latitude, longitude, depth}
 
-\item{agg.var}{aggregate variable}
+\item{agg_var}{aggregate variable}
 
-\item{order.var}{retrieve data with order by variable}
+\item{order_var}{retrieve data with order by variable}
 }
 \value{
 aggregated subset of a table
@@ -32,17 +32,17 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 ## Input: Table name; variable name, space time range information
-table.name <- "tblsst_AVHRR_OI_NRT" # table name
-sel.var <- "sst" # choose variable
-range.var <- list() # Range variable [lat,lon,time]
-range.var$lat <- c(25, 30)
-range.var$lon <- c(-160, -155)
-range.var$time <- c("2016-03-29", "2016-05-29")
+table_name <- "tblsst_AVHRR_OI_NRT" # table name
+sel_var <- "sst" # choose variable
+range_var <- list() # Range variable [lat,lon,time]
+range_var$lat <- c(25, 30)
+range_var$lon <- c(-160, -155)
+range_var$time <- c("2016-03-29", "2016-05-29")
 #
 # Aggregate
-agg.var <- "time" # Specify aggregate variable
-tbl.subset <- get_aggtable(con, table.name, sel.var, range.var, agg.var)
-head(tbl.subset)
+agg_var <- "time" # Specify aggregate variable
+tbl_subset <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
+head(tbl_subset)
 #
 dbDisconnect(con)
 }

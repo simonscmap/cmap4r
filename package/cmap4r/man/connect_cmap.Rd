@@ -4,10 +4,12 @@
 \alias{connect_cmap}
 \title{Connect to the CMAP database}
 \usage{
-connect_cmap(Driver = "libtdsodbc.so")
+connect_cmap(Driver = "libtdsodbc.so", reset = FALSE)
 }
 \arguments{
 \item{Driver}{name of the database driver to be used to connect to the database}
+
+\item{reset}{TRUE if key_ring credentials needs to be deleted}
 }
 \value{
 connection object for the database

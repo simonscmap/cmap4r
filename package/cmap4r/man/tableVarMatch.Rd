@@ -4,12 +4,12 @@
 \alias{tableVarMatch}
 \title{Check if the specified variables are present in the table or not}
 \usage{
-tableVarMatch(con, table.name, varname)
+tableVarMatch(con, table_name, varname)
 }
 \arguments{
 \item{con}{connection object to the database}
 
-\item{table.name}{table name in the database}
+\item{table_name}{table name in the database}
 
 \item{varname}{names of variables}
 }

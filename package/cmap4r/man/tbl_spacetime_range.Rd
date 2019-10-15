@@ -4,12 +4,12 @@
 \alias{tbl_spacetime_range}
 \title{Get space time range of a  table}
 \usage{
-tbl_spacetime_range(con, table.name)
+tbl_spacetime_range(con, table_name)
 }
 \arguments{
 \item{con}{connection object to the database}
 
-\item{table.name}{table name in the database}
+\item{table_name}{table name in the database}
 }
 \value{
 table with range of space time variable
@@ -23,11 +23,11 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 ## Choose table:
-table.name <- "tblsst_AVHRR_OI_NRT"
+table_name <- "tblsst_AVHRR_OI_NRT"
 #
 #
 # Space/time information of the table
-tbl.spaceTimeInfo <- tbl_spacetime_range(con, table.name)
+tbl.spaceTimeInfo <- tbl_spacetime_range(con, table_name)
 print(tbl.spaceTimeInfo)
 #
 dbDisconnect(con)

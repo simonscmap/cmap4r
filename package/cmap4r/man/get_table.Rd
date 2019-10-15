@@ -4,18 +4,18 @@
 \alias{get_table}
 \title{Retrieve subset of data from a table on CMAP}
 \usage{
-get_table(con, table.name, sel.var, range.var, order.var = NULL)
+get_table(con, table_name, sel_var, range_var, order_var = NULL)
 }
 \arguments{
 \item{con}{connection object to the database}
 
-\item{table.name}{table name in the database}
+\item{table_name}{table name in the database}
 
-\item{sel.var}{select a variable in the table}
+\item{sel_var}{select a variable in the table}
 
-\item{range.var}{range of time, latitude, longitude, depth}
+\item{range_var}{range of time, latitude, longitude, depth}
 
-\item{order.var}{retrieve data with order by variable}
+\item{order_var}{retrieve data with order by variable}
 }
 \value{
 subset of a table as data frame
@@ -29,15 +29,15 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 ## Input: Table name; variable name, space time range information
-table.name <- "tblsst_AVHRR_OI_NRT" # table name
-sel.var <- "sst" # choose variable
-range.var <- list() # Range variable [lat,lon,time]
-range.var$lat <- c(10, 70)
-range.var$lon <- c(-180, -80)
-range.var$time <- c("2016-04-30", "2016-04-30")
+table_name <- "tblsst_AVHRR_OI_NRT" # table name
+sel_var <- "sst" # choose variable
+range_var <- list() # Range variable [lat,lon,time]
+range_var$lat <- c(10, 70)
+range_var$lon <- c(-180, -80)
+range_var$time <- c("2016-04-30", "2016-04-30")
 #
 ## Subset selection:
-tbl.subset <- get_table(con, table.name, sel.var, range.var)
+tbl.subset <- get_table(con, table_name, sel_var, range_var)
 head(tbl.subset)
 #
 dbDisconnect(con)

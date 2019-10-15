@@ -4,14 +4,14 @@
 \alias{plot_hist}
 \title{Plot histogram of the variable of interest}
 \usage{
-plot_hist(tbl.subset, type = c("plotly", "ggplot")[1], sel.var)
+plot_hist(tbl_subset, type = c("plotly", "ggplot")[1], sel_var)
 }
 \arguments{
-\item{tbl.subset}{table with depth and variable of interest}
+\item{tbl_subset}{table with depth and variable of interest}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
 
-\item{sel.var}{select a variable in the table}
+\item{sel_var}{select a variable in the table}
 }
 \value{
 plot object of the chosen type
@@ -25,31 +25,31 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
-table.list <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
-var.list <- c("sst", "argo_merge_temperature_adj", "argo_merge_salinity_adj")
+table_list <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
+var_list <- c("sst", "argo_merge_temperature_adj", "argo_merge_salinity_adj")
 #
 # variable "sst" selected from "tblSST_AVHRR_OI_NRT"
 selIndex <- 1
-table.name <- table.list[selIndex]
-sel.var <- var.list[selIndex]
+table_name <- table_list[selIndex]
+sel_var <- var_list[selIndex]
 #
 #
 # Range variable
-range.var <- list()
-range.var$lat <- c(20, 24)
-range.var$lon <- c(-170, 150)
-range.var$time <- c("2016-04-30", "2016-04-30")
+range_var <- list()
+range_var$lat <- c(20, 24)
+range_var$lon <- c(-170, 150)
+range_var$time <- c("2016-04-30", "2016-04-30")
 #
 #
 #
 # Subset selection:
-tbl.subset <- get_table(con, table.name, sel.var, range.var)
-head(tbl.subset)
+tbl_subset <- get_table(con, table_name, sel_var, range_var)
+head(tbl_subset)
 #
 #
 # Plot function available for R User
-p <- plot_hist(tbl.subset, "ggplot", sel.var)
-p <- plot_hist(tbl.subset, "plotly", sel.var)
+p <- plot_hist(tbl_subset, "ggplot", sel_var)
+p <- plot_hist(tbl_subset, "plotly", sel_var)
 p
 #
 #

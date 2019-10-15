@@ -4,12 +4,12 @@
 \alias{tbl_numvar_range}
 \title{Get range of all the numerical variables}
 \usage{
-tbl_numvar_range(con, table.name)
+tbl_numvar_range(con, table_name)
 }
 \arguments{
 \item{con}{connection object to the database}
 
-\item{table.name}{table name in the database}
+\item{table_name}{table name in the database}
 }
 \value{
 table with range of numeric variables
@@ -23,10 +23,10 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Choose table:
-table.name <- "tblsst_AVHRR_OI_NRT"
+table_name <- "tblsst_AVHRR_OI_NRT"
 #
 # Numeric variable range:
-tbl.rangeNumVar <- tbl_numvar_range(con, table.name)
+tbl.rangeNumVar <- tbl_numvar_range(con, table_name)
 print(tbl.rangeNumVar)
 #
 dbDisconnect(con)

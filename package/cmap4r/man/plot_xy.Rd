@@ -4,26 +4,26 @@
 \alias{plot_xy}
 \title{XY plot}
 \usage{
-plot_xy(con, table.list, var.list, range.var, agg.var, type = c("plotly",
+plot_xy(con, table_list, var_list, range_var, agg_var, type = c("plotly",
   "ggplot")[1])
 }
 \arguments{
 \item{con}{connection object to the database}
 
-\item{table.list}{list of  tables}
+\item{table_list}{list of  tables}
 
-\item{var.list}{list of  corresponding variable}
+\item{var_list}{list of  corresponding variable}
 
-\item{range.var}{range of time, latitude, longitude, depth}
+\item{range_var}{range of time, latitude, longitude, depth}
 
-\item{agg.var}{aggregate variable}
+\item{agg_var}{aggregate variable}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
 }
 \value{
 \item{plot}{ plot object of the chosen type}
-   \item{table.x}{subset of data from  first table }
-   \item{table.y}{subset of data from  second table }
+   \item{table_x}{subset of data from  first table }
+   \item{table_y}{subset of data from  second table }
 }
 \description{
 Scatter plot of two variable of interest
@@ -34,17 +34,17 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 # Inpit variable:
 #
-table.list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
-var.list <- c("sst", "sla")
+table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
+var_list <- c("sst", "sla")
 #
-range.var <- list()
-range.var$lat <- c(25, 30)
-range.var$lon <- c(-160, -155)
-range.var$time <- c("2016-03-29", "2016-05-29")
+range_var <- list()
+range_var$lat <- c(25, 30)
+range_var$lon <- c(-160, -155)
+range_var$time <- c("2016-03-29", "2016-05-29")
 #
-agg.var <- "time"
+agg_var <- "time"
 
-out <- plot_xy(con, table.list, var.list, range.var, agg.var, type = "plotly")
+out <- plot_xy(con, table_list, var_list, range_var, agg_var, type = "plotly")
 out$plot
 dbDisconnect(con)
 }

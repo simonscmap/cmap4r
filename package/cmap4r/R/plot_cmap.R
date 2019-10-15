@@ -278,11 +278,17 @@ plot_xy <- function(con, table_list, var_list, range_var, agg_var,
   table_name <- table_list[selIndex] # Specify table name I
   sel_var <- var_list[selIndex] # Variable from table name I
   tbl_subset_x <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
+  ## tbl_subset_x <- get_aggtable(con, table_name, sel_var, range_var, agg_var, agg_var_resolution)  ## Suggested.
 
   selIndex <- 2
   table_name <- table_list[selIndex] # Specify table name II
   sel_var <- var_list[selIndex] # Variable from table name II
   tbl_subset_y <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
+  ## tbl_subset_y <- get_aggtable(con, table_name, sel_var, range_var, agg_var, agg_var_resolution)  ## Suggested
+
+  ## Suggested:
+  stopifnot(same_resolution(tbl_subset_x, tbl_subset_y))
+
   df_plot <- merge(tbl_subset_x, tbl_subset_y, agg_var)
 
   if (type == "plotly") {

@@ -4,12 +4,12 @@
 \alias{tbl_vartype}
 \title{Get class of columns in the table}
 \usage{
-tbl_vartype(con, table.name)
+tbl_vartype(con, table_name)
 }
 \arguments{
 \item{con}{connection object to the database}
 
-\item{table.name}{table name in the database}
+\item{table_name}{table name in the database}
 }
 \value{
 column name with its class
@@ -23,10 +23,10 @@ library(cmap4r)
 con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 ## Choose table:
-table.name <- "tblsst_AVHRR_OI_NRT"
+table_name <- "tblsst_AVHRR_OI_NRT"
 #
 # Class of each column in the table
-tbl.colClass <- tbl_vartype(con, table.name)
+tbl.colClass <- tbl_vartype(con, table_name)
 print(tbl.colClass)
 #
 dbDisconnect(con)

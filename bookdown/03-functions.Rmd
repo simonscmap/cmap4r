@@ -3,11 +3,12 @@ knitr::opts_chunk$set(echo = TRUE, fig.width=12, fig.height=8,fig.align = "cente
                       out.width = "100%")
 library(DBI)
 library(dplyr)
+apiKey = "5e05c500-d68d-11e9-9d3b-4f83fcec4710"
 ## library(cmap4r)
 ```
 # Functions
 
-## Getting started
+## Getting started & simpler functions
 
 Data in the CMAP database exists in tables, and can be accessed by specific
 table names, and variable names therein. For instance, sea surface temperature
@@ -15,6 +16,21 @@ is from the table `"tblSST_AVHRR_OI_NRT"`, and the variable name is `"sst"`. The
 full set of table names and variable names can be found here:
 
 https://cmap.readthedocs.io/en/latest/catalog/catalog.html
+
+The CMAP4R function `get_catalog()` retrieves the latest version. Examples of
+simpler functions are here:
+
+```{r, eval=TRUE}
+load_all("~/repos/cmap4r/package/cmap4r")
+
+## Simpler functions ####################
+cruisename = "KOK1606"
+head('tblFalkor_2018')
+columns('tblAMT13_Chisholm')
+cruise_by_name(cruisename)
+cruise_bounds(cruisename)
+print(get_catalog())
+```
 
 Each table contains many data "rows", which are indexed by "keys" of the four
 values:
@@ -28,34 +44,33 @@ of interest.
 
 ## Download data
 
-When retrieving the data from **CMAP**, the user specifies the following:
+When retrieving all data from **CMAP** in a "rectangle" of space and time,
+specifies the following:
 
-+ Name of table (`table.name`)
-+ Names of variables in that table (`sel_var`)
-+ "Range" variable (list containing ranges of `latitude`, `longitude`, `depth`,
-  and `time`)
++ Name of table (`table`)
++ Names of variables in that table (`variable`)
++ Upper and lower limits of the variables (`dt1`, `dt2`, `lon1`, `lon2`, `lat1`,
+  `lat2`, `depth1`, `depth2`)
 
-These are used in the `get_table()` function, which downloads the data as a
-data frame.
+These are used in the `space_time()` function, which downloads the data as a data
+frame.
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
-
-## Input: Table name; variable name, space time range information
-table_name = 'tblsst_AVHRR_OI_NRT'     
-sel_var = 'sst'                         
-range_var <- list(lat = c(10,70),
-                  lon = c(-180, -80),
-                  time <- c('2016-04-30', '2016-04-30'))
-
-## Subset selection:
-tbl_subset <- get_table(con, table_name, sel_var, range_var)
-head(tbl_subset)
-
-dbDisconnect(con)
+dat = space_time(table = 'tblsst_AVHRR_OI_NRT',
+                 variable = 'sst',
+                 dt1 = '2016-04-30',
+                 dt2 = '2016-04-30',
+                 lon1 = 69,
+                 lon2 = 70,
+                 lat1 = -161,
+                 lat2 = -160,
+                 depth1 = 0,
+                 depth2 = 5)
 ```
 
 ## Summarize data
+
+**Code is outdated** 
 
 A typical table's "attributes" include:
 
@@ -76,6 +91,13 @@ DBI::dbExecute(con, "SET QUOTED_IDENTIFIER ON")
 
 ## Choose a table:
 table_name <-  "tblsst_AVHRR_OI_NRT"
+table_name <- "tblModis_AOD_REP"
+exclude_tablenames <- c("tblModis_AOD_REP",
+                        "tblHOT_Macrozooplankton",
+                        "tblDarwin_3day")
+table_name = exclude_tablenames[2]
+
+table_name = "tblDarwin_Nutrient_Climatology"
 
 # Variable name in the table
 tbl_fields <- dbListFields(con, table_name)
@@ -111,6 +133,8 @@ There are two built-in options for making plots -- scatter plots to compare two
 variable of interest, or histograms of individual variables.
 
 ### Scatterplot of two variables
+
+**Code is outdated** 
 
 The `plot_xy()` function makes a scatterplot of two variables (from two tables),
 aggregated across a variable called `agg_var`. Why aggregate though? The two
@@ -160,6 +184,8 @@ dbDisconnect(con)
 
 ### Histograms 
 
+**Code is outdated** 
+
 To generate a histogram plot of a single variable of interest, simply specify which variable and which time/lat/lon/depth range, and use the function `plot_hist()` as follows:
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
@@ -191,36 +217,60 @@ trajectory, whose location in space and time is recorded in
 latitude/longitude/time. Then, we'd like to obtain data like sea surface
 temperature or salinity, *as if we were recording it along the ship's
 trajectory*. Colocalization simply means retrieving such data manually from the
-database, by querying from the *vicinity* of each lat/lon/time triplet and
-summarizing it (e.g. taking the average).
+database, by querying from the *vicinity* (a rectangle) of each lat/lon/time
+triplet of interest, and summarizing it (e.g. taking the average).
 
-The size of the vicinity is define by the user-specified slack in longitude,
+The size of the vicinity is define by the user-specified "slack" in longitude,
 latitude and time. For instance, one could ask for 1 degrees of slack in
 longitude and latitude, and 6 hours of slack in time.
 
-Long story short, the basic idea is: query "rectangle" region's subtable from
-the databse for every lat/lon/time triplet of interest, for each variable.
-
-The main function to do this is `matchSource_onetable`, which colocalizes data
-for one table at a time (the `table_name` variable from the catalog), and one or
-more variables in that table (the `sel_var` variable, again from the
-catalog). The latitude/longitude/time triplets are to be in a CSV file whose
-path you'll supply in the variable `source`. Here is a short example:
+The main function is `along_track`, which colocalizes data for one or multiple
+tables and variables at a time. The available cruises can be found by running
+the function `cruises()`. The available data tables and variable names are
+listed in the catalog (`get_catalog()`, or from
+https://cmap.readthedocs.io/en/latest/catalog/catalog.html). Here is a short
+example:
 
 ```{r, echo=TRUE, eval=FALSE}
-## Setup 
-con = DBI::dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
-latMargin = 0_3
-lonMargin = 0_3
-timeMargin = 1
-source = '~/Desktop/MGL1704-veryshort.csv'
-table.name = "tblSST_AVHRR_OI_NRT"
-sel_var = "sst"
-res = matchSource_onetable(con, source, table_name, sel_var, latMargin, lonMargin, timeMargin)
-print(head(res))
+## Colocalize a cruise that are already in CMAP:
+cruise='diel'
+targetTables=c('tblSeaFlow', 'tblPisces_NRT')
+targetVars=c('synecho_abundance', 'NO3')
+depth1=0
+depth2=5
+temporalTolerance=c(0, 4)
+latTolerance=c(0, 0.25)
+lonTolerance=c(0, 0.25)
+depthTolerance=c(5, 5)
+la("~/repos/cmap4r/package/cmap4r")
+dat = along_track(cruise[1],
+                  targetTables[1],
+                  targetVars[1],
+                  depth1[1],
+                  depth2[1],
+                  temporalTolerance[1],
+                  latTolerance[1],
+                  lonTolerance[1],
+                  depthTolerance[1])
 ```
 
+## Issue SQL query
 
-## Other useful functions
+(For advanced users) Simons CMAP datasets are hosted in a SQL database and the
+CMAP4R R package provides the user with a number of pre-developed methods to
+extract and retrieve subsets of the data. The rest of this documentation is
+dedicated to explore and explain these methods. In addition to the pre-developed
+functions described above, you may issue custom SQL query statement and returns
+the results in form of a data frame.
 
-Suggest some!
+
+```{r}
+apiKey = "5e05c500-d68d-11e9-9d3b-4f83fcec4710" ## TODO: erase
+query("SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRT
+         WHERE
+         [time] BETWEEN '2017-06-03' AND '2017-06-03' AND
+         lat BETWEEN 10 AND 55 AND
+         lon BETWEEN -180 AND 100 AND
+         depth BETWEEN 0 AND 0.5
+         ORDER BY [time], lat, lon, depth", apiKey)
+```

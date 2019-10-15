@@ -4,14 +4,14 @@
 \alias{rangeVarCheck}
 \title{Check if the specified range variable is present in the table or not}
 \usage{
-rangeVarCheck(con, table.name, range.var)
+rangeVarCheck(con, table_name, range_var)
 }
 \arguments{
 \item{con}{connection object to the database}
 
-\item{table.name}{table name in the database}
+\item{table_name}{table name in the database}
 
-\item{range.var}{range variable}
+\item{range_var}{range variable}
 }
 \value{
 0 or index of range variable

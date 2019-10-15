@@ -5,12 +5,12 @@
 \title{Subsets a subtble from an OFFLINE table (3 columns called "lat" "lon" and
 "time").}
 \usage{
-subset_from_tbl(tbl, range.var)
+subset_from_tbl(tbl, range_var)
 }
 \arguments{
 \item{tbl}{3 column matrix.}
 
-\item{range.var}{Data frame containing information about the "rectangle" of
+\item{range_var}{Data frame containing information about the "rectangle" of
 interest.}
 }
 \value{

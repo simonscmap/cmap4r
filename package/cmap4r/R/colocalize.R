@@ -1,98 +1,219 @@
-#' Colocalization of a dataset using lattitude, longitude, depth and time information
-#'
-#' Takes all the lat/lon/time triplets in the comma separated \code{source}
-#' file, collects and aggregates (mean and standard deviation) each variable's
-#' data in a rectangle around each triplet. The size of the rectangle is
-#' determined by a user-input margin in lat, lon and time.
-#'
-#'
-#' @param con  connection object to the database
-#' @param table_name table name.
-#' @param sel_vars variables in this table that are to be queried.
-#' @param latMargin latitude margin.
-#' @param lonMargin longitude margin.
-#' @param timeMargin time margin.
-#' @param depthRange range of depth
-#' @param source The file name of the csv source file that contains the
-#'   lat/lon/date triplets.
-#' @param orderby orderby variable in the selected table
-#' @param N description to add later
-#' @importFrom utils read.csv
-#' @export
-#' @return Data frame containing the colocalized data. Each row is an original
-#'   time/lat/lon.
-#' @examples
-#' \dontrun{
-#' library(cmap4r)
-#' ## Setup
-#' con <- connect_cmap(Driver = "libtdsodbc.so")
-#' latMargin <- 0.3
-#' lonMargin <- 0.3
-#' timeMargin <- 1
-#' source <- "somefile.csv"
-#' table_name <- "tblSST_AVHRR_OI_NRT"
-#' sel_var <- "sst"
-#' res <- match_table(con, source, table_name, sel_var, latMargin, lonMargin, timeMargin)
-#' print(head(res))
-#' }
-match_table <- function(con, source, table_name, sel_vars,
-                                latMargin, lonMargin, timeMargin, depthRange = NULL,
-                                orderby = NULL, N = 1E5 ## TODO: Find a good number.
-) {
+##' Colocalizes the source variable (from source table) with a single target
+##' long variable (from target table).  The tolerance parameters set the
+##' matching boundaries between the source and target data sets.  Returns a
+##' dataframe containing the source variable joined with the target variable.
+##' @param spname stored procedure name that executes the matching logic.
+##' @param sourceTable table name of the source data set.
+##' @param sourceVariable the source variable. The target variables are matched
+##'   (colocalized) with this variable.
+##' @param targetTables table names of the target data sets to be matched with
+##'   the source data.
+##' @param targetVariables variable names to be matched with the source
+##'   variable.
+##' @param dt1 start date or datetime.
+##' @param dt2 end date or datetime.
+##' @param lat1 start latitude [degree N].
+##' @param lat2 end latitude [degree N].
+##' @param lon1 start longitude [degree E].
+##' @param lon2 end longitude [degree E].
+##' @param depth1 start depth [m].
+##' @param depth2 end depth [m].
+##' @param timeTolerance float list of temporal tolerance values between pairs
+##'   of source and target datasets. The size and order of values in this list
+##'   should match those of targetTables. If only a single integer value is
+##'   given, that would be applied to all target datasets. This parameter is in
+##'   day units except when the target variable represents monthly climatology
+##'   data in which case it is in month units. Notice fractional values are not
+##'   supported in the current version.
+##' @param latTolerance float list of spatial tolerance values in meridional
+##'   direction [deg] between pairs of source and target data sets. If only one
+##'   value is given, that would be applied to all target data sets.
+##' @param lonTolerance float list of spatial tolerance values in zonal
+##'   direction [deg] between pairs of source and target data sets. If only one
+##'   value is given, that would be applied to all target data sets.
+##' @param depthTolerance float list of spatial tolerance values in vertical
+##'   direction [m] between pairs of source and target data sets. If only one
+##'   value is given, that would be applied to all target data sets.
+atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
+                         dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2,
+                         temporalTolerance, latTolerance, lonTolerance,
+                         depthTolerance){
 
-  ## Read in source table
-  source_table <- read.csv(source)
-  ntriplets <- nrow(source_table)
+  apiKey = get_api_key()
 
-  ## Create data frame to fill in
-  DF <- data.frame(matrix(nrow = ntriplets)[, -1])
-  DF[["lat"]] <- source_table[, "lat"]
-  DF[["lon"]] <- source_table[, "lon"]
-  DF[["time"]] <- source_table[, "time"]
+  ## Stringify all arguments and form Query
+  args = list(spName, sourceTable, sourceVar, targetTable, targetVar, dt1,
+              dt2, lat1, lat2, lon1, lon2, depth1, depth2, temporalTolerance,
+              latTolerance, lonTolerance, depthTolerance)
 
-  ## TODO Remember to add depth query
-  ## if not 'depth' in srcDF.columns:
-  ##     srcDF['depth'] = 0
-
-  ## For each variable in "variables",
-  for (sel_var in sel_vars) {
-    means <- stds <- rep(NA, ntriplets)
-
-    ## Download the entire table first
-    range_var_all <- return_range_from_all_triplets(
-      source_table, latMargin,
-      lonMargin, timeMargin,
-      depthRange
-    )
-    ## n = getObservationCount(con, table.name, type="exact")
-    ## if(n > N) stop("Query is too large!")
-    tbl <- get_table(con, table_name, sel_var, range_var_all, orderby)
-
-    for (itriplet in 1:ntriplets) {
-      ## printprogress(itriplet, ntriplets)
-
-      lat <- source_table[itriplet, "lat"]
-      lon <- source_table[itriplet, "lon"]
-      dt <- source_table[itriplet, "time"]
-
-      ## Query that subtable:
-      range_var <- return_range(lat, lon, dt, latMargin, lonMargin, timeMargin, depthRange)
-
-      ## Get a subset from /that/ table.
-      tbl_subset <- subset_from_tbl(tbl, range_var)
-
-      ## Aggregate it (for now, only calculating means)
-      if (nrow(tbl_subset) == 0) {
-        means[itriplet] <- NA
-      } else {
-        values <- tbl_subset[[sel_var]]
-        means[itriplet] <- mean(values, na.rm = TRUE) ## Removing the NAs
-        stds[itriplet] <- sd(values, na.rm = TRUE) ## Removing the NAs
-      }
+  ## A helper function. islist is a boolean that says whether the
+  ## argument should be treated as a list
+  custom_toString <- function(x, islist){
+    if(length(x)>1 | islist){
+      x = sapply(x, function(b)paste0("'", b, "'"))
+      x = paste(x, collapse = ",+")
+      x = paste0('[', x, ']')
+    } else {
+      x = toString(x)
     }
-    DF[[sel_var]] <- means
-    DF[[paste0(sel_var, "-std")]] <- stds
-    cat(fill = TRUE)
+    return(x)
   }
-  return(DF)
+
+
+  ## Define the ones that are list objects
+  type_args = rep(FALSE, 17)
+  ## type_args[c(3,4,14,15,16,17)] = TRUE ## Commented out for now, but most
+  ## likely needed!
+
+  ## Form EXEC statement (new);
+  args = Map(custom_toString, args, type_args)
+  myquery = sprintf("EXEC %s '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'",
+                    args[1], args[2], args[3], args[4], args[5], args[6],
+                    args[7], args[8], args[9], args[10], args[11], args[12],
+                    args[13], args[14], args[15], args[16], args[17])
+
+  ## Issue query
+  ## browser()
+  ## a = query(myquery, apiKey)
+  ## a$time[1]
+  ## as.POSIXlt(a$time[1])
+  return(query(myquery, apiKey)) ## query is API().query in Python
+}
+
+
+
+##' @title Match one dataset with another on hand.
+##' Loops through the target data sets and match them with the source data set
+##' according to the the accosiated tolerance parameters.
+##' @return Returns a compiled dataframe of the source and matched target data
+##'   sets.
+compile <- function(sourceTable,
+                    sourceVar,
+                    targetTables,
+                    targetVars,
+                    dt1,
+                    dt2,
+                    lat1,
+                    lat2,
+                    lon1,
+                    lon2,
+                    depth1,
+                    depth2,
+                    temporalTolerance,
+                    latTolerance,
+                    lonTolerance,
+                    depthTolerance){
+
+  apiKey = get_api_key()
+
+  ## Helper to add and subtract date
+  shift_dt <- function(dt, timeMargin){
+
+    ## Basic checks
+    ## assert_that("Date" %in% class(dt))
+    ## Commented out until Mohammad fixes the query issue
+
+    ## Shift time
+    dt = as.POSIXlt(dt) + (+1) * 60 * 60 * 24 * timeMargin
+    dt = format(dt,'%Y-%m-%d %H:%M:%S')
+    ## dt3 = as.Date(dt2, format='%Y:%m:%d %H:%M:%S')
+    ## browser()
+    return(dt)
+  }
+
+  ## ## Testing shift_dt
+  ## test_that("Time shift is done properly", {
+  ##   dt = "2019-03-03"
+  ##   dt = as.Date(dt)
+  ##   dt_after = shift_dt(dt, 1)
+  ##   expect_equal(dt_after, as.Date("2019-03-04"))
+  ## })
+
+  ## Helper to check size (and latitude and longitude match).
+  size_ok <- function(data, df){
+    ok1 = all(sapply(df, nrow) == nrow(data))
+    ok2 = all.equal(df[[1]][["lat"]], dat[["lat"]])
+    ok3 = all.equal(df[[1]][["lon"]], dat[["lon"]])
+    return(all(ok1, ok2, ok3))
+  }
+
+  pb = txtProgressBar(min = 0, max = length(targetTables), style = 3)
+  spName = "uspMatch"
+  df = list()
+  for(ii in 1:length(targetTables)){
+
+    ## Get data using atomic_match
+    setTxtProgressBar(pb, ii)
+    data = atomic_match(spName,
+                        sourceTable,
+                        sourceVar,
+                        targetTables[ii],
+                        targetVars[ii],
+                        shift_dt(dt1, -temporalTolerance[ii]),
+                        shift_dt(dt2, temporalTolerance[ii]),
+                        lat1 - latTolerance[ii],
+                        lat2 + latTolerance[ii],
+                        lon1 - latTolerance[ii],
+                        lon2 + latTolerance[ii],
+                        depth1 - depthTolerance[ii],
+                        depth2 + depthTolerance[ii],
+                        temporalTolerance[ii],
+                        latTolerance[ii],
+                        lonTolerance[ii],
+                        depthTolerance[ii])
+    if(length(data) < 1){ warning(sprintf('No matching entry associated with %s.', targetVars[i]))}
+
+    ## If all goes well, insert the colocalized data into the list (later turned
+    ## into a data frame)
+    if(ii == 1){
+      df[[ii]] = data
+    } else if(size_ok(data, df)){
+      df[[targetVars[ii]]] = cbind(data[[targetVars[ii]]])
+      df[[paste0(targetVars[ii],'_std')]] = cbind(data[[paste0(targetVars[ii],'_std')]])
+    } else {
+      stop(sprintf('The matched data frame associated with %s does not have the same size as the first target variable. Please change the tolerance variable.',
+                      targetVars[ii]))
+    }
+  }
+  cat(fill=TRUE)
+
+  ## Format into data frame
+  df = as.data.frame(do.call(rbind, df))
+  return(df)
+}
+
+
+##' @title Colocalize along a cruise track.  Takes a cruise name and colocalizes
+##'   the cruise track with the specified variable(s). THIS IS THE MAIN
+##'   COLOCALIZATION function for a cruise.
+##' @param cruise String of the name of cruise. You can see the list of cruises
+##'   using \code{cruises()}.
+##' @param depth1 LOWER limit for depth along the cruise track (lat/lon
+##'   trajectory) the user is interested in.
+##' @param depth2 UPPER limit for depth along the cruise track (lat/lon
+##'   trajectory) the user is interested in.
+##' @return A dataset colocalized with the cruise.
+##' @export
+along_track <- function(cruise, targetTables, targetVars, depth1, depth2,
+                        temporalTolerance, latTolerance, lonTolerance,
+                        depthTolerance){
+
+  apiKey = get_api_key()
+  df = cruise_bounds(cruise)
+  dat = compile(sourceTable='tblCruise_Trajectory',
+                sourceVar=toString(df[,'ID']),
+                targetTables=targetTables,
+                targetVars=targetVars,
+                dt1=df[['dt1']][1],
+                dt2=df[['dt2']][1],
+                lat1=as.numeric(df[1,'lat1']),
+                lat2=as.numeric(df[1,'lat2']),
+                lon1=as.numeric(df[1,'lon1']),
+                lon2=as.numeric(df[1,'lon2']),
+                depth1=depth1,
+                depth2=depth2,
+                temporalTolerance=temporalTolerance,
+                latTolerance=latTolerance,
+                lonTolerance=lonTolerance,
+                depthTolerance=depthTolerance)
 }

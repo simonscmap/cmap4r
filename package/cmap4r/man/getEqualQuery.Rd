@@ -4,10 +4,10 @@
 \alias{getEqualQuery}
 \title{Create filter query with equality condition}
 \usage{
-getEqualQuery(range.var)
+getEqualQuery(range_var)
 }
 \arguments{
-\item{range.var}{range variable}
+\item{range_var}{range variable}
 }
 \value{
 list object from range variable

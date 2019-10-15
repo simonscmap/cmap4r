@@ -1,75 +1,3 @@
-#' Check if the specified range variable is present in the table or not
-#'
-#' @param con connection object to the database
-#' @param table_name table name in the database
-#' @param range_var range variable
-#' @return 0 or index of range variable
-#' @import magrittr
-#' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
-#' @importFrom DBI dbSendQuery dbFetch dbClearResult
-rangeVarCheck <- function(con, table_name, range_var) {
-  # tbl_connect <- dplyr::tbl(con,table_name)
-  rvarName <- names(range_var)
-  tblxx <- tbl_sample(con, table_name, n = 5)
-  inde <- match(rvarName, names(tblxx))
-  if (any(is.na(inde))) {
-    print("Check speccified range variable:")
-    return(0)
-  } else {
-    return(inde)
-  }
-}
-
-
-#'  Check if the specified variables are present in the table or not
-#'
-#' @param con connection object to the database
-#' @param table_name table name in the database
-#' @param varname names of variables
-#' @return 0 or index of range variable
-#' @import magrittr
-#' @importFrom dplyr tbl collect filter select arrange summarise_at select_at
-#' @importFrom DBI dbSendQuery dbFetch dbClearResult
-tableVarMatch <- function(con, table_name, varname) {
-  # tbl_connect <- dplyr::tbl(con,table_name)
-  tblxx <- tbl_sample(con, table_name, n = 5)
-
-  inde <- match(varname, names(tblxx))
-  if (any(is.na(inde))) {
-    print("Check specified  variable:")
-    return(NA)
-  } else {
-    return(inde)
-  }
-}
-
-
-
-
-
-
-
-
-
-# getSubsetSpaceTimeRange11  = function(con,table.name,range.var){
-#   tbl.connect <- tbl(con,table.name)
-#   tbl.subsetSpaceTimeSummary <- tbl.connect %>%
-#     dplyr::filter(between(time, range.var$time[1], range.var$time[2]),
-#            between(lat,range.var$lat[1],range.var$lat[2]),
-#            between(lon,range.var$lon[1],range.var$lon[2])) %>%
-#     summarise(nObs = n(), MaxLat = max(lat, na.rm = TRUE),
-#               MinLat = min(lat, na.rm = TRUE),
-#               MaxLon = max(lon, na.rm = TRUE),
-#               MinLon = min(lon, na.rm = TRUE),
-#               MaxTime = max(time, na.rm = TRUE),
-#               MinTime = min(time, na.rm = TRUE)) %>%
-#     collect()
-#   return(tbl.subsetSpaceTimeSummary)
-# }
-
-
-
-
 #'  Convert range object to list object: It will be used latter for creating query.
 #'
 #' @param range_var range variable
@@ -231,8 +159,8 @@ return_range_from_all_triplets <- function(source_table, latMargin, lonMargin,
   dt_all <- source_table[, "time"]
 
   ## Grab ranges of Everything.
-  lat <- range(lat_all)
-  lon <- range(lon_all)
+  lat <- range(lat_all, na.rm=TRUE)
+  lon <- range(lon_all, na.rm=TRUE)
   range_dat <- function(dats) {
     ## For now, assume that the dates are sorted
     return(c(toString(dats[1]), toString(dats[length(dats)])))
@@ -378,43 +306,3 @@ one_overlap <- function(min1, max1, min2, max2) {
   return((min1 <= max2) & (max1 >= min2))
 }
 
-
-
-
-
-# # Plot - Regional map
-# lat.ref <- data.frame(lat=unique(tbl.subset$lat))
-# lat.ref$ind <- 1:nrow(lat.ref)
-# lon.ref <- data.frame(lon=unique(tbl.subset$lon))
-# lon.ref$ind <- 1:nrow(lon.ref)
-# ind.lat <- match(tbl.subset$lat,lat.ref$lat)
-# ind.lon <- match(tbl.subset$lon,lon.ref$lon)
-# Fe.mat <- matrix(NA,nrow = nrow(lon.ref), ncol = nrow(lat.ref))
-# for (i in 1:length(ind.lon)) {
-#   Fe.mat[ind.lon[i],ind.lat[i]] <- tbl.subset$Fe[i]
-# }
-# p <- plot_ly(
-#   z = t(Fe.mat),
-#   x = lon.ref$lon,
-#   y = lat.ref$lat,
-#   type = "heatmap"
-# )
-# p %>%
-#   layout(title='Regional map',
-#          xaxis = list(title = 'Longitude'),
-#          yaxis = list(title= 'Latitude'))
-
-
-
-# between(sql(rvarName[1]), range.var[[rvarName[1]]][1], range.var[[rvarName[1]]][2]),
-# between(sql(rvarName[2]), range.var[[rvarName[2]]][1], range.var[[rvarName[2]]][2]),
-# between(sql(rvarName[3]), range.var[[rvarName[3]]][1], range.var[[rvarName[3]]][2]),
-# between(sql(rvarName[4]), range.var[[rvarName[4]]][1], range.var[[rvarName[4]]][2])
-
-
-#
-# tbl.query <- tbl.connect %>%
-#   select(indsel) %>%
-#   dplyr::filter(between(sql(rvarName[1]), range.var[[rvarName[1]]][1], range.var[[rvarName[1]]][2]),
-#          between(sql(rvarName[2]), range.var[[rvarName[2]]][1], range.var[[rvarName[2]]][2]),
-#          between(sql(rvarName[3]), range.var[[rvarName[3]]][1], range.var[[rvarName[3]]][2]))

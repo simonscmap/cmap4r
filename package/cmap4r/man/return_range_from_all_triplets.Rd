@@ -6,11 +6,11 @@
 margins of error for query, and returns a "range" variable for all triplets
 (with margin).}
 \usage{
-return_range_from_all_triplets(source.table, latMargin, lonMargin,
+return_range_from_all_triplets(source_table, latMargin, lonMargin,
   timeMargin, depthRange)
 }
 \arguments{
-\item{source.table}{a matrix with 3 columns which each are: lat (center
+\item{source_table}{a matrix with 3 columns which each are: lat (center
 latitude), lon (center longitude) dt (center date).}
 
 \item{latMargin}{margin for latitude, around the center.}
