@@ -60,7 +60,7 @@ initialize_cmap <- function(base_url=NULL, route = NULL){
   if(!is.null(attr(tem1,"class"))){
     message("API key incorrect/not available.")
     message("Setting up API authorization key.")
-    ## set_authorization(reset=TRUE)
+    set_authorization(reset=TRUE)
     set_authorization()
     api_key <-  paste("Api-Key",keyring::key_get("cmap_api"),sep = " ")
   }
