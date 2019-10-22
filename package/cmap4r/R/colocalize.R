@@ -193,37 +193,48 @@ compile <- function(sourceTable,
 
 
 
-
 #' Colocalize along a cruise track.  Takes a cruise name and colocalizes
 #'   the cruise track with the specified variable(s). THIS IS THE MAIN
 #'   COLOCALIZATION function for a cruise.
 #'
-#' @param cruise String of the name of cruise. You can see the list of cruises using \code{cruises()}.
-#' @param targetTables table names of the target data sets to be matched with the source data.
+#' @param cruise String of the name of cruise. You can see the list of cruises
+#'   using \code{cruises()}.
+#' @param targetTables table names of the target data sets to be matched with
+#'   the source data.
 #' @param targetVars variable names to be matched with the source variable.
 #' @param depth1 LOWER limit for depth along the cruise track (lat/lon
 #'   trajectory) the user is interested in.
 #' @param depth2 UPPER limit for depth along the cruise track (lat/lon
 #'   trajectory) the user is interested in.
-#' @param temporalTolerance float list of temporal tolerance values between pairs of source and target datasets. The size and order of values in this list should match those of targetTables. If only a single integer value is given, that would be applied to all target datasets. This parameter is in day units except when the target variable represents monthly climatology data in which case it is in month units. Notice fractional values are not supported in the current version.
-#' @param latTolerance float list of spatial tolerance values in meridional direction [deg] between pairs of source and target data sets. If only one value is given, that would be applied to all target data sets.
-#' @param lonTolerance float list of spatial tolerance values in zonal direction [deg] between pairs of source and target data sets. If only one value is given, that would be applied to all target data sets.
-#' @param depthTolerance float list of spatial tolerance values in vertical direction [m] between pairs of source and target data sets. If only one value is given, that would be applied to all target data sets.
+#' @param temporalTolerance numeric vector of temporal tolerance values between
+#'   pairs of source and target datasets. The size and order of values in this
+#'   list should match those of targetTables. If only a single integer value is
+#'   given, that would be applied to all target datasets. This parameter is in
+#'   day units except when the target variable represents monthly climatology
+#'   data in which case it is in month units. Notice fractional values are not
+#'   supported in the current version.
+#' @param latTolerance numeric vector of spatial tolerance values in meridional
+#'   direction [deg] between pairs of source and target data sets. If only one
+#'   value is given, that would be applied to all target data sets.
+#' @param lonTolerance numeric vector of spatial tolerance values in zonal
+#'   direction [deg] between pairs of source and target data sets. If only one
+#'   value is given, that would be applied to all target data sets.
+#' @param depthTolerance numeric vector of spatial tolerance values in vertical
+#'   direction [m] between pairs of source and target data sets. If only one
+#'   value is given, that would be applied to all target data sets.
 #' @return A dataset colocalized with the cruise.
 #' @export
-#' @example
-#' \dontrun{
-#' library(cmap4r)
+#' @examples \donttest{ library(cmap4r)
 #'
 #' cruise='diel'
-#' targetTables=c('tblSeaFlow', 'tblPisces_NRT')
-#' targetVars=c('synecho_abundance', 'NO3')
+#' targetTables=c('tblSeaFlow')
+#' targetVars=c('synecho_abundance')
 #' depth1=0
 #' depth2=5
-#' temporalTolerance=c(0, 4)
-#' latTolerance=c(0, 0.25)
-#' lonTolerance=c(0, 0.25)
-#' depthTolerance=c(5, 5)
+#' temporalTolerance=c(0)
+#' latTolerance=c(0)
+#' lonTolerance=c(0)
+#' depthTolerance=c(5)
 #' dat = along_track(cruise,
 #'                   targetTables,
 #'                   targetVars,
