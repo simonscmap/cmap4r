@@ -1,5 +1,88 @@
-#' Retrieve stored procedure for extracting timeseries data aggregated at
-#' weekely, monthly, quaterly, annual or none level.
+# ------------------- authorization subroutines --------------------------
+
+# Check query execution
+#
+# query_out output after a query
+#
+check_authorization = function(query_out){
+  if(rawToChar(query_out$content) == "Unauthorized"){
+    print("Please reset API authorization key")
+    return(FALSE)
+  } else return(TRUE)
+}
+
+# Internal function for getting API key.
+get_api_key <- function(){
+  payload = initialize_cmap()
+  apiKey = payload$api_key
+  strsplit(apiKey," ")[[1]][2]
+}
+
+
+# ------------------- get_metadata sub_function  --------------------
+
+
+# Returns a dataframe containing references associated with a data set.
+# datasetID ID of dataset.
+get_references <- function(datasetID){
+  apiKey = get_api_key()
+  myquery = sprintf("SELECT Reference FROM dbo.udfDatasetReferences(%d)", datasetID)
+  return(query(myquery, apiKey))
+}
+
+
+
+# Returns a dataframe containing the associated metadata of a variable (such
+# as data source, distributor, references, and etc..). The inputs can be
+# string literals (if only one table, and variable is passed) or a list of
+# string literals.
+# table table name.
+# variable variable name.
+get_metadata_noref <- function(table, variable){
+  apiKey = get_api_key()
+  myquery = sprintf("SELECT * FROM dbo.udfMetaData_NoRef('%s', '%s')", variable, table)
+  return(query(myquery, apiKey))
+}
+
+
+
+
+
+
+
+
+
+# ------------------- get_data  --------------------------
+
+
+
+# Check range variable format
+#
+# @param range_var output after a query
+#' @import magrittr
+check_rangevar <- function(range_var) {
+  if( !any(names(range_var) %in% "lat"))
+    stop("Latitude range is missing.")
+  if( !any(names(range_var) %in% "lon"))
+    stop("Longitude range is missing.")
+  if( !any(names(range_var) %in% "time")){
+    print("Time range is missing. Using default date range.")
+    range_var$time <- c("2000-01-01", Sys.Date())
+  }
+  if( !any(names(range_var) %in% "depth")){
+    print("Depth range is missing. Using default date range.")
+    range_var$depth <- c(0, 0)
+  }
+  return(range_var)
+}
+
+
+
+
+
+# Retrieve stored procedure for extracting timeseries data aggregated at
+# weekely, monthly, quaterly, annual or none level.
+#' @import magrittr
 uspInterval_indicator <- function(interval){
   if(is.null(interval)){
     return('uspTimeSeries')
@@ -18,7 +101,7 @@ uspInterval_indicator <- function(interval){
 }
 
 
-#' Helper to check error (very basic for now)
+# Helper to check error (very basic for now)
 check_error <- function(response){
   return(response$status_code==200)
   ## TODO: return the actual status corresponding to the status code, IF not
@@ -26,15 +109,19 @@ check_error <- function(response){
 }
 
 
-#' Helper to get response to tibble.
+# Helper to get response to tibble.
+#' @importFrom  jsonlite fromJSON
+#' @importFrom readr read_csv
+#' @importFrom httr content
 process_response_to_tibble <- function(response, route){
-
-  if(route == "/api/data/query?"){
+  #if(route == "/api/data/query?"){
+  # print(route)
+  if (grep("api", route)){
     ## Handling CSV responses.
     a = invisible(httr::content(response, "raw"))
     a = suppressMessages(readr::read_csv(a))
-
-  } else if (route == "/dataretrieval/query?"){
+  } else if (grep("dataretrieval", route)){
+  # } else if (route == "/dataretrieval/query?"){
     ## Handling JSON responses.
     a = invisible(httr::content(response, "text"))
     a = unlist(strsplit(a, "\n", fixed=TRUE))
@@ -56,23 +143,24 @@ process_response_to_tibble <- function(response, route){
 }
 
 
-#' Validating the format of sp arguments.
-#' @param table (string) table name (each data set is stored in one or more
-#'   than one table).
-#' @param variable (string) variable short name which directly corresponds to a
-#'   field name in the table.
-#' @param dt1 (string of format "YYYY-MM-DDTHH:MM:SS" start date (or datetime
-#'   simply as YYYY-MM-DD). Caution!! This function doesn't check for the exact
-#'   format of the input, and only checks for whether it is a string. Same for
-#'   \code{dt2}.
-#' @param dt2 (string of format "YYYY-MM-DDTHH:MM:SS" end date (or datetime,
-#'   simply as YYYY-MM_DD).
-#' @param lat1 (Numeric) start latitude [degree N].
-#' @param lat2 (Numeric) end latitude [degree N].
-#' @param lon1 (Numeric) start longitude [degree E].
-#' @param lon2 (Numeric) end longitude [degree E].
-#' @param depth1 (Numeric) start depth [m].
-#' @param depth2 (Numeric) end depth [m].
+# Validating the format of sp arguments.
+# @param table (string) table name (each data set is stored in one or more
+#   than one table).
+# @param variable (string) variable short name which directly corresponds to a
+#   field name in the table.
+# @param dt1 (string of format "YYYY-MM-DDTHH:MM:SS" start date (or datetime
+#   simply as YYYY-MM-DD). Caution!! This function doesn't check for the exact
+#   format of the input, and only checks for whether it is a string. Same for
+#   \code{dt2}.
+# @param dt2 (string of format "YYYY-MM-DDTHH:MM:SS" end date (or datetime,
+#   simply as YYYY-MM_DD).
+# @param lat1 (Numeric) start latitude [degree N].
+# @param lat2 (Numeric) end latitude [degree N].
+# @param lon1 (Numeric) start longitude [degree E].
+# @param lon2 (Numeric) end longitude [degree E].
+# @param depth1 (Numeric) start depth [m].
+# @param depth2 (Numeric) end depth [m].
+#' @importFrom assertthat assert_that is.string
 validate_sp_args <- function(table,
                              variable, dt1, dt2, lat1, lat2, lon1, lon2,
                              depth1, depth2){
@@ -89,10 +177,10 @@ validate_sp_args <- function(table,
 }
 
 
-#' Takes a custom query, issues a request to the API, and returns the results
-#' in form of a dataframe.
-#' @param myquery An "EXEC ..." string.
-#' @param apiKey The API Key.
+# Takes a custom query, issues a request to the API, and returns the results
+# in form of a dataframe.
+# @param myquery An "EXEC ..." string.
+# @param apiKey The API Key.
 query <- function(myquery, apiKey){
   ## Form query
   payload = list(query = myquery)
@@ -104,17 +192,19 @@ query <- function(myquery, apiKey){
 
 
 
-#' Returns a subset of data according to space-time constraints. (Identical function in python.)
+# Returns a subset of data according to space-time constraints. (Identical function in python.)
 subset <- function(spName, table, variable, dt1, dt2, lat1, lat2, lon1,
                    lon2, depth1, depth2, apiKey){
         query = sprintf('EXEC %s ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', spName)
-        args = list(table, variable, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2)
+        args = list(table, variable, dt1, dt2, lat1, lat2,
+                    lon1, lon2, depth1, depth2)
         return(stored_proc(query, args, apiKey))
 }
 
-#' Executes a stored procedure. (Near-identical function in python.) Executes a
-#' stored-procedure and returns the results in form of a dataframe. Similar to
-#' \code{query()}.
+# Executes a stored procedure. (Near-identical function in python.) Executes a
+# stored-procedure and returns the results in form of a dataframe. Similar to
+# \code{query()}.
+#' @importFrom assertthat assert_that is.string
 stored_proc <- function(query, args, apiKey){
         payload =list(tableName = args[1],
                       fields = args[2],
@@ -132,14 +222,24 @@ stored_proc <- function(query, args, apiKey){
         ## payload$dt1 = paste0(payload$dt1, " 00:00:00")
         ## payload$dt2 = paste0(payload$dt2, " 00:00:00")
 
-        assert_that(validate_sp_args(args[[1]], args[[2]], args[[3]],
+        assertthat::assert_that(validate_sp_args(args[[1]],
+                                                 args[[2]], args[[3]],
                                      args[[4]], args[[5]],
                                      args[[6]], args[[7]],
                                      args[[8]], args[[9]], args[[10]]))
-        request(payload, route= "/api/data/query?", apiKey)}
+        # route = '/dataretrieval/sp?'     # JSON format, deprecated
+        route = '/api/data/sp?'     # CSV format
+        request(payload, route = route, apiKey)}
 
-#' Send API request. Going from (payload -> response -> df). Near-identical
-#' function in Python.
+
+
+
+# Send API request. Going from (payload -> response -> df). Near-identical
+# function in Python.
+#
+#' @importFrom  jsonlite fromJSON
+#' @importFrom readr read_csv
+#' @importFrom httr add_headers GET
 request <- function(payload, route, apiKey){
 
   ## Hard coded
@@ -157,14 +257,16 @@ request <- function(payload, route, apiKey){
   ## TODO: Consider using RETRY("GET", "http://invalidhostname/"), since the
   ## initial request sometimes fails.
 
-  if(!check_error(response))browser() ## temporary
+  if(!check_error(response)) browser() ## temporary
   stopifnot(check_error(response))
   return(process_response_to_tibble(response,
                                     route)) ## The second argument is until
                                             ## Mohammad fixes this issue.
 }
 
-#' Helper, UNTESTED!! Only works for match so far.
+
+# Helper, UNTESTED!! Only works for match so far.
+#' @importFrom utils URLencode
 urlencode_python <- function(payload){
   ## assert_that(length(payload)==1)
   all_items = Map(function(item, itemname){
@@ -181,7 +283,8 @@ urlencode_python <- function(payload){
 
 
 
-#' Helper to check variable name or table name with the catalog.
+# Helper to check variable name or table name with the catalog.
+#' @import magrittr
 check_with_catalog <- function(thing, type=c("varName", "tableName"), apiKey){
   type = match.arg(type)
   catalog = get_catalog()

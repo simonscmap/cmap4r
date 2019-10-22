@@ -4,12 +4,10 @@
 \alias{plot_regmap}
 \title{Regional map}
 \usage{
-plot_regmap(con, table_name, sel_var, range_var, type = c("plotly",
-  "ggplot")[1])
+plot_regmap(table_name, sel_var, range_var, type = c("plotly",
+  "ggplot")[1], export_data = FALSE)
 }
 \arguments{
-\item{con}{connection object to the database}
-
 \item{table_name}{name of table from CMAP}
 
 \item{sel_var}{selected varable from the table}
@@ -17,18 +15,18 @@ plot_regmap(con, table_name, sel_var, range_var, type = c("plotly",
 \item{range_var}{range of time, latitude, longitude, depth}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
+
+\item{export_data}{boolean variable to export data or not. The data will be saved in the working directory.}
 }
 \value{
-\item{plot}{ plot object of the chosen type}
-   \item{table}{subset of data from  first table }
+plot object of the chosen type
 }
 \description{
 Regional map of a variable of interest at varying range of latitude and longitude
 }
 \examples{
-\dontrun{
+\donttest{
 library(cmap4r)
-con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
 table_name <- "tblsst_AVHRR_OI_NRT"
@@ -39,8 +37,8 @@ range_var$lon <- c(-180, -80)
 range_var$time <- c("2016-04-30", "2016-04-30")
 #
 ## Plot - regional map
-# out <- plot_regmap(con, table_name,sel_var,range_var, type = 'ggplot')
-out <- plot_regmap(con, table_name, sel_var, range_var, type = "plotly")
-out$plot
+# out <- plot_regmap( table_name,sel_var,range_var, type = 'ggplot')
+out <- plot_regmap(table_name, sel_var, range_var, type = "plotly")
+out
 }
 }

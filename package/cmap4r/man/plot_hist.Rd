@@ -4,14 +4,19 @@
 \alias{plot_hist}
 \title{Plot histogram of the variable of interest}
 \usage{
-plot_hist(tbl_subset, type = c("plotly", "ggplot")[1], sel_var)
+plot_hist(table_name, sel_var, range_var, type = c("plotly",
+  "ggplot")[1], export_data = FALSE)
 }
 \arguments{
-\item{tbl_subset}{table with depth and variable of interest}
+\item{table_name}{name of the table from CMAP}
+
+\item{sel_var}{select a variable in the table}
+
+\item{range_var}{range variable}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
 
-\item{sel_var}{select a variable in the table}
+\item{export_data}{boolean variable to export data or not. The data will be saved in the working directory.}
 }
 \value{
 plot object of the chosen type
@@ -20,9 +25,8 @@ plot object of the chosen type
 Histogram object of chosen type
 }
 \examples{
-\dontrun{
+\donttest{
 library(cmap4r)
-con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
 table_list <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
@@ -41,18 +45,10 @@ range_var$lon <- c(-170, 150)
 range_var$time <- c("2016-04-30", "2016-04-30")
 #
 #
-#
-# Subset selection:
-tbl_subset <- get_table(con, table_name, sel_var, range_var)
-head(tbl_subset)
-#
-#
 # Plot function available for R User
-p <- plot_hist(tbl_subset, "ggplot", sel_var)
-p <- plot_hist(tbl_subset, "plotly", sel_var)
+p <- plot_hist(table_name, sel_var, range_var, "ggplot")
+p <- plot_hist(table_name, sel_var, range_var, "plotly")
 p
 #
-#
-dbDisconnect(con)
 }
 }

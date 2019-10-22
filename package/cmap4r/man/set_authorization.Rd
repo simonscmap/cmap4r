@@ -15,8 +15,10 @@ Set authorization/API key for accessing the CMAP database.
 \examples{
 \dontrun{
 library(cmap4r)
-# To set the authorization key
+
+# To set the API authorization key
 set_authorization()
+
 # To reset the authorization key
 set_authorization(reset = TRUE)
 }

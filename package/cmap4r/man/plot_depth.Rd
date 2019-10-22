@@ -4,14 +4,19 @@
 \alias{plot_depth}
 \title{Plot variable of interest with varying depth}
 \usage{
-plot_depth(tbl_subset, type = c("plotly", "ggplot")[1], sel_var)
+plot_depth(table_name, sel_var, range_var, type = c("plotly",
+  "ggplot")[1], export_data = FALSE)
 }
 \arguments{
-\item{tbl_subset}{table with depth and variable of interest}
+\item{table_name}{name of the table from CMAP}
+
+\item{sel_var}{select a variable in the table}
+
+\item{range_var}{range variable}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
 
-\item{sel_var}{select a variable in the table}
+\item{export_data}{boolean variable to export data or not. The data will be saved in the working directory.}
 }
 \value{
 plot object of the chosen type
@@ -20,13 +25,12 @@ plot object of the chosen type
 Depth plot object
 }
 \examples{
-\dontrun{
+\donttest{
 library(cmap4r)
-con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Inpit variable:
-table_list <- c("tblArgoMerge_REP", "tblPisces_NRT", "tblDarwin_Chl_Climatology")
-var_list <- c("argo_merge_chl_adj", "CHL", "chl01_darwin_clim")
+table_list <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
+var_list <- c('argo_merge_chl_adj', 'CHL', 'CHL')
 #
 # selected argo_merge_chl_adj from tblArgoMerge_REP
 selIndex <- 1
@@ -37,19 +41,11 @@ range_var <- list()
 range_var$lat <- c(20, 24)
 range_var$lon <- c(-170, -150)
 range_var$depth <- c(0, 1500)
-range_var$time <- c("2016-04-30", "2016-04-30")
-#
-#
-# Subset selection: data retrieval
-agg_var <- "depth"
-tbl_subset <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
-head(tbl_subset)
-#
+range_var$time <- c("2014-04-25", "2014-04-30")
 #
 # Plot -- Depth profiles:
-p <- plot_depth(tbl_subset, "plotly", sel_var)
+p <- plot_depth(table_name, sel_var, range_var, "plotly")
+# p
 #
-#
-dbDisconnect(con)
 }
 }

@@ -4,12 +4,10 @@
 \alias{plot_xy}
 \title{XY plot}
 \usage{
-plot_xy(con, table_list, var_list, range_var, agg_var, type = c("plotly",
-  "ggplot")[1])
+plot_xy(table_list, var_list, range_var, agg_var, type = c("plotly",
+  "ggplot")[1], export_data = FALSE)
 }
 \arguments{
-\item{con}{connection object to the database}
-
 \item{table_list}{list of  tables}
 
 \item{var_list}{list of  corresponding variable}
@@ -19,19 +17,18 @@ plot_xy(con, table_list, var_list, range_var, agg_var, type = c("plotly",
 \item{agg_var}{aggregate variable}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
+
+\item{export_data}{boolean variable to export data or not. The data will be saved in the working directory.}
 }
 \value{
-\item{plot}{ plot object of the chosen type}
-   \item{table_x}{subset of data from  first table }
-   \item{table_y}{subset of data from  second table }
+plot object of the chosen type
 }
 \description{
 Scatter plot of two variable of interest
 }
 \examples{
-\dontrun{
+\donttest{
 library(cmap4r)
-con <- connect_cmap(Driver = "libtdsodbc.so")
 # Inpit variable:
 #
 table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
@@ -44,8 +41,8 @@ range_var$time <- c("2016-03-29", "2016-05-29")
 #
 agg_var <- "time"
 
-out <- plot_xy(con, table_list, var_list, range_var, agg_var, type = "plotly")
-out$plot
-dbDisconnect(con)
+# xy plot
+out <- plot_xy(table_list, var_list, range_var, agg_var)
+out
 }
 }

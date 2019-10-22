@@ -10,14 +10,25 @@ along_track(cruise, targetTables, targetVars, depth1, depth2,
   temporalTolerance, latTolerance, lonTolerance, depthTolerance)
 }
 \arguments{
-\item{cruise}{String of the name of cruise. You can see the list of cruises
-using \code{cruises()}.}
+\item{cruise}{String of the name of cruise. You can see the list of cruises using \code{cruises()}.}
+
+\item{targetTables}{table names of the target data sets to be matched with the source data.}
+
+\item{targetVars}{variable names to be matched with the source variable.}
 
 \item{depth1}{LOWER limit for depth along the cruise track (lat/lon
 trajectory) the user is interested in.}
 
 \item{depth2}{UPPER limit for depth along the cruise track (lat/lon
 trajectory) the user is interested in.}
+
+\item{temporalTolerance}{float list of temporal tolerance values between pairs of source and target datasets. The size and order of values in this list should match those of targetTables. If only a single integer value is given, that would be applied to all target datasets. This parameter is in day units except when the target variable represents monthly climatology data in which case it is in month units. Notice fractional values are not supported in the current version.}
+
+\item{latTolerance}{float list of spatial tolerance values in meridional direction [deg] between pairs of source and target data sets. If only one value is given, that would be applied to all target data sets.}
+
+\item{lonTolerance}{float list of spatial tolerance values in zonal direction [deg] between pairs of source and target data sets. If only one value is given, that would be applied to all target data sets.}
+
+\item{depthTolerance}{float list of spatial tolerance values in vertical direction [m] between pairs of source and target data sets. If only one value is given, that would be applied to all target data sets.}
 }
 \value{
 A dataset colocalized with the cruise.

@@ -2,27 +2,31 @@
 % Please edit documentation in R/plot_cmap.R
 \name{plot_ts}
 \alias{plot_ts}
-\title{Plot variable of interest with varying time}
+\title{Plot variable of interest with varying time.}
 \usage{
-plot_ts(tbl_subset, type = c("plotly", "ggplot")[1], sel_var)
+plot_ts(table_name, sel_var, range_var, type = c("plotly", "ggplot")[1],
+  export_data = FALSE)
 }
 \arguments{
-\item{tbl_subset}{table with depth and variable of interest}
+\item{table_name}{table with depth and variable of interest}
+
+\item{sel_var}{select a variable in the table}
+
+\item{range_var}{range variable}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
 
-\item{sel_var}{select a variable in the table}
+\item{export_data}{boolean variable to export data or not. The data will be saved in the working directory.}
 }
 \value{
 plot object of the chosen type
 }
 \description{
-times eries plot object
+Times eries plot object.
 }
 \examples{
-\dontrun{
+\donttest{
 library(cmap4r)
-con <- connect_cmap(Driver = "libtdsodbc.so")
 #
 # Input variable:
 table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
@@ -39,15 +43,9 @@ range_var$lat <- c(25, 30)
 range_var$lon <- c(-160, -155)
 range_var$time <- c("2016-03-29", "2016-05-29")
 #
-# Subset selection: data retrieval
-agg_var <- "time"
-tbl_subset <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
-head(tbl_subset, 20)
-#
 # Plot -- Time series:
-p <- plot_ts(tbl_subset, "plotly", sel_var)
+p <- plot_ts(table_name, sel_var, range_var)
 p
 #
-dbDisconnect(con)
 }
 }
