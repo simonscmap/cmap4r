@@ -113,7 +113,7 @@ cruise_bounds <- function(cruisename){
 cruise_trajectory <- function(cruisename){
 
   apiKey = get_api_key()
-  df = cruise_by_name(cruisename, apiKey)
+  df = cruise_by_name(cruisename)
   myquery = sprintf("EXEC uspCruiseTrajectory %d", unlist(df[['ID']][1]))
   df = query(myquery, apiKey)
 
@@ -351,6 +351,7 @@ head <- function(tableName, rows = 5, apiKey){
 #' #
 #' ## Variable attribute:
 #' tbl.var <- get_var(table_name, var_name)
+#' }
 get_var <- function(tableName, varName, apiKey){
   apiKey = get_api_key()
   myquery = sprintf("SELECT * FROM tblVariables WHERE Table_Name='%s' AND Short_Name='%s'", tableName, varName)

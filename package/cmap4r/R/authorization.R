@@ -14,7 +14,7 @@
 #' # To reset the authorization key
 #' set_authorization(reset = TRUE)
 #' }
-set_authorization = function(reset = FALSE){
+set_authorization <- function(reset = FALSE){
   if (reset){
     keyring::key_delete("cmap_api")
     message("CMAP API authorization key has been deteted.")
@@ -42,29 +42,30 @@ set_authorization = function(reset = FALSE){
 #' # Output list with CMAP database access credentials
 #' initialize_cmap()
 #' }
-initialize_cmap = function(base_url=NULL, route = NULL){
+initialize_cmap <- function(base_url=NULL, route = NULL){
+
+  ## Form some common arguments
   if(is.null(base_url))
     base_url = 'https://simonscmap.com'
   if(is.null(route)){
     # route = '/dataretrieval/sp?'
     route <- "/api/data/sp?"
   }
+
+
+  ## Try fetching key once
   tem1 <- try(api_key <-
                 paste("Api-Key",keyring::key_get("cmap_api"),sep = " "),
               silent = T)
+
+  ## If an error occurs, reset the authorization
   if(!is.null(attr(tem1,"class"))){
     message("API key incorrect/not available.")
     message("Setting up API authorization key.")
+    set_authorization(reset=TRUE)
     set_authorization()
     api_key <-  paste("Api-Key",keyring::key_get("cmap_api"),sep = " ")
   }
   return(list(base_url = base_url,route = route, api_key = api_key))
 }
-
-
-
-
-# 31095550-d3d9-11e9-9174-fdf4e45bb057
-
-
 
