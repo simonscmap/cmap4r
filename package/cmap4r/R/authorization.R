@@ -2,6 +2,7 @@
 #'
 #' @param reset boolean variable for set authorization key for API access to the database
 #' @import magrittr
+#' @export
 #' @importFrom keyring key_delete key_set
 #' @examples
 #' \dontrun{
@@ -34,6 +35,7 @@ set_authorization = function(reset = FALSE){
 #' @param route data retrieval route of the database.  Default: "/api/data/sp?"
 #' @import magrittr
 #' @importFrom keyring key_get
+#' @export
 #' @examples
 #' \dontrun{
 #' library(cmap4r)

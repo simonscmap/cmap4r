@@ -40,7 +40,7 @@ get_references <- function(datasetID){
 # variable variable name.
 get_metadata_noref <- function(table, variable){
   apiKey = get_api_key()
-  myquery = sprintf("SELECT * FROM dbo.udfMetaData_NoRef('%s', '%s')", variable, table)
+  myquery = sprintf("SELECT * FROM dbo.udfCatalog() WHERE Variable='%s' AND Table_Name='%s'", variable, table)
   return(query(myquery, apiKey))
 }
 

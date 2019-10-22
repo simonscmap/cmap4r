@@ -363,7 +363,7 @@ is_climatology <- function(tableName){
 #' @param variables vector of variable names in the tables.
 #' @export
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' library(cmap4r)
 #' #
 #' ## Input:
@@ -374,12 +374,19 @@ is_climatology <- function(tableName){
 #' metadata
 #' }
 get_metadata <- function(tables, variables){
+  append_df = function(df, a){
+    out <- data.frame(matrix(NaN, a, ncol(df)))
+    names(out) <- names(df)
+    out[1,] <- data.frame(df)[1,]
+    out
+  }
   metadata = data.frame()
   for(i in 1:length(tables)){
     df <- get_metadata_noref(tables[i], variables[i])
     datasetID = df$Dataset_ID[1]
     refs = get_references(datasetID)
-    df <- cbind(df,Reference = t(refs$Reference))
+    df <- append_df(df,length(refs$Reference))
+    df$Reference = refs$Reference
     if(i == 1){
       metadata <- df
     } else {

@@ -15,7 +15,7 @@ get_metadata(tables, variables)
 Returns a dataframe containing the associated metadata. The inputs can be strings (if only one table, and variable is passed) or a list of string literals.
 }
 \examples{
-\dontrun{
+\donttest{
 library(cmap4r)
 #
 ## Input:
