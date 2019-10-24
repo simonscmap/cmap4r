@@ -1,6 +1,6 @@
 Package: cmap4r
 Type: Package
-Title: CMAP database for R users
+Title: CMAP Database for R Users
 Version: 0.1.0
 Date: 2019-10-10
 Authors@R: c(person(given = "Aditya", family = "Mishra", role = c("aut", "cre"),
@@ -13,9 +13,9 @@ Authors@R: c(person(given = "Aditya", family = "Mishra", role = c("aut", "cre"),
                     email = "jbien@usc.edu"))
 Maintainer: Aditya Mishra <amishra@flatironinstitute.org>
 URL: https://github.com/simonscmap/cmap4r
-Description: The paclage facilitates user to  download, visualize and process data from CMAP database  using R.
+Description: This package allows the user to download, visualize, and process data from the CMAP database using R.
 Depends: R (>= 3.3.0) , stats , utils 
-Imports: plotly , ggplot2 , magrittr, keyring, assertthat, httr, jsonlite, readr
+Imports: plotly, ggplot2, magrittr, keyring, assertthat, httr, jsonlite, readr
 License: GPL (>= 3.0)
 Encoding: UTF-8
 LazyData: true
