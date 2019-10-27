@@ -1,45 +1,26 @@
 # CMAP for R users
 
-[Simons CMAP](https://cmap.readthedocs.io/en/latest/index.html) is an initiative from [CBIOMES](https://cbiomes.org/) collaboration that provide open source database service to unify, visualize, and analyze ocean data sets from the  field campaign observations, remote sensing satellite, and model outputs. The project is supported by the Simons Foundation .
+[Simons CMAP](https://cmap.readthedocs.io/en/latest/index.html) is an initiative from [CBIOMES](https://cbiomes.org/) collaboration that provide open source database service to unify, visualize, and analyze ocean data sets from the  field campaign observations, remote sensing satellite, and model outputs. The project is supported by the [Simons Foundation](https://www.simonsfoundation.org/).
 
-Currently, [CMAP](https://cmap.readthedocs.io/en/latest/index.html) host examples and functions to analyze and process the data for Python users. In order to make R users familiar to the database, we provide examples in R to connect, process, analyze and visualize the data.
+In order to make R users familiar to the database, the package "cmap4r" allows a user to download, visualize, and process data from the CMAP database.
+
 
 
 ## Getting Started
 
-CMAP hosts data on a Microsoft SQL Server. 
-
-### Prerequisites
-
-For  Mac operating system, a user needs to install the unixODBC library and database drivers. We suggest using SQL Server ODBC drivers (Free TDS). Using Homebrew, run the following commands to install the suggested module.
+CMAP hosts data on a Microsoft SQL Server. To retrieve the data from the database, *cmap4r* requires an API key. For this, the user needs to register on the [SimonsCMAP](https://simonscmap.com/register) website and follow the APIKeys tab on the webpage to obtain the API key. The package allows the user to save the key as *keyring variable* which will be used for data retrieval whenever required.
 
 
--   brew install unixodbc
--   brew install freetds
 
-In case of Linux operating system, first, install [Anaconda
-distribition](https://www.anaconda.com/distribution/#linux), and then
-run the following commands to install suggested module.
+### Installation
+Currently, we host the latest version of the package on [GitHub](https://github.com/simonscmap/cmap4r). Please follow the instruction below to install the package. 
 
--   conda install -c anaconda unixodbc
--   conda install -c anaconda freetds
-
-Please follow the [link](https://db.rstudio.com/best-practices/drivers/)
-to see other drivers available for installation.
-
-
-### R user
-An R user will need the following package to connect to the database: a) “DBI”, for database interface; b) “odbc” for connecting to the database using **DBI** interface.
-
-In addition, user may require some additional R package for downloading, processing and visualizing the data. Run the following commands to install some of the essential packages.
+In addition, the user may require some additional R package for processing and visualizing the data. Run the following commands to install some of the essential packages.
 
 
 ```
-## Package "DBI" provide interface to the database
-install.packages("DBI")
-
-## Driver for the database
-install.packages("odbc")
+## Package "cmap4r" for downloading and visualizing data 
+devtools::install_github("simonscmap/cmap4r/package/cmap4r")
 
 ## Package for data processing:
 install.packages("dbplyr")  
@@ -50,43 +31,49 @@ install.packages("ggplot2")
 install.packages("plotly")
 
 ```
-## R package
 
-Functions in the *cmap4r* package facilitates downloading, preprocessing and visualizing the data from the CMAP database. 
+### Save API Key as *keyring*
 
-### Connecting to the database
-
-*connect_cmap* function the *cmap4r* package returns connection object to the database. 
+After installing *cmap4r*, use **set_authorization** function to set/reset the API Key. 
 
 ```
 library(cmap4r)
-## connection object to the database
-con <- connect_cmap(Driver = "libtdsodbc.so")
 
-dbDisconnect(con)
+# To set the API authorization key
+set_authorization()
+
+# To reset the authorization key
+set_authorization(reset = TRUE)
 ```
 
 
-### Example:
 
-Use *get_table* function to download data from a table on CMAP database in given range of space and time.
+### Working example:
+
+Following functions allow user to download the data as table from the  CMAP database in given range of space and time.
+- get_spacetime
+- get_section
+- get_timeseries
+- get_depthprofile
+- exec_manualquery
 
 ```
 library(cmap4r)
-con <- connect_cmap(Driver = "libtdsodbc.so")
 #
-## Input: Table name; variable name, space time range information
-table.name <- "tblsst_AVHRR_OI_NRT" # table name
-sel.var <- "sst" # choose variable
-range.var <- list() # Range variable [lat,lon,time]
-range.var$lat <- c(10, 70)
-range.var$lon <- c(-180, -80)
-range.var$time <- c("2016-04-30", "2016-04-30")
+## Input: Table name; variable name.
+table_name <- "tblArgoMerge_REP" # table name
+sel_var <- "argo_merge_chl_adj" # choose variable
+#
+# Range variable [lat,lon,time]
+lat1 = 20; lat2 = 24
+lon1 = -170; lon2 = -150
+dt1 = "2016-04-30"; dt2 = "2016-04-30"
+depth1 <- 0; depth2 =  1500
 #
 ## Subset selection:
-tbl.subset <- get_table(con, table.name, sel.var, range.var)
+tbl.subset <- get_depthprofile(table_name, sel_var, lat1, lat2, lon1, lon2,
+                               dt1, dt2, depth1, depth2)
 head(tbl.subset)
 #
-dbDisconnect(con)
 ```
-Refer **bookdown** to learn more about using functions available in **cmap4r**.
+Refer **bookdown** to learn about using the data retrieval and visualization function available in the **cmap4r**.
