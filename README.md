@@ -1,22 +1,19 @@
 # CMAP for R users
 
-[Simons CMAP](https://cmap.readthedocs.io/en/latest/index.html) is an initiative from [CBIOMES](https://cbiomes.org/) collaboration that provide open source database service to unify, visualize, and analyze ocean data sets from the  field campaign observations, remote sensing satellite, and model outputs. The project is supported by the [Simons Foundation](https://www.simonsfoundation.org/).
+[Simons CMAP](https://cmap.readthedocs.io/en/latest/index.html) is an initiative from [CBIOMES](https://cbiomes.org/) collaboration that provides open source database service to unify, visualize, and analyze ocean data sets from the  field campaign observations, remote sensing satellite, and model outputs. The project is supported by the [Simons Foundation](https://www.simonsfoundation.org/).
 
-In order to make R users familiar to the database, the package "cmap4r" allows a user to download, visualize, and process data from the CMAP database.
+To make R users familiar to the database, the package "cmap4r" allows a user to download, visualize, and process data from the CMAP database.
 
 
 
 ## Getting Started
 
-CMAP hosts data on a Microsoft SQL Server. To retrieve the data from the database, *cmap4r* requires an API key. For this, the user needs to register on the [SimonsCMAP](https://simonscmap.com/register) website and follow the APIKeys tab on the webpage to obtain the API key. The package allows the user to save the key as *keyring variable* which will be used for data retrieval whenever required.
+CMAP hosts data on a Microsoft SQL Server. To retrieve the data from the database, *cmap4r* requires an API key. For this, the user needs to register on the [SimonsCMAP](https://simonscmap.com/register) website and follow the APIKeys tab on the webpage to obtain the API key. The package allows the user to save the key as a **keyring variable** which will be used for data retrieval whenever required.
 
 
 
 ### Installation
-Currently, we host the latest version of the package on [GitHub](https://github.com/simonscmap/cmap4r). Please follow the instruction below to install the package. 
-
-In addition, the user may require some additional R package for processing and visualizing the data. Run the following commands to install some of the essential packages.
-
+Currently, we host the latest version of the package on [GitHub](https://github.com/simonscmap/cmap4r). Please follow the instruction below to install the package. Also, install some additional R package for processing and visualizing the data. 
 
 ```
 ## Package "cmap4r" for downloading and visualizing data 
@@ -34,7 +31,7 @@ install.packages("plotly")
 
 ### Save API Key as *keyring*
 
-After installing *cmap4r*, use **set_authorization** function to set/reset the API Key. 
+After installing *cmap4r*, use the **set_authorization** function to set/reset the API Key. 
 
 ```
 library(cmap4r)
@@ -50,7 +47,7 @@ set_authorization(reset = TRUE)
 
 ### Working example:
 
-Following functions allow user to download the data as table from the  CMAP database in given range of space and time.
+To download the data as a table from the  CMAP database in a given range of space and time, use appropriate retrieval functions:  
 - get_spacetime
 - get_section
 - get_timeseries
