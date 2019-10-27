@@ -4,15 +4,29 @@
 \alias{plot_depth}
 \title{Plot variable of interest with varying depth}
 \usage{
-plot_depth(table_name, sel_var, range_var, type = c("plotly",
-  "ggplot")[1], export_data = FALSE)
+plot_depth(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2, depth1,
+  depth2, type = c("plotly", "ggplot")[1], export_data = FALSE)
 }
 \arguments{
 \item{table_name}{name of the table from CMAP}
 
 \item{sel_var}{select a variable in the table}
 
-\item{range_var}{range variable}
+\item{lat1}{start latitude [degree N].}
+
+\item{lat2}{end latitude [degree N].}
+
+\item{lon1}{start longitude [degree E].}
+
+\item{lon2}{end longitude [degree E].}
+
+\item{dt1}{start date or datetime.}
+
+\item{dt2}{end date or datetime.}
+
+\item{depth1}{start depth [m].}
+
+\item{depth2}{end depth [m].}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
 
@@ -37,14 +51,16 @@ selIndex <- 1
 table_name <- table_list[selIndex]
 sel_var <- var_list[selIndex]
 #
-range_var <- list()
-range_var$lat <- c(20, 24)
-range_var$lon <- c(-170, -150)
-range_var$depth <- c(0, 1500)
-range_var$time <- c("2014-04-25", "2014-04-30")
+# Range variable [lat,lon,time,depth]
+lat1 = 20; lat2 = 24
+lon1 = -170; lon2 = -150
+dt1 = "2014-04-25"; dt2 = "2014-04-30"
+depth1 <- 0; depth2 =  1500
+
 #
 # Plot -- Depth profiles:
-p <- plot_depth(table_name, sel_var, range_var, "plotly")
+p <- plot_depth(table_name, sel_var, lat1, lat2, lon1, lon2,
+                        dt1, dt2,depth1, depth2, "plotly")
 # p
 #
 }

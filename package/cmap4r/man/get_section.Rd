@@ -4,14 +4,29 @@
 \alias{get_section}
 \title{Retrieve subset of a table from CMAP using space time range parameters}
 \usage{
-get_section(table_name, sel_var, range_var)
+get_section(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2,
+  depth1 = NULL, depth2 = NULL)
 }
 \arguments{
 \item{table_name}{table name in the database}
 
 \item{sel_var}{select a variable in the table}
 
-\item{range_var}{range of time, latitude, longitude, depth}
+\item{lat1}{start latitude [degree N].}
+
+\item{lat2}{end latitude [degree N].}
+
+\item{lon1}{start longitude [degree E].}
+
+\item{lon2}{end longitude [degree E].}
+
+\item{dt1}{start date or datetime.}
+
+\item{dt2}{end date or datetime.}
+
+\item{depth1}{start depth [m].}
+
+\item{depth2}{end depth [m].}
 }
 \value{
 subset of a table as data frame
@@ -26,14 +41,15 @@ library(cmap4r)
 ## Input: Table name; variable name, space time range information
 table_name <- "tblPisces_NRT" # table name
 sel_var <- "NO3" # choose variable
-range_var <- list() # Range variable [lat,lon,time]
-range_var$lat <- c(10, 60)
-range_var$lon <- c(-160, -158)
-range_var$time <- c("2016-04-30", "2016-04-30")
-range_var$depth <- c(0, 5000)
+# Range variable [lat,lon,time]
+lat1 = 10; lat2 = 60
+lon1 = -160; lon2 = -158
+dt1 = "2016-04-30"; dt2 = "2016-04-30"
+depth1 <- 0; depth2 =  5000
 #
 ## Subset selection:
-tbl.subset <- get_section(table_name, sel_var, range_var)
+tbl.subset <- get_section(table_name, sel_var, lat1, lat2, lon1, lon2,
+                   dt1, dt2, depth1, depth2)
 head(tbl.subset)
 #
 }

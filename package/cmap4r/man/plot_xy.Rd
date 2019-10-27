@@ -4,7 +4,8 @@
 \alias{plot_xy}
 \title{XY plot}
 \usage{
-plot_xy(table_list, var_list, range_var, agg_var, type = c("plotly",
+plot_xy(table_list, var_list, lat1, lat2, lon1, lon2, dt1, dt2,
+  depth1 = NULL, depth2 = NULL, agg_var, type = c("plotly",
   "ggplot")[1], export_data = FALSE)
 }
 \arguments{
@@ -12,7 +13,21 @@ plot_xy(table_list, var_list, range_var, agg_var, type = c("plotly",
 
 \item{var_list}{list of  corresponding variable}
 
-\item{range_var}{range of time, latitude, longitude, depth}
+\item{lat1}{start latitude [degree N].}
+
+\item{lat2}{end latitude [degree N].}
+
+\item{lon1}{start longitude [degree E].}
+
+\item{lon2}{end longitude [degree E].}
+
+\item{dt1}{start date or datetime.}
+
+\item{dt2}{end date or datetime.}
+
+\item{depth1}{start depth [m].}
+
+\item{depth2}{end depth [m].}
 
 \item{agg_var}{aggregate variable}
 
@@ -34,15 +49,18 @@ library(cmap4r)
 table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
 var_list <- c("sst", "sla")
 #
-range_var <- list()
-range_var$lat <- c(25, 30)
-range_var$lon <- c(-160, -155)
-range_var$time <- c("2016-03-29", "2016-05-29")
+# Range variable [lat,lon,time,depth]
+lat1 = 25; lat2 = 30
+lon1 = -160; lon2 = -155
+dt1 =  "2016-03-29"; dt2 = "2016-05-29"
+depth1 <- NULL; depth2 =  NULL
+
 #
 agg_var <- "time"
 
 # xy plot
-out <- plot_xy(table_list, var_list, range_var, agg_var)
+out <- plot_xy(table_list, var_list, lat1, lat2, lon1, lon2,
+               dt1, dt2, depth1, depth2, agg_var)
 out
 }
 }

@@ -4,15 +4,30 @@
 \alias{plot_hist}
 \title{Plot histogram of the variable of interest}
 \usage{
-plot_hist(table_name, sel_var, range_var, type = c("plotly",
-  "ggplot")[1], export_data = FALSE)
+plot_hist(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2,
+  depth1 = NULL, depth2 = NULL, type = c("plotly", "ggplot")[1],
+  export_data = FALSE)
 }
 \arguments{
 \item{table_name}{name of the table from CMAP}
 
 \item{sel_var}{select a variable in the table}
 
-\item{range_var}{range variable}
+\item{lat1}{start latitude [degree N].}
+
+\item{lat2}{end latitude [degree N].}
+
+\item{lon1}{start longitude [degree E].}
+
+\item{lon2}{end longitude [degree E].}
+
+\item{dt1}{start date or datetime.}
+
+\item{dt2}{end date or datetime.}
+
+\item{depth1}{start depth [m].}
+
+\item{depth2}{end depth [m].}
 
 \item{type}{choose a type of plot object: 'plotly','ggplot}
 
@@ -37,17 +52,19 @@ selIndex <- 1
 table_name <- table_list[selIndex]
 sel_var <- var_list[selIndex]
 #
-#
-# Range variable
-range_var <- list()
-range_var$lat <- c(20, 24)
-range_var$lon <- c(-170, 150)
-range_var$time <- c("2016-04-30", "2016-04-30")
-#
-#
+# Range variable [lat,lon,time,depth]
+lat1 = 20; lat2 = 24
+lon1 = -170; lon2 = -150
+dt1 = "2016-04-30"; dt2 = "2016-04-30"
+depth1 <- NULL; depth2 =  NULL
+
+
 # Plot function available for R User
-p <- plot_hist(table_name, sel_var, range_var, "ggplot")
-p <- plot_hist(table_name, sel_var, range_var, "plotly")
+# p <- plot_hist(table_name, sel_var, lat1, lat2,
+#                lon1, lon2, dt1, dt2, depth1, depth2, "ggplot")
+
+p <- plot_hist(table_name, sel_var, lat1, lat2, lon1, lon2,
+               dt1, dt2, depth1, depth2, "plotly")
 p
 #
 }

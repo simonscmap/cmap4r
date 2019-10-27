@@ -4,14 +4,29 @@
 \alias{get_timeseries}
 \title{Retrieve timeseries data from  CMAP using space time range parameters}
 \usage{
-get_timeseries(table_name, sel_var, range_var, interval = NULL)
+get_timeseries(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2,
+  depth1 = NULL, depth2 = NULL, interval = NULL)
 }
 \arguments{
 \item{table_name}{table name in the database}
 
 \item{sel_var}{select a variable in the table}
 
-\item{range_var}{range of time, latitude, longitude, depth}
+\item{lat1}{start latitude [degree N].}
+
+\item{lat2}{end latitude [degree N].}
+
+\item{lon1}{start longitude [degree E].}
+
+\item{lon2}{end longitude [degree E].}
+
+\item{dt1}{start date or datetime.}
+
+\item{dt2}{end date or datetime.}
+
+\item{depth1}{start depth [m].}
+
+\item{depth2}{end depth [m].}
 
 \item{interval}{choose time series data aggregation at [weekly, montly, quaterly, annual, none]}
 }
@@ -28,13 +43,14 @@ library(cmap4r)
 ## Input: Table name; variable name, space time range information
 table_name <- "tblHOT_Bottle" # table name
 sel_var <- "SiO4_bottle_hot" # choose variable
-range_var <- list() # Range variable [lat,lon,time]
-range_var$lat <- c(22, 23)
-range_var$lon <- c(-159, -157)
-range_var$time <- c("1988-12-01", "2016-10-15")
+# Range variable [lat,lon,time]
+lat1 = 22; lat2 = 23
+lon1 = -159; lon2 = -157
+dt1 = "1988-12-01"; dt2 = "2016-10-15"
 
 # Subset selection:
-tbl.subset <- get_timeseries(table_name, sel_var, range_var)
+tbl.subset <- get_timeseries(table_name, sel_var, lat1, lat2,
+                                lon1, lon2, dt1, dt2)
 head(tbl.subset)
 #
 }

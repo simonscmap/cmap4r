@@ -8,7 +8,14 @@
 #'
 #' @param table_name name of the table from CMAP
 #' @param sel_var select a variable in the table
-#' @param range_var range variable
+#' @param dt1 start date or datetime.
+#' @param dt2 end date or datetime.
+#' @param lat1 start latitude [degree N].
+#' @param lat2 end latitude [degree N].
+#' @param lon1 start longitude [degree E].
+#' @param lon2 end longitude [degree E].
+#' @param depth1 start depth [m].
+#' @param depth2 end depth [m].
 #' @param type choose a type of plot object: 'plotly','ggplot
 #' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
 #' @return plot object of the chosen type
@@ -30,19 +37,28 @@
 #' table_name <- table_list[selIndex]
 #' sel_var <- var_list[selIndex]
 #' #
-#' range_var <- list()
-#' range_var$lat <- c(20, 24)
-#' range_var$lon <- c(-170, -150)
-#' range_var$depth <- c(0, 1500)
-#' range_var$time <- c("2014-04-25", "2014-04-30")
+#' # Range variable [lat,lon,time,depth]
+#' lat1 = 20; lat2 = 24
+#' lon1 = -170; lon2 = -150
+#' dt1 = "2014-04-25"; dt2 = "2014-04-30"
+#' depth1 <- 0; depth2 =  1500
+#'
 #' #
 #' # Plot -- Depth profiles:
-#' p <- plot_depth(table_name, sel_var, range_var, "plotly")
+#' p <- plot_depth(table_name, sel_var, lat1, lat2, lon1, lon2,
+#'                         dt1, dt2,depth1, depth2, "plotly")
 #' # p
 #' #
 #' }
-plot_depth <- function(table_name, sel_var, range_var, type = c("plotly", "ggplot")[1], export_data = FALSE) {
-  tbl_subset <- get_depthprofile(table_name, sel_var, range_var)
+plot_depth <- function(table_name, sel_var, lat1, lat2,
+                       lon1, lon2, dt1, dt2,
+                       depth1, depth2,
+                       type = c("plotly", "ggplot")[1],
+                       export_data = FALSE) {
+
+  tbl_subset <- get_depthprofile(table_name, sel_var, lat1, lat2,
+                                 lon1, lon2, dt1, dt2,
+                                 depth1, depth2)
   tbl_subset <- data.frame(tbl_subset)
   depInd <- match("depth", names(tbl_subset))
   if (is.na(depInd)) {
@@ -86,7 +102,14 @@ plot_depth <- function(table_name, sel_var, range_var, type = c("plotly", "ggplo
 #'
 #' @param table_name table with depth and variable of interest
 #' @param sel_var select a variable in the table
-#' @param range_var range variable
+#' @param dt1 start date or datetime.
+#' @param dt2 end date or datetime.
+#' @param lat1 start latitude [degree N].
+#' @param lat2 end latitude [degree N].
+#' @param lon1 start longitude [degree E].
+#' @param lon2 end longitude [degree E].
+#' @param depth1 start depth [m].
+#' @param depth2 end depth [m].
 #' @param type choose a type of plot object: 'plotly','ggplot
 #' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
 #' @return plot object of the chosen type
@@ -108,18 +131,25 @@ plot_depth <- function(table_name, sel_var, range_var, type = c("plotly", "ggplo
 #' sel_var <- var_list[selIndex]
 #' #
 #' # # Example I:
-#' range_var <- list()
-#' range_var$lat <- c(25, 30)
-#' range_var$lon <- c(-160, -155)
-#' range_var$time <- c("2016-03-29", "2016-05-29")
+#' # Range variable [lat,lon,time,depth]
+#' lat1 = 25; lat2 = 30
+#' lon1 = -160; lon2 = -155
+#' dt1 = "2016-03-29"; dt2 = "2016-05-29"
 #' #
 #' # Plot -- Time series:
-#' p <- plot_ts(table_name, sel_var, range_var)
+#' p <- plot_ts(table_name, sel_var, lat1, lat2, lon1, lon2,
+#'              dt1, dt2)
 #' p
 #' #
 #' }
-plot_ts <- function(table_name, sel_var, range_var, type = c("plotly", "ggplot")[1], export_data = FALSE) {
-  tbl_subset <- get_timeseries(table_name, sel_var, range_var)
+plot_ts <- function(table_name, sel_var, lat1, lat2,
+                    lon1, lon2, dt1, dt2,
+                    depth1 = NULL, depth2 = NULL,
+                    type = c("plotly", "ggplot")[1],
+                    export_data = FALSE) {
+  tbl_subset <- get_timeseries(table_name, sel_var, lat1, lat2,
+                               lon1, lon2, dt1, dt2,
+                               depth1, depth2)
   tbl_subset <- data.frame(tbl_subset)
 
   tind <- match("time", names(tbl_subset))
@@ -164,7 +194,14 @@ utils::globalVariables(c("..density.."))
 #'
 #' @param table_name name of the table from CMAP
 #' @param sel_var select a variable in the table
-#' @param range_var range variable
+#' @param dt1 start date or datetime.
+#' @param dt2 end date or datetime.
+#' @param lat1 start latitude [degree N].
+#' @param lat2 end latitude [degree N].
+#' @param lon1 start longitude [degree E].
+#' @param lon2 end longitude [degree E].
+#' @param depth1 start depth [m].
+#' @param depth2 end depth [m].
 #' @param type choose a type of plot object: 'plotly','ggplot
 #' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
 #' @return plot object of the chosen type
@@ -185,25 +222,31 @@ utils::globalVariables(c("..density.."))
 #' table_name <- table_list[selIndex]
 #' sel_var <- var_list[selIndex]
 #' #
-#' #
-#' # Range variable
-#' range_var <- list()
-#' range_var$lat <- c(20, 24)
-#' range_var$lon <- c(-170, 150)
-#' range_var$time <- c("2016-04-30", "2016-04-30")
-#' #
-#' #
+#' # Range variable [lat,lon,time,depth]
+#' lat1 = 20; lat2 = 24
+#' lon1 = -170; lon2 = -150
+#' dt1 = "2016-04-30"; dt2 = "2016-04-30"
+#' depth1 <- NULL; depth2 =  NULL
+#'
+#'
 #' # Plot function available for R User
-#' p <- plot_hist(table_name, sel_var, range_var, "ggplot")
-#' p <- plot_hist(table_name, sel_var, range_var, "plotly")
+#' # p <- plot_hist(table_name, sel_var, lat1, lat2,
+#' #                lon1, lon2, dt1, dt2, depth1, depth2, "ggplot")
+#'
+#' p <- plot_hist(table_name, sel_var, lat1, lat2, lon1, lon2,
+#'                dt1, dt2, depth1, depth2, "plotly")
 #' p
 #' #
 #' }
-plot_hist <- function(table_name, sel_var, range_var,
+plot_hist <- function(table_name, sel_var, lat1, lat2,
+                      lon1, lon2, dt1, dt2,
+                      depth1 = NULL, depth2 = NULL,
                       type = c("plotly", "ggplot")[1],
                       export_data = FALSE) {
 
-  tbl_subset <- get_spacetime(table_name, sel_var, range_var)
+  tbl_subset <- get_spacetime(table_name, sel_var, lat1, lat2,
+                              lon1, lon2, dt1, dt2,
+                              depth1, depth2)
   tbl_subset <- data.frame(tbl_subset)
 
   sind <- match(sel_var, names(tbl_subset))
@@ -248,7 +291,14 @@ plot_hist <- function(table_name, sel_var, range_var,
 #'
 #' @param table_list list of  tables
 #' @param var_list list of  corresponding variable
-#' @param range_var range of time, latitude, longitude, depth
+#' @param dt1 start date or datetime.
+#' @param dt2 end date or datetime.
+#' @param lat1 start latitude [degree N].
+#' @param lat2 end latitude [degree N].
+#' @param lon1 start longitude [degree E].
+#' @param lon2 end longitude [degree E].
+#' @param depth1 start depth [m].
+#' @param depth2 end depth [m].
 #' @param agg_var aggregate variable
 #' @param type choose a type of plot object: 'plotly','ggplot
 #' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
@@ -265,18 +315,23 @@ plot_hist <- function(table_name, sel_var, range_var,
 #' table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
 #' var_list <- c("sst", "sla")
 #' #
-#' range_var <- list()
-#' range_var$lat <- c(25, 30)
-#' range_var$lon <- c(-160, -155)
-#' range_var$time <- c("2016-03-29", "2016-05-29")
+#' # Range variable [lat,lon,time,depth]
+#' lat1 = 25; lat2 = 30
+#' lon1 = -160; lon2 = -155
+#' dt1 =  "2016-03-29"; dt2 = "2016-05-29"
+#' depth1 <- NULL; depth2 =  NULL
+#'
 #' #
 #' agg_var <- "time"
 #'
 #' # xy plot
-#' out <- plot_xy(table_list, var_list, range_var, agg_var)
+#' out <- plot_xy(table_list, var_list, lat1, lat2, lon1, lon2,
+#'                dt1, dt2, depth1, depth2, agg_var)
 #' out
 #' }
-plot_xy <- function(table_list, var_list, range_var, agg_var,
+plot_xy <- function(table_list, var_list, lat1, lat2,
+                    lon1, lon2, dt1, dt2,
+                    depth1 = NULL, depth2 = NULL, agg_var,
                     type = c("plotly", "ggplot")[1],
                     export_data = FALSE) {
   if ( agg_var == 'time' ){
@@ -289,14 +344,18 @@ plot_xy <- function(table_list, var_list, range_var, agg_var,
   selIndex <- 1
   table_name <- table_list[selIndex] # Specify table name I
   sel_var <- var_list[selIndex] # Variable from table name I
-  tbl_subset_x <- temfun(table_name, sel_var, range_var)
+  tbl_subset_x <- temfun(table_name, sel_var, lat1, lat2,
+                         lon1, lon2, dt1, dt2,
+                         depth1, depth2)
   tbl_subset_x <- data.frame(tbl_subset_x)
 
 
   selIndex <- 2
   table_name <- table_list[selIndex] # Specify table name II
   sel_var <- var_list[selIndex] # Variable from table name II
-  tbl_subset_y <- temfun(table_name, sel_var, range_var)
+  tbl_subset_y <- temfun(table_name, sel_var, lat1, lat2,
+                         lon1, lon2, dt1, dt2,
+                         depth1, depth2)
   tbl_subset_y <- data.frame(tbl_subset_y)
 
   ## Suggested:
@@ -340,7 +399,14 @@ plot_xy <- function(table_list, var_list, range_var, agg_var,
 #'
 #' @param table_name name of table from CMAP
 #' @param sel_var selected varable from the table
-#' @param range_var range of time, latitude, longitude, depth
+#' @param dt1 start date or datetime.
+#' @param dt2 end date or datetime.
+#' @param lat1 start latitude [degree N].
+#' @param lat2 end latitude [degree N].
+#' @param lon1 start longitude [degree E].
+#' @param lon2 end longitude [degree E].
+#' @param depth1 start depth [m].
+#' @param depth2 end depth [m].
 #' @param type choose a type of plot object: 'plotly','ggplot
 #' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
 #' @return plot object of the chosen type
@@ -355,20 +421,29 @@ plot_xy <- function(table_list, var_list, range_var, agg_var,
 #' # Inpit variable:
 #' table_name <- "tblsst_AVHRR_OI_NRT"
 #' sel_var <- "sst"
-#' range_var <- list()
-#' range_var$lat <- c(10, 70)
-#' range_var$lon <- c(-180, -80)
-#' range_var$time <- c("2016-04-30", "2016-04-30")
+#'
+#' # Range variable [lat,lon,time,depth]
+#' lat1 = 10; lat2 = 70
+#' lon1 = -180; lon2 = -80
+#' dt1 = "2016-04-30"; dt2 = "2016-04-30"
+#' depth1 <- NULL; depth2 =  NULL
+#'
 #' #
 #' ## Plot - regional map
-#' # out <- plot_regmap( table_name,sel_var,range_var, type = 'ggplot')
-#' out <- plot_regmap(table_name, sel_var, range_var, type = "plotly")
+#' # out <- plot_regmap( table_name,sel_var, lat1, lat2, lon1, lon2,
+#' #                    dt1, dt2, depth1, depth2, type = 'ggplot')
+#' out <- plot_regmap(table_name, sel_var, lat1, lat2, lon1, lon2,
+#'                    dt1, dt2, depth1, depth2, type = "plotly")
 #' out
 #' }
-plot_regmap <- function(table_name, sel_var, range_var,
+plot_regmap <- function(table_name, sel_var, lat1, lat2,
+                        lon1, lon2, dt1, dt2,
+                        depth1 = NULL, depth2 = NULL,
                         type = c("plotly", "ggplot")[1],
                         export_data = FALSE) {
-  tbl_subset <- get_spacetime(table_name, sel_var, range_var)
+  tbl_subset <- get_spacetime(table_name, sel_var, lat1, lat2,
+                              lon1, lon2, dt1, dt2,
+                              depth1, depth2)
 
   ## Data prepration for heatmap
   lat_ref <- data.frame(lat = unique(tbl_subset$lat))
