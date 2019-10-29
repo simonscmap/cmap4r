@@ -17,7 +17,7 @@ Currently, we host the latest version of the package on [GitHub](https://github.
 
 ```
 ## Package "cmap4r" for downloading and visualizing data 
-devtools::install_github("simonscmap/cmap4r/package/cmap4r")
+devtools::install_github("simonscmap/cmap4r/cmap4r")
 
 ## Package for data processing:
 install.packages("dbplyr")  
