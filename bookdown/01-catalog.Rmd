@@ -1,0 +1,7 @@
+# Catalog of data
+
+The catalog for the CMAP data is reproduced here.
+
+```{r  message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
+print(get_catalog())
+```

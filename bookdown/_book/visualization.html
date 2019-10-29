@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html">
-<link rel="next" href="data-retrieval.html">
+<link rel="prev" href="data-retrieval.html">
+<link rel="next" href="faq.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -128,19 +128,80 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="catalog-of-data" class="section level1">
-<h1><span class="header-section-number">1</span> Catalog of data</h1>
-<p>The catalog for the CMAP data is reproduced here.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">get_catalog</span>())</code></pre></div>
+<div id="visualization" class="section level1">
+<h1><span class="header-section-number">3</span> Visualization</h1>
+<p>There are two built-in options for making plots – scatter plots to compare two variable of interest, or histograms of individual variables.</p>
+<div id="scatterplot-of-two-variables" class="section level2">
+<h2><span class="header-section-number">3.1</span> Scatterplot of two variables</h2>
+<p><strong>Code is outdated</strong></p>
+<p>The <code>plot_xy()</code> function makes a scatterplot of two variables (from two tables), aggregated across a variable called <code>agg_var</code>. Why aggregate though? The two variables from the two tables might exist at different time/space resolutions. Because of this potential discrepancy in data resolution, averaging the two datasets at some resolution according to, say, <code>agg_var=&quot;time&quot;</code>, by day, is a useful step before plotting a relationship between the two.</p>
+<p>There are currently two methods for plotting – one using the <code>ggplot2</code> R package, and another using <code>plotly</code>.</p>
+<!-- **plot_xy** function download the data, and output a list which contain a) plot -->
+<!-- object: **plot_ly/ggplot**; b) corresponding data tables. -->
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
 
+## Define variables
+table_list &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tblSST_AVHRR_OI_NRT&#39;</span>, <span class="st">&#39;tblAltimetry_REP&#39;</span>) 
+var_list &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&#39;sst&#39;</span>, <span class="st">&#39;sla&#39;</span>)  
+range_var &lt;-<span class="st"> </span><span class="kw">list</span>()
+range_var<span class="op">$</span>lat &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">25</span>,<span class="dv">30</span>)
+range_var<span class="op">$</span>lon &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">160</span>, <span class="dv">-155</span>)
+range_var<span class="op">$</span>time &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;2016-03-29&#39;</span>, <span class="st">&#39;2016-05-29&#39;</span>)
+agg_var &lt;-<span class="st"> &#39;time&#39;</span> ## agg_var &lt;- &#39;lat&#39;
+
+## -----------------------------------
+## Dataset from table I
+selIndex &lt;-<span class="st"> </span><span class="dv">1</span>
+table_name &lt;-<span class="st"> </span>table_list[selIndex]                       <span class="co"># Specify table name I</span>
+sel_var &lt;-<span class="st"> </span>var_list[selIndex]                            <span class="co"># Variable from table name I  </span>
+tbl_subset_x &lt;-<span class="st"> </span><span class="kw">get_aggtable</span>(con, table_name, sel_var, range_var, agg_var)
+<span class="kw">head</span>(tbl_subset_x)
+
+## Dataset from table II
+selIndex &lt;-<span class="st"> </span><span class="dv">2</span>
+table_name &lt;-<span class="st"> </span>table_list[selIndex]                       <span class="co"># Specify table name II</span>
+sel_var &lt;-<span class="st"> </span>var_list[selIndex]                            <span class="co"># Variable from table name II</span>
+tbl_subset_y &lt;-<span class="st"> </span><span class="kw">get_aggtable</span>(con, table_name, sel_var, range_var, agg_var)
+<span class="kw">head</span>(tbl_subset_y)
+
+## Plot
+out &lt;-<span class="st"> </span><span class="kw">plot_xy</span>(con, table_list, var_list, range_var, agg_var, <span class="dt">type =</span> <span class="st">&#39;plotly&#39;</span>)
+out<span class="op">$</span>plot
+<span class="kw">dbDisconnect</span>(con)</code></pre></div>
+</div>
+<div id="histograms" class="section level2">
+<h2><span class="header-section-number">3.2</span> Histograms</h2>
+<p><strong>Code is outdated</strong></p>
+<p>To generate a histogram plot of a single variable of interest, simply specify which variable and which time/lat/lon/depth range, and use the function <code>plot_hist()</code> as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
+
+## Specify what to query
+table_name &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tblSST_AVHRR_OI_NRT&#39;</span>)
+sel_name &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&#39;sst&#39;</span>)
+range_var &lt;-<span class="st"> </span><span class="kw">list</span>()
+range_var<span class="op">$</span>lat &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">24</span>)
+range_var<span class="op">$</span>lon &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">170</span>, <span class="dv">150</span>)
+range_var<span class="op">$</span>time &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;2016-04-30&#39;</span>, <span class="st">&#39;2016-04-30&#39;</span>)
+
+## Obtain a data table:
+tbl_subset &lt;-<span class="st"> </span><span class="kw">get_table</span>(con, table_name, sel_var, range_var)
+<span class="kw">head</span>(tbl_subset)
+
+## Make plot
+p &lt;-<span class="st"> </span><span class="kw">plot_hist</span>(tbl_subset, <span class="st">&#39;plotly&#39;</span>, sel_var)
+p
+
+<span class="kw">dbDisconnect</span>(con)</code></pre></div>
+
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="data-retrieval.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="data-retrieval.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="faq.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

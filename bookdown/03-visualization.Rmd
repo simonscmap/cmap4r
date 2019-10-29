@@ -1,0 +1,82 @@
+# Visualization
+
+There are two built-in options for making plots -- scatter plots to compare two
+variable of interest, or histograms of individual variables.
+
+## Scatterplot of two variables
+
+**Code is outdated** 
+
+The `plot_xy()` function makes a scatterplot of two variables (from two tables),
+aggregated across a variable called `agg_var`. Why aggregate though? The two
+variables from the two tables might exist at different time/space
+resolutions. Because of this potential discrepancy in data resolution, averaging
+the two datasets at some resolution according to, say, `agg_var="time"`, by day,
+is a useful step before plotting a relationship between the two.
+
+There are currently two methods for plotting -- one using the `ggplot2` R
+package, and another using `plotly`.
+
+<!-- **plot_xy** function download the data, and output a list which contain a) plot -->
+<!-- object: **plot_ly/ggplot**; b) corresponding data tables. -->
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
+con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+
+## Define variables
+table_list <- c('tblSST_AVHRR_OI_NRT', 'tblAltimetry_REP') 
+var_list <-  c('sst', 'sla')  
+range_var <- list()
+range_var$lat <- c(25,30)
+range_var$lon <- c(-160, -155)
+range_var$time <- c('2016-03-29', '2016-05-29')
+agg_var <- 'time' ## agg_var <- 'lat'
+
+## -----------------------------------
+## Dataset from table I
+selIndex <- 1
+table_name <- table_list[selIndex]                       # Specify table name I
+sel_var <- var_list[selIndex]                            # Variable from table name I  
+tbl_subset_x <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
+head(tbl_subset_x)
+
+## Dataset from table II
+selIndex <- 2
+table_name <- table_list[selIndex]                       # Specify table name II
+sel_var <- var_list[selIndex]                            # Variable from table name II
+tbl_subset_y <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
+head(tbl_subset_y)
+
+## Plot
+out <- plot_xy(con, table_list, var_list, range_var, agg_var, type = 'plotly')
+out$plot
+dbDisconnect(con)
+```
+
+## Histograms 
+
+**Code is outdated** 
+
+To generate a histogram plot of a single variable of interest, simply specify which variable and which time/lat/lon/depth range, and use the function `plot_hist()` as follows:
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
+con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+
+## Specify what to query
+table_name <- c('tblSST_AVHRR_OI_NRT')
+sel_name <-  c('sst')
+range_var <- list()
+range_var$lat <- c(20, 24)
+range_var$lon <- c(-170, 150)
+range_var$time <- c('2016-04-30', '2016-04-30')
+
+## Obtain a data table:
+tbl_subset <- get_table(con, table_name, sel_var, range_var)
+head(tbl_subset)
+
+## Make plot
+p <- plot_hist(tbl_subset, 'plotly', sel_var)
+p
+
+dbDisconnect(con)
+```

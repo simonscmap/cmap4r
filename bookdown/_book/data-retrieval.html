@@ -30,7 +30,7 @@
   
   
 <link rel="prev" href="catalog-of-data.html">
-<link rel="next" href="faq.html">
+<link rel="next" href="visualization.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -99,18 +99,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <ul class="summary">
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About the ‘cmap4r’ R package</a></li>
 <li class="chapter" data-level="1" data-path="catalog-of-data.html"><a href="catalog-of-data.html"><i class="fa fa-check"></i><b>1</b> Catalog of data</a></li>
-<li class="chapter" data-level="2" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>2</b> Functions</a><ul>
-<li class="chapter" data-level="2.1" data-path="functions.html"><a href="functions.html#getting-started-simpler-functions"><i class="fa fa-check"></i><b>2.1</b> Getting started &amp; simpler functions</a></li>
-<li class="chapter" data-level="2.2" data-path="functions.html"><a href="functions.html#download-data"><i class="fa fa-check"></i><b>2.2</b> Download data</a></li>
-<li class="chapter" data-level="2.3" data-path="functions.html"><a href="functions.html#summarize-data"><i class="fa fa-check"></i><b>2.3</b> Summarize data</a></li>
-<li class="chapter" data-level="2.4" data-path="functions.html"><a href="functions.html#visualization"><i class="fa fa-check"></i><b>2.4</b> Visualization</a><ul>
-<li class="chapter" data-level="2.4.1" data-path="functions.html"><a href="functions.html#scatterplot-of-two-variables"><i class="fa fa-check"></i><b>2.4.1</b> Scatterplot of two variables</a></li>
-<li class="chapter" data-level="2.4.2" data-path="functions.html"><a href="functions.html#histograms"><i class="fa fa-check"></i><b>2.4.2</b> Histograms</a></li>
+<li class="chapter" data-level="2" data-path="data-retrieval.html"><a href="data-retrieval.html"><i class="fa fa-check"></i><b>2</b> Data Retrieval</a><ul>
+<li class="chapter" data-level="2.1" data-path="data-retrieval.html"><a href="data-retrieval.html#getting-started-simpler-functions"><i class="fa fa-check"></i><b>2.1</b> Getting started &amp; simpler functions</a></li>
+<li class="chapter" data-level="2.2" data-path="data-retrieval.html"><a href="data-retrieval.html#download-data"><i class="fa fa-check"></i><b>2.2</b> Download data</a></li>
+<li class="chapter" data-level="2.3" data-path="data-retrieval.html"><a href="data-retrieval.html#summarize-data"><i class="fa fa-check"></i><b>2.3</b> Summarize data</a></li>
+<li class="chapter" data-level="2.4" data-path="data-retrieval.html"><a href="data-retrieval.html#colocalize-data"><i class="fa fa-check"></i><b>2.4</b> Colocalize data</a></li>
+<li class="chapter" data-level="2.5" data-path="data-retrieval.html"><a href="data-retrieval.html#issue-sql-query"><i class="fa fa-check"></i><b>2.5</b> Issue SQL query</a></li>
 </ul></li>
-<li class="chapter" data-level="2.5" data-path="functions.html"><a href="functions.html#colocalize-data"><i class="fa fa-check"></i><b>2.5</b> Colocalize data</a></li>
-<li class="chapter" data-level="2.6" data-path="functions.html"><a href="functions.html#issue-sql-query"><i class="fa fa-check"></i><b>2.6</b> Issue SQL query</a></li>
+<li class="chapter" data-level="3" data-path="visualization.html"><a href="visualization.html"><i class="fa fa-check"></i><b>3</b> Visualization</a><ul>
+<li class="chapter" data-level="3.1" data-path="visualization.html"><a href="visualization.html#scatterplot-of-two-variables"><i class="fa fa-check"></i><b>3.1</b> Scatterplot of two variables</a></li>
+<li class="chapter" data-level="3.2" data-path="visualization.html"><a href="visualization.html#histograms"><i class="fa fa-check"></i><b>3.2</b> Histograms</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="faq.html"><a href="faq.html"><i class="fa fa-check"></i><b>3</b> FAQ</a></li>
+<li class="chapter" data-level="4" data-path="faq.html"><a href="faq.html"><i class="fa fa-check"></i><b>4</b> FAQ</a></li>
 </ul>
 
       </nav>
@@ -128,8 +128,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="functions" class="section level1">
-<h1><span class="header-section-number">2</span> Functions</h1>
+<div id="data-retrieval" class="section level1">
+<h1><span class="header-section-number">2</span> Data Retrieval</h1>
 <div id="getting-started-simpler-functions" class="section level2">
 <h2><span class="header-section-number">2.1</span> Getting started &amp; simpler functions</h2>
 <p>Data in the CMAP database exists in tables, and can be accessed by specific table names, and variable names therein. For instance, sea surface temperature is from the table <code>&quot;tblSST_AVHRR_OI_NRT&quot;</code>, and the variable name is <code>&quot;sst&quot;</code>. The full set of table names and variable names can be found here:</p>
@@ -219,74 +219,8 @@ tbl_range &lt;-<span class="st"> </span><span class="kw">tbl_numvar_range</span>
 
 <span class="kw">dbDisconnect</span>(con)</code></pre></div>
 </div>
-<div id="visualization" class="section level2">
-<h2><span class="header-section-number">2.4</span> Visualization</h2>
-<p>There are two built-in options for making plots – scatter plots to compare two variable of interest, or histograms of individual variables.</p>
-<div id="scatterplot-of-two-variables" class="section level3">
-<h3><span class="header-section-number">2.4.1</span> Scatterplot of two variables</h3>
-<p><strong>Code is outdated</strong></p>
-<p>The <code>plot_xy()</code> function makes a scatterplot of two variables (from two tables), aggregated across a variable called <code>agg_var</code>. Why aggregate though? The two variables from the two tables might exist at different time/space resolutions. Because of this potential discrepancy in data resolution, averaging the two datasets at some resolution according to, say, <code>agg_var=&quot;time&quot;</code>, by day, is a useful step before plotting a relationship between the two.</p>
-<p>There are currently two methods for plotting – one using the <code>ggplot2</code> R package, and another using <code>plotly</code>.</p>
-<!-- **plot_xy** function download the data, and output a list which contain a) plot -->
-<!-- object: **plot_ly/ggplot**; b) corresponding data tables. -->
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
-
-## Define variables
-table_list &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tblSST_AVHRR_OI_NRT&#39;</span>, <span class="st">&#39;tblAltimetry_REP&#39;</span>) 
-var_list &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&#39;sst&#39;</span>, <span class="st">&#39;sla&#39;</span>)  
-range_var &lt;-<span class="st"> </span><span class="kw">list</span>()
-range_var<span class="op">$</span>lat &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">25</span>,<span class="dv">30</span>)
-range_var<span class="op">$</span>lon &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">160</span>, <span class="dv">-155</span>)
-range_var<span class="op">$</span>time &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;2016-03-29&#39;</span>, <span class="st">&#39;2016-05-29&#39;</span>)
-agg_var &lt;-<span class="st"> &#39;time&#39;</span> ## agg_var &lt;- &#39;lat&#39;
-
-## -----------------------------------
-## Dataset from table I
-selIndex &lt;-<span class="st"> </span><span class="dv">1</span>
-table_name &lt;-<span class="st"> </span>table_list[selIndex]                       <span class="co"># Specify table name I</span>
-sel_var &lt;-<span class="st"> </span>var_list[selIndex]                            <span class="co"># Variable from table name I  </span>
-tbl_subset_x &lt;-<span class="st"> </span><span class="kw">get_aggtable</span>(con, table_name, sel_var, range_var, agg_var)
-<span class="kw">head</span>(tbl_subset_x)
-
-## Dataset from table II
-selIndex &lt;-<span class="st"> </span><span class="dv">2</span>
-table_name &lt;-<span class="st"> </span>table_list[selIndex]                       <span class="co"># Specify table name II</span>
-sel_var &lt;-<span class="st"> </span>var_list[selIndex]                            <span class="co"># Variable from table name II</span>
-tbl_subset_y &lt;-<span class="st"> </span><span class="kw">get_aggtable</span>(con, table_name, sel_var, range_var, agg_var)
-<span class="kw">head</span>(tbl_subset_y)
-
-## Plot
-out &lt;-<span class="st"> </span><span class="kw">plot_xy</span>(con, table_list, var_list, range_var, agg_var, <span class="dt">type =</span> <span class="st">&#39;plotly&#39;</span>)
-out<span class="op">$</span>plot
-<span class="kw">dbDisconnect</span>(con)</code></pre></div>
-</div>
-<div id="histograms" class="section level3">
-<h3><span class="header-section-number">2.4.2</span> Histograms</h3>
-<p><strong>Code is outdated</strong></p>
-<p>To generate a histogram plot of a single variable of interest, simply specify which variable and which time/lat/lon/depth range, and use the function <code>plot_hist()</code> as follows:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">con &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(odbc<span class="op">::</span><span class="kw">odbc</span>(), <span class="dt">DSN=</span><span class="st">&quot;CMAP-MSSQL&quot;</span>,<span class="dt">UID=</span><span class="st">&quot;ArmLab&quot;</span>,<span class="dt">PWD=</span><span class="st">&quot;ArmLab2018&quot;</span>)
-
-## Specify what to query
-table_name &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tblSST_AVHRR_OI_NRT&#39;</span>)
-sel_name &lt;-<span class="st">  </span><span class="kw">c</span>(<span class="st">&#39;sst&#39;</span>)
-range_var &lt;-<span class="st"> </span><span class="kw">list</span>()
-range_var<span class="op">$</span>lat &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">20</span>, <span class="dv">24</span>)
-range_var<span class="op">$</span>lon &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">170</span>, <span class="dv">150</span>)
-range_var<span class="op">$</span>time &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;2016-04-30&#39;</span>, <span class="st">&#39;2016-04-30&#39;</span>)
-
-## Obtain a data table:
-tbl_subset &lt;-<span class="st"> </span><span class="kw">get_table</span>(con, table_name, sel_var, range_var)
-<span class="kw">head</span>(tbl_subset)
-
-## Make plot
-p &lt;-<span class="st"> </span><span class="kw">plot_hist</span>(tbl_subset, <span class="st">&#39;plotly&#39;</span>, sel_var)
-p
-
-<span class="kw">dbDisconnect</span>(con)</code></pre></div>
-</div>
-</div>
 <div id="colocalize-data" class="section level2">
-<h2><span class="header-section-number">2.5</span> Colocalize data</h2>
+<h2><span class="header-section-number">2.4</span> Colocalize data</h2>
 <p>First of all, what does it mean to <em>colocalize</em>? Imagine a ship moving along a trajectory, whose location in space and time is recorded in latitude/longitude/time. Then, we’d like to obtain data like sea surface temperature or salinity, <em>as if we were recording it along the ship’s trajectory</em>. Colocalization simply means retrieving such data manually from the database, by querying from the <em>vicinity</em> (a rectangle) of each lat/lon/time triplet of interest, and summarizing it (e.g. taking the average).</p>
 <p>The size of the vicinity is define by the user-specified “slack” in longitude, latitude and time. For instance, one could ask for 1 degrees of slack in longitude and latitude, and 6 hours of slack in time.</p>
 <p>The main function is <code>along_track</code>, which colocalizes data for one or multiple tables and variables at a time. The available cruises can be found by running the function <code>cruises()</code>. The available data tables and variable names are listed in the catalog (<code>get_catalog()</code>, or from <a href="https://cmap.readthedocs.io/en/latest/catalog/catalog.html" class="uri">https://cmap.readthedocs.io/en/latest/catalog/catalog.html</a>). Here is a short example:</p>
@@ -312,7 +246,7 @@ dat =<span class="st"> </span><span class="kw">along_track</span>(cruise[<span c
                   depthTolerance[<span class="dv">1</span>])</code></pre></div>
 </div>
 <div id="issue-sql-query" class="section level2">
-<h2><span class="header-section-number">2.6</span> Issue SQL query</h2>
+<h2><span class="header-section-number">2.5</span> Issue SQL query</h2>
 <p>(For advanced users) Simons CMAP datasets are hosted in a SQL database and the CMAP4R R package provides the user with a number of pre-developed methods to extract and retrieve subsets of the data. The rest of this documentation is dedicated to explore and explain these methods. In addition to the pre-developed functions described above, you may issue custom SQL query statement and returns the results in form of a data frame.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">apiKey =<span class="st"> &quot;5e05c500-d68d-11e9-9d3b-4f83fcec4710&quot;</span> ## <span class="al">TODO</span>: erase
 <span class="kw">query</span>(<span class="st">&quot;SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRT</span>
@@ -331,7 +265,7 @@ dat =<span class="st"> </span><span class="kw">along_track</span>(cruise[<span c
         </div>
       </div>
 <a href="catalog-of-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="faq.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="visualization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
