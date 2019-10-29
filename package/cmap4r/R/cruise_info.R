@@ -35,7 +35,7 @@ cruises <- function(){
 #' cruiseVar <- cruise_variables('SCOPE_Falkor1')
 #' #
 #' }
-cruise_variables = function(cruiseName){
+cruise_variables <- function(cruiseName){
   df = cruise_by_name(cruiseName)
   exequery <- sprintf('SELECT * FROM dbo.udfCruiseVariables(%d) ',
                       df$ID[1])

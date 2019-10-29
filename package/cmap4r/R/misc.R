@@ -257,7 +257,7 @@ request <- function(payload, route, apiKey){
   ## TODO: Consider using RETRY("GET", "http://invalidhostname/"), since the
   ## initial request sometimes fails.
 
-  if(!check_error(response)) browser() ## temporary
+  ## if(!check_error(response)) browser() ## temporary
   stopifnot(check_error(response))
   return(process_response_to_tibble(response,
                                     route)) ## The second argument is until
