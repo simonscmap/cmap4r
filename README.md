@@ -16,7 +16,7 @@ CMAP hosts data on a Microsoft SQL Server. To retrieve data from the database, `
 Currently, we host the latest version of the package on [GitHub](https://github.com/simonscmap/cmap4r). Please follow the instructions below to install the package and some additional R packages for processing and visualizing the data. 
 
 ```
-## Package "cmap4r" for downloading and visualizing data 
+## Install cmap4r:
 devtools::install_github("simonscmap/cmap4r/cmap4r")
 
 ## Package for data processing:
