@@ -1,82 +1,203 @@
 # Visualization
 
-There are two built-in options for making plots -- scatter plots to compare two
-variable of interest, or histograms of individual variables.
+<!-- There are two built-in options for making plots -- scatter plots to compare two -->
+<!-- variable of interest, or histograms of individual variables. -->
 
-## Scatterplot of two variables
 
-**Code is outdated** 
+## Regional map
 
-The `plot_xy()` function makes a scatterplot of two variables (from two tables),
-aggregated across a variable called `agg_var`. Why aggregate though? The two
-variables from the two tables might exist at different time/space
-resolutions. Because of this potential discrepancy in data resolution, averaging
-the two datasets at some resolution according to, say, `agg_var="time"`, by day,
-is a useful step before plotting a relationship between the two.
+Image/heatmap plot of a table variable from the **Simons CMAP** database in a given range of latitude and longitude at a fixed time and depth.
 
-There are currently two methods for plotting -- one using the `ggplot2` R
-package, and another using `plotly`.
+Specify following parameters to retrieve the required data using **get_spacetime**.
 
-<!-- **plot_xy** function download the data, and output a list which contain a) plot -->
-<!-- object: **plot_ly/ggplot**; b) corresponding data tables. -->
++ Table Name (tableName)
++ Variables to be extracted (varName)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
+
+
+**plot_regmap** function download the data, and output a regional map plot object: **plot_ly/ggplot2** with "x axis" as "longitude" and "y axis" as "lattitude". User can modify the plot object to produce a properly annotated visualization. 
+
+
+
+
+```{r}
+library(cmap4r)
+
+tableName <- "tblsst_AVHRR_OI_NRT"
+varName <- "sst"
+
+# Range variable [lat,lon,time,depth]
+lat1 = 10; lat2 = 70
+lon1 = -180; lon2 = -80
+dt1 = "2016-04-30"; dt2 = "2016-04-30"
+depth1 <- 0; depth2 =  0
+
+p <- plot_regmap(tableName, varName, lat1, lat2, lon1, lon2,
+                  dt1, dt2, depth1, depth2, type = "plotly")
+p
+```
+
+## Time series plot
+
+Create a timeseries plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_timeseries** to download data aggregated by time. 
+
+
+
+Specify the following  parameters to retrieve the required data from the  **Simons CMAP**. 
+
++ Table Name (tableName)
++ Variables to be extracted (varName)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
+
+
+
+
+Call **plot_ts** function to obtain **plot_ly/ggplot2** object. User can modify the plot object to produce a properly annotated visualization. 
+
+
+```{r}
+library(cmap4r)
+
+# Input variable:
+tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
+varList <- c("sst", "sla", "NO3")
+
+# selected "sst" from the table "tblSST_AVHRR_OI_NRT"
+selIndex <- 1
+tableName <- tableList[selIndex]
+varName <- varList[selIndex]
+
+# Range variable [lat,lon,time,depth]
+lat1 = 25; lat2 = 30
+lon1 = -160; lon2 = -155
+dt1 = "2016-03-29"; dt2 = "2016-05-29"
+
+# Plot -- Time series:
+p <- plot_ts(tableName, varName, lat1, lat2, lon1, lon2,
+             dt1, dt2)
+p
+```
+
+## Depth profile plot
+
+Create a depth profile plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_depthprofile** to download the data aggregated by depth.  
+
+
+Specify the following  parameters to retrieve the required data from the  **Simons CMAP**. 
+
++ Table Name (tableName)
++ Variables to be extracted (varName)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
++ Depth will be used as an aggregate variable
+
+
+Call **plot_depth** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
+
+
+```{r}
+library(cmap4r)
+
+# Inpit variable:
+tableList <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
+varList <- c('argo_merge_chl_adj', 'CHL', 'CHL')
+#
+# selected argo_merge_chl_adj from tblArgoMerge_REP
+selIndex <- 1
+tableName <- tableList[selIndex]
+varName <- varList[selIndex]
+#
+# Range variable [lat,lon,time,depth]
+lat1 = 20; lat2 = 24
+lon1 = -170; lon2 = -150
+dt1 = "2014-04-25"; dt2 = "2014-04-30"
+depth1 <- 0; depth2 =  1500
+
+
+# Plot -- Depth profiles:
+p <- plot_depth(tableName, varName, lat1, lat2, lon1, lon2,
+                        dt1, dt2,depth1, depth2, "plotly")
+p
+
+```
+
+
+
+## XY plot
+
+Create a scatter plot of two table variables from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_timeseries/get_depthprofile/get_spacetime** to download the data. Why aggregate though? The two variables from the two tables might exist at different time/space resolutions. Because of this potential discrepancy in data resolution, averaging the two datasets at some resolution according to, say, `agg_var="time"`, by day, is a useful step before plotting a relationship between the two.
+
+Specify the following  parameters to retrieve the required data from the  **Simons CMAP**. 
+
++ Table list (list of tableName)
++ Variable list to be extracted (list of variable name)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
++ Specify aggregate variable (time/depth/latitude/longitude)
+
+
+Call **plot_xy** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
+
+
+
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+library(cmap4r)
 
-## Define variables
-table_list <- c('tblSST_AVHRR_OI_NRT', 'tblAltimetry_REP') 
-var_list <-  c('sst', 'sla')  
-range_var <- list()
-range_var$lat <- c(25,30)
-range_var$lon <- c(-160, -155)
-range_var$time <- c('2016-03-29', '2016-05-29')
-agg_var <- 'time' ## agg_var <- 'lat'
+# Inpit variable:
+tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
+varList <- c("sst", "sla")
 
-## -----------------------------------
-## Dataset from table I
-selIndex <- 1
-table_name <- table_list[selIndex]                       # Specify table name I
-sel_var <- var_list[selIndex]                            # Variable from table name I  
-tbl_subset_x <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
-head(tbl_subset_x)
+# Range variable [lat,lon,time,depth]
+lat1 = 25; lat2 = 30
+lon1 = -160; lon2 = -155
+dt1 =  "2016-03-29"; dt2 = "2016-05-29"
+depth1 <- NULL; depth2 =  NULL
 
-## Dataset from table II
-selIndex <- 2
-table_name <- table_list[selIndex]                       # Specify table name II
-sel_var <- var_list[selIndex]                            # Variable from table name II
-tbl_subset_y <- get_aggtable(con, table_name, sel_var, range_var, agg_var)
-head(tbl_subset_y)
+# Aggregate variable
+agg_var <- "time"
 
-## Plot
-out <- plot_xy(con, table_list, var_list, range_var, agg_var, type = 'plotly')
-out$plot
-dbDisconnect(con)
+# xy plot
+p <- plot_xy(tableList, varList, lat1, lat2, lon1, lon2,
+               dt1, dt2, depth1, depth2, agg_var)
+p
 ```
 
 ## Histograms 
 
-**Code is outdated** 
+Create a histogram plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_spacetime** to download the data.  
 
-To generate a histogram plot of a single variable of interest, simply specify which variable and which time/lat/lon/depth range, and use the function `plot_hist()` as follows:
+
+Specify the following  parameters to retrieve the required data from the  **Simons CMAP**. 
+
++ Table Name (tableName)
++ Variables to be extracted (varName)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
+
+Call **plot_hist** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
+
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
-con <- dbConnect(odbc::odbc(), DSN="CMAP-MSSQL",UID="ArmLab",PWD="ArmLab2018")
+library(cmap4r)
 
-## Specify what to query
-table_name <- c('tblSST_AVHRR_OI_NRT')
-sel_name <-  c('sst')
-range_var <- list()
-range_var$lat <- c(20, 24)
-range_var$lon <- c(-170, 150)
-range_var$time <- c('2016-04-30', '2016-04-30')
+# Inpit variable:
+tableList <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
+varList <- c("sst", "argo_merge_temperature_adj", "argo_merge_salinity_adj")
 
-## Obtain a data table:
-tbl_subset <- get_table(con, table_name, sel_var, range_var)
-head(tbl_subset)
+# variable "sst" selected from "tblSST_AVHRR_OI_NRT"
+selIndex <- 1
+tableName <- tableList[selIndex]
+varName <- varList[selIndex]
 
-## Make plot
-p <- plot_hist(tbl_subset, 'plotly', sel_var)
+# Range variable [lat,lon,time,depth]
+lat1 = 20; lat2 = 24
+lon1 = -170; lon2 = -150
+dt1 = "2016-04-30"; dt2 = "2016-04-30"
+depth1 <- NULL; depth2 =  NULL
+
+p <- plot_hist(tableName, varName, lat1, lat2, lon1, lon2,
+               dt1, dt2, depth1, depth2, "plotly")
 p
-
-dbDisconnect(con)
 ```
+
+
+
+
