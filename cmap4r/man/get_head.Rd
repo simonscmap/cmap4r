@@ -2,30 +2,29 @@
 % Please edit documentation in R/table_info.R
 \name{get_head}
 \alias{get_head}
-\title{Returns top  n records  from a table on CMAP}
+\title{Returns top  n records  from a table on the Simons CMAP.}
 \usage{
 get_head(tableName, nrows = 5)
 }
 \arguments{
-\item{tableName}{name of table.}
+\item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
 
 \item{nrows}{number of rows to retrieve.}
 }
 \value{
-subset of a table as data frame
+return table  as dataframe
 }
 \description{
-Returns top  n records  from a table on CMAP
+Returns top  n records  from a table on the Simons CMAP.
 }
 \examples{
 \donttest{
-library(cmap4r)
 
 ## Input: Table name;
-table_name <- "tblArgoMerge_REP" # table name
+tableName <- "tblArgoMerge_REP" # table name
 #
 ## Top n rows:
-tbl.subset <- get_head(table_name, nrows=10)
+tbl.subset <- get_head(tableName, nrows=10)
 tbl.subset
 }
 }

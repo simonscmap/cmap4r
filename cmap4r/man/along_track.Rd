@@ -53,7 +53,7 @@ Colocalize along a cruise track.  Takes a cruise name and colocalizes
   COLOCALIZATION function for a cruise.
 }
 \examples{
-\donttest{ library(cmap4r)
+\donttest{ 
 
 cruise='diel'
 targetTables=c('tblSeaFlow')

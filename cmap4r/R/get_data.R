@@ -3,44 +3,37 @@
 #####################################################################
 
 
-
-#' Returns a subset of data according to
-#' space-time constraints.  The results are ordered by time, lat, lon, and
-#' depth (if exists).
+#' Returns a subset of table using the specified space-time range inputs. 
 #'
-#' Get subset of a table as data frame
-#'
-#' @param table_name table name in the database
-#' @param sel_var select a variable in the table
-#' @param dt1 start date or datetime.
-#' @param dt2 end date or datetime.
-#' @param lat1 start latitude [degree N].
-#' @param lat2 end latitude [degree N].
-#' @param lon1 start longitude [degree E].
-#' @param lon2 end longitude [degree E].
-#' @param depth1 start depth [m].
-#' @param depth2 end depth [m].
-#' @return subset of a table as data frame
+#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param varName specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @return required subset of the table is ordered by time, lat, lon, and depth (if exists).
 #' @export
 #' @examples
 #' \donttest{
-#' 
-#' #
 #' ## Input: Table name; variable name, space time range information
-#' table_name <- "tblsst_AVHRR_OI_NRT" # table name
-#' sel_var <- "sst" # choose variable
+#' tableName <- "tblsst_AVHRR_OI_NRT" # table name
+#' varName <- "sst" # choose variable
 #' # Range variable [lat,lon,time]
 #' lat1 = 10; lat2 = 70
 #' lon1 = -180; lon2 = -80
 #' dt1 = "2016-04-30"; dt2 = "2016-04-30"
 #' #
 #' ## Subset selection:
-#' tbl.subset <- get_spacetime(table_name, sel_var, lat1, lat2,
+#' tbl.subset <- get_spacetime(tableName, varName, lat1, lat2,
 #'                                lon1, lon2, dt1, dt2)
 #' head(tbl.subset)
 #' #
 #' }
-get_spacetime <- function(table_name, sel_var, lat1, lat2,
+get_spacetime <- function(tableName, varName, lat1, lat2,
                           lon1, lon2, dt1, dt2,
                           depth1 = NULL, depth2 = NULL) {
   range_var <- list()
@@ -51,7 +44,7 @@ get_spacetime <- function(table_name, sel_var, lat1, lat2,
   range_var <- check_rangevar(range_var)
   spName <- "uspSpaceTime"
   apiKey = get_api_key()
-  out = subset(spName, table_name, sel_var,
+  out = subset(spName, tableName, varName,
                  dt1 = range_var$time[1],
                  dt2 = range_var$time[2],
                  lat1 = range_var$lat[1],
@@ -67,32 +60,26 @@ get_spacetime <- function(table_name, sel_var, lat1, lat2,
 
 
 
-
-
-
-#' Retrieve subset of a table from CMAP using space time range parameters
+#' Retrieve section of a table from the Simons CMAP databse using spatio-temporal range parameters.
 #'
-#' Get subset of a table as data frame
-#'
-#' @param table_name table name in the database
-#' @param sel_var select a variable in the table
-#' @param dt1 start date or datetime.
-#' @param dt2 end date or datetime.
-#' @param lat1 start latitude [degree N].
-#' @param lat2 end latitude [degree N].
-#' @param lon1 start longitude [degree E].
-#' @param lon2 end longitude [degree E].
-#' @param depth1 start depth [m].
-#' @param depth2 end depth [m].
-#' @return subset of a table as data frame
+#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param varName specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @return required subset of the table is ordered by time, lat, lon, and depth (if exists).
 #' @export
 #' @examples
 #' \donttest{
-#' 
 #' #
 #' ## Input: Table name; variable name, space time range information
-#' table_name <- "tblPisces_NRT" # table name
-#' sel_var <- "NO3" # choose variable
+#' tableName <- "tblPisces_NRT" # table name
+#' varName <- "NO3" # choose variable
 #' # Range variable [lat,lon,time]
 #' lat1 = 10; lat2 = 60
 #' lon1 = -160; lon2 = -158
@@ -100,12 +87,12 @@ get_spacetime <- function(table_name, sel_var, lat1, lat2,
 #' depth1 <- 0; depth2 =  5000
 #' #
 #' ## Subset selection:
-#' tbl.subset <- get_section(table_name, sel_var, lat1, lat2, lon1, lon2,
+#' tbl.subset <- get_section(tableName, varName, lat1, lat2, lon1, lon2,
 #'                    dt1, dt2, depth1, depth2)
 #' head(tbl.subset)
 #' #
 #' }
-get_section = function(table_name, sel_var, lat1, lat2,
+get_section = function(tableName, varName, lat1, lat2,
                        lon1, lon2, dt1, dt2,
                        depth1 = NULL, depth2 = NULL) {
   range_var <- list()
@@ -116,7 +103,7 @@ get_section = function(table_name, sel_var, lat1, lat2,
   range_var = check_rangevar(range_var)
   spName = "uspSectionMap"
   apiKey = get_api_key()
-  out = subset(spName, table_name, sel_var,
+  out = subset(spName, tableName, varName,
                  dt1 = range_var$time[1],
                  dt2 = range_var$time[2],
                  lat1 = range_var$lat[1],
@@ -131,42 +118,38 @@ get_section = function(table_name, sel_var, lat1, lat2,
 
 
 
-#' Retrieve timeseries data from  CMAP using space time range parameters
+#' Retrieve subset of a table  aggregated by time from the Simons CMAP databse using the space-time range inputs. 
 #'
-#' Get subset of a table as data frame
-#'
-#' @param table_name table name in the database
-#' @param sel_var select a variable in the table
-#' @param dt1 start date or datetime.
-#' @param dt2 end date or datetime.
-#' @param lat1 start latitude [degree N].
-#' @param lat2 end latitude [degree N].
-#' @param lon1 start longitude [degree E].
-#' @param lon2 end longitude [degree E].
-#' @param depth1 start depth [m].
-#' @param depth2 end depth [m].
+#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param varName specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
 #' @param interval choose time series data aggregation at [weekly, montly, quaterly, annual, none]
-#' @return subset of a table as data frame
+#' @return required aggregated output is ordered by time, lat, lon, and depth (if exists).
 #' @export
 #' @examples
 #' \dontrun{
-#' 
-#' #
 #' ## Input: Table name; variable name, space time range information
-#' table_name <- "tblHOT_Bottle" # table name
-#' sel_var <- "SiO4_bottle_hot" # choose variable
+#' tableName <- "tblHOT_Bottle" # table name
+#' varName <- "SiO4_bottle_hot" # choose variable
 #' # Range variable [lat,lon,time]
 #' lat1 = 22; lat2 = 23
 #' lon1 = -159; lon2 = -157
 #' dt1 = "1988-12-01"; dt2 = "2016-10-15"
 #'
 #' # Subset selection:
-#' tbl.subset <- get_timeseries(table_name, sel_var, lat1, lat2,
+#' tbl.subset <- get_timeseries(tableName, varName, lat1, lat2,
 #'                                 lon1, lon2, dt1, dt2)
 #' head(tbl.subset)
 #' #
 #' }
-get_timeseries <- function(table_name, sel_var, lat1, lat2,
+get_timeseries <- function(tableName, varName, lat1, lat2,
                            lon1, lon2, dt1, dt2,
                            depth1 = NULL, depth2 = NULL,
                            interval=NULL) {
@@ -178,7 +161,7 @@ get_timeseries <- function(table_name, sel_var, lat1, lat2,
   range_var <- check_rangevar(range_var)
   spName <- uspInterval_indicator(interval)
   apiKey = get_api_key()
-  out <- subset(spName, table_name, sel_var,
+  out <- subset(spName, tableName, varName,
                   dt1 = range_var$time[1],
                   dt2 = range_var$time[2],
                   lat1 = range_var$lat[1],
@@ -195,29 +178,29 @@ get_timeseries <- function(table_name, sel_var, lat1, lat2,
 
 
 
-#' Retrieve depth profile data from  CMAP using space time range parameters
+#' Retrieve subset of a table  aggregated by depth from the Simons CMAP databse using the space-time range inputs. 
+#' 
+#' Compute mean and standard deviation at each depth level based on the range of lattitude, longitude and time inputs.  
 #'
-#' Get subset of a table as data frame
-#'
-#' @param table_name table name in the database
-#' @param sel_var select a variable in the table
-#' @param dt1 start date or datetime.
-#' @param dt2 end date or datetime.
-#' @param lat1 start latitude [degree N].
-#' @param lat2 end latitude [degree N].
-#' @param lon1 start longitude [degree E].
-#' @param lon2 end longitude [degree E].
-#' @param depth1 start depth [m].
-#' @param depth2 end depth [m].
-#' @return subset of a table as data frame
+#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param varName specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @return required aggregated output is ordered by depth. 
 #' @export
 #' @examples
 #' \dontrun{
 #' 
 #' #
 #' ## Input: Table name; variable name, space time range information
-#' table_name <- "tblArgoMerge_REP" # table name
-#' sel_var <- "argo_merge_chl_adj" # choose variable
+#' tableName <- "tblArgoMerge_REP" # table name
+#' varName <- "argo_merge_chl_adj" # choose variable
 #' # Range variable [lat,lon,time]
 #' lat1 = 20; lat2 = 24
 #' lon1 = -170; lon2 = -150
@@ -225,12 +208,12 @@ get_timeseries <- function(table_name, sel_var, lat1, lat2,
 #' depth1 <- 0; depth2 =  1500
 #' #
 #' ## Subset selection:
-#' tbl.subset <- get_depthprofile(table_name, sel_var, lat1, lat2, lon1, lon2,
+#' tbl.subset <- get_depthprofile(tableName, varName, lat1, lat2, lon1, lon2,
 #'                                dt1, dt2, depth1, depth2)
 #' head(tbl.subset)
 #' #
 #' }
-get_depthprofile = function(table_name, sel_var, lat1, lat2,
+get_depthprofile = function(tableName, varName, lat1, lat2,
                             lon1, lon2, dt1, dt2,
                             depth1, depth2) {
   range_var <- list()
@@ -241,7 +224,7 @@ get_depthprofile = function(table_name, sel_var, lat1, lat2,
   range_var = check_rangevar(range_var)
   spName = "uspDepthProfile"
   apiKey = get_api_key()
-  out = subset(spName, table_name, sel_var,
+  out = subset(spName, tableName, varName,
                  dt1 = range_var$time[1],
                  dt2 = range_var$time[2],
                  lat1 = range_var$lat[1],
@@ -261,16 +244,13 @@ get_depthprofile = function(table_name, sel_var, lat1, lat2,
 
 
 
-#' Retrieve data using manual query.
-#'
-#' Get subset of a table as data frame
+#' Retrieve data using the user designed SQL query.
 #'
 #' @param manual_query own query of the user.
-#' @return subset of a table as data frame
+#' @return output is returned as dataframe object.
 #' @export
 #' @examples
 #' \donttest{
-#' 
 #' #
 #' manual_query = "SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRT
 #'   WHERE
@@ -351,7 +331,7 @@ exec_manualquery <- function(manual_query) {
 #' time_series(table, variable, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2) ## not complete
 #' #
 #' }
-#' # time_series <- function(table, variable, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, interval=NULL){#   #   spName <- uspInterval_indicator(interval)#   apiKey = get_api_key()#   out <- subset(spName, table_name, sel_var, dt1, dt2, lat1, lat2, lon1, lon2,#                 depth1, depth2, apiKey)#   return(out)#
+#' # time_series <- function(table, variable, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2, interval=NULL){#   #   spName <- uspInterval_indicator(interval)#   apiKey = get_api_key()#   out <- subset(spName, tableName, varName, dt1, dt2, lat1, lat2, lon1, lon2,#                 depth1, depth2, apiKey)#   return(out)#
 
 
 
@@ -361,8 +341,8 @@ exec_manualquery <- function(manual_query) {
 #' #'
 #' #' Get subset of a table as data frame
 #' #'
-#' #' @param table_name table name in the database
-#' #' @param sel_var select a variable in the table
+#' #' @param tableName table name in the database
+#' #' @param varName select a variable in the table
 #' #' @param range_var range of time, latitude, longitude, depth
 #' #' @return subset of a table as data frame
 #' #'
@@ -386,7 +366,7 @@ exec_manualquery <- function(manual_query) {
 #' #' }
 #' depth_profile <- function(table, variable, dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2){
 #'   apiKey = get_api_key()
-#'   out = subset("uspDepthProfile", table_name, sel_var, dt1, dt2, lat1, lat2, lon1, lon2,
+#'   out = subset("uspDepthProfile", tableName, varName, dt1, dt2, lat1, lat2, lon1, lon2,
 #'                depth1, depth2, apiKey)
 #'   return(out)
 #' }

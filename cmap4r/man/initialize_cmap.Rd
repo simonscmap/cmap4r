@@ -2,7 +2,7 @@
 % Please edit documentation in R/authorization.R
 \name{initialize_cmap}
 \alias{initialize_cmap}
-\title{Initialize CMAP database access credentials.}
+\title{Initialize the CMAP database access credentials.}
 \usage{
 initialize_cmap(base_url = NULL, route = NULL)
 }
@@ -12,11 +12,10 @@ initialize_cmap(base_url = NULL, route = NULL)
 \item{route}{data retrieval route of the database.  Default: "/api/data/sp?"}
 }
 \description{
-Initialize CMAP database access credentials.
+Initialize the CMAP database access credentials.
 }
 \examples{
 \dontrun{
-library(cmap4r)
 # Output list with CMAP database access credentials
 initialize_cmap()
 }

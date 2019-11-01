@@ -4,14 +4,14 @@
 \alias{plot_hist}
 \title{Plot histogram of the variable of interest}
 \usage{
-plot_hist(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2,
+plot_hist(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL, type = c("plotly", "ggplot")[1],
   export_data = FALSE)
 }
 \arguments{
-\item{table_name}{name of the table from CMAP}
+\item{tableName}{name of the table from CMAP}
 
-\item{sel_var}{select a variable in the table}
+\item{varName}{select a variable in the table}
 
 \item{lat1}{start latitude [degree N].}
 
@@ -41,7 +41,7 @@ Histogram object of chosen type
 }
 \examples{
 \donttest{
-library(cmap4r)
+
 #
 # Inpit variable:
 table_list <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
@@ -49,8 +49,8 @@ var_list <- c("sst", "argo_merge_temperature_adj", "argo_merge_salinity_adj")
 #
 # variable "sst" selected from "tblSST_AVHRR_OI_NRT"
 selIndex <- 1
-table_name <- table_list[selIndex]
-sel_var <- var_list[selIndex]
+tableName <- table_list[selIndex]
+varName <- var_list[selIndex]
 #
 # Range variable [lat,lon,time,depth]
 lat1 = 20; lat2 = 24
@@ -60,10 +60,10 @@ depth1 <- NULL; depth2 =  NULL
 
 
 # Plot function available for R User
-# p <- plot_hist(table_name, sel_var, lat1, lat2,
+# p <- plot_hist(tableName, varName, lat1, lat2,
 #                lon1, lon2, dt1, dt2, depth1, depth2, "ggplot")
 
-p <- plot_hist(table_name, sel_var, lat1, lat2, lon1, lon2,
+p <- plot_hist(tableName, varName, lat1, lat2, lon1, lon2,
                dt1, dt2, depth1, depth2, "plotly")
 p
 #

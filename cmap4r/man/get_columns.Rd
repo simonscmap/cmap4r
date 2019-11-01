@@ -2,28 +2,27 @@
 % Please edit documentation in R/table_info.R
 \name{get_columns}
 \alias{get_columns}
-\title{Returns the list of columns of a data set.}
+\title{Returns the list of column variables in a table.}
 \usage{
 get_columns(tableName)
 }
 \arguments{
-\item{tableName}{table name.}
+\item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
 }
 \value{
-columns in a table
+column variables name of a table as dataframe
 }
 \description{
-Returns the list of columns of a data set.
+Returns the list of column variables in a table.
 }
 \examples{
 \donttest{
-library(cmap4r)
 #
 ## Input: Table name;
-table_name <- "tblAMT13_Chisholm" # table name
+tableName <- "tblAMT13_Chisholm" # table name
 #
 ## Subset selection:
-tbl.columns <- get_columns(table_name)
+tbl.columns <- get_columns(tableName)
 tbl.columns
 #
 }

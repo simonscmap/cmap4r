@@ -2,45 +2,44 @@
 % Please edit documentation in R/get_data.R
 \name{get_section}
 \alias{get_section}
-\title{Retrieve subset of a table from CMAP using space time range parameters}
+\title{Retrieve section of a table from the Simons CMAP databse using spatio-temporal range parameters.}
 \usage{
-get_section(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2,
+get_section(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL)
 }
 \arguments{
-\item{table_name}{table name in the database}
+\item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
 
-\item{sel_var}{select a variable in the table}
+\item{varName}{specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database.}
 
-\item{lat1}{start latitude [degree N].}
+\item{lat1}{start latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lat2}{end latitude [degree N].}
+\item{lat2}{end latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lon1}{start longitude [degree E].}
+\item{lon1}{start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.}
 
-\item{lon2}{end longitude [degree E].}
+\item{lon2}{end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.}
 
-\item{dt1}{start date or datetime.}
+\item{dt1}{start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'}
 
-\item{dt2}{end date or datetime.}
+\item{dt2}{end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'}
 
-\item{depth1}{start depth [m].}
+\item{depth1}{positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 
-\item{depth2}{end depth [m].}
+\item{depth2}{positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 }
 \value{
-subset of a table as data frame
+required subset of the table is ordered by time, lat, lon, and depth (if exists).
 }
 \description{
-Get subset of a table as data frame
+Retrieve section of a table from the Simons CMAP databse using spatio-temporal range parameters.
 }
 \examples{
 \donttest{
-library(cmap4r)
 #
 ## Input: Table name; variable name, space time range information
-table_name <- "tblPisces_NRT" # table name
-sel_var <- "NO3" # choose variable
+tableName <- "tblPisces_NRT" # table name
+varName <- "NO3" # choose variable
 # Range variable [lat,lon,time]
 lat1 = 10; lat2 = 60
 lon1 = -160; lon2 = -158
@@ -48,7 +47,7 @@ dt1 = "2016-04-30"; dt2 = "2016-04-30"
 depth1 <- 0; depth2 =  5000
 #
 ## Subset selection:
-tbl.subset <- get_section(table_name, sel_var, lat1, lat2, lon1, lon2,
+tbl.subset <- get_section(tableName, varName, lat1, lat2, lon1, lon2,
                    dt1, dt2, depth1, depth2)
 head(tbl.subset)
 #

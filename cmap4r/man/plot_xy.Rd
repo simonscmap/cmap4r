@@ -43,7 +43,7 @@ Scatter plot of two variable of interest
 }
 \examples{
 \donttest{
-library(cmap4r)
+
 # Inpit variable:
 #
 table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")

@@ -4,14 +4,14 @@
 \alias{plot_ts}
 \title{Plot variable of interest with varying time.}
 \usage{
-plot_ts(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2,
+plot_ts(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL, type = c("plotly", "ggplot")[1],
   export_data = FALSE)
 }
 \arguments{
-\item{table_name}{table with depth and variable of interest}
+\item{tableName}{table with depth and variable of interest}
 
-\item{sel_var}{select a variable in the table}
+\item{varName}{select a variable in the table}
 
 \item{lat1}{start latitude [degree N].}
 
@@ -41,7 +41,7 @@ Times eries plot object.
 }
 \examples{
 \donttest{
-library(cmap4r)
+
 #
 # Input variable:
 table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
@@ -49,8 +49,8 @@ var_list <- c("sst", "sla", "NO3")
 #
 # selected "sst" from the table "tblSST_AVHRR_OI_NRT"
 selIndex <- 1
-table_name <- table_list[selIndex]
-sel_var <- var_list[selIndex]
+tableName <- table_list[selIndex]
+varName <- var_list[selIndex]
 #
 # # Example I:
 # Range variable [lat,lon,time,depth]
@@ -59,7 +59,7 @@ lon1 = -160; lon2 = -155
 dt1 = "2016-03-29"; dt2 = "2016-05-29"
 #
 # Plot -- Time series:
-p <- plot_ts(table_name, sel_var, lat1, lat2, lon1, lon2,
+p <- plot_ts(tableName, varName, lat1, lat2, lon1, lon2,
              dt1, dt2)
 p
 #

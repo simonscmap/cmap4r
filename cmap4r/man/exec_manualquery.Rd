@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_data.R
 \name{exec_manualquery}
 \alias{exec_manualquery}
-\title{Retrieve data using manual query.}
+\title{Retrieve data using the user designed SQL query.}
 \usage{
 exec_manualquery(manual_query)
 }
@@ -10,14 +10,13 @@ exec_manualquery(manual_query)
 \item{manual_query}{own query of the user.}
 }
 \value{
-subset of a table as data frame
+output is returned as dataframe object.
 }
 \description{
-Get subset of a table as data frame
+Retrieve data using the user designed SQL query.
 }
 \examples{
 \donttest{
-library(cmap4r)
 #
 manual_query = "SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRT
   WHERE

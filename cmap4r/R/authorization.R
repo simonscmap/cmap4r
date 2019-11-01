@@ -1,4 +1,4 @@
-#' Set authorization/API key for accessing the CMAP database.
+#' Set/save the user API key for accessing the CMAP database.
 #'
 #' @param reset boolean variable for set authorization key for API access to the database
 #' @import magrittr
@@ -27,7 +27,7 @@ set_authorization <- function(reset = FALSE){
 
 
 
-#' Initialize CMAP database access credentials.
+#' Initialize the CMAP database access credentials.
 #'
 #'
 #' @param base_url base url for the database. Default: 'https://simonscmap.com'

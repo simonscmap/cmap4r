@@ -2,45 +2,45 @@
 % Please edit documentation in R/get_data.R
 \name{get_depthprofile}
 \alias{get_depthprofile}
-\title{Retrieve depth profile data from  CMAP using space time range parameters}
+\title{Retrieve subset of a table  aggregated by depth from the Simons CMAP databse using the space-time range inputs.}
 \usage{
-get_depthprofile(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2,
+get_depthprofile(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1, depth2)
 }
 \arguments{
-\item{table_name}{table name in the database}
+\item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
 
-\item{sel_var}{select a variable in the table}
+\item{varName}{specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database.}
 
-\item{lat1}{start latitude [degree N].}
+\item{lat1}{start latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lat2}{end latitude [degree N].}
+\item{lat2}{end latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lon1}{start longitude [degree E].}
+\item{lon1}{start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.}
 
-\item{lon2}{end longitude [degree E].}
+\item{lon2}{end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.}
 
-\item{dt1}{start date or datetime.}
+\item{dt1}{start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'}
 
-\item{dt2}{end date or datetime.}
+\item{dt2}{end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'}
 
-\item{depth1}{start depth [m].}
+\item{depth1}{positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 
-\item{depth2}{end depth [m].}
+\item{depth2}{positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 }
 \value{
-subset of a table as data frame
+required aggregated output is ordered by depth.
 }
 \description{
-Get subset of a table as data frame
+Compute mean and standard deviation at each depth level based on the range of lattitude, longitude and time inputs.
 }
 \examples{
 \dontrun{
-library(cmap4r)
+
 #
 ## Input: Table name; variable name, space time range information
-table_name <- "tblArgoMerge_REP" # table name
-sel_var <- "argo_merge_chl_adj" # choose variable
+tableName <- "tblArgoMerge_REP" # table name
+varName <- "argo_merge_chl_adj" # choose variable
 # Range variable [lat,lon,time]
 lat1 = 20; lat2 = 24
 lon1 = -170; lon2 = -150
@@ -48,7 +48,7 @@ dt1 = "2016-04-30"; dt2 = "2016-04-30"
 depth1 <- 0; depth2 =  1500
 #
 ## Subset selection:
-tbl.subset <- get_depthprofile(table_name, sel_var, lat1, lat2, lon1, lon2,
+tbl.subset <- get_depthprofile(tableName, varName, lat1, lat2, lon1, lon2,
                                dt1, dt2, depth1, depth2)
 head(tbl.subset)
 #

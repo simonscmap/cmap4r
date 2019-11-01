@@ -4,13 +4,13 @@
 \alias{plot_depth}
 \title{Plot variable of interest with varying depth}
 \usage{
-plot_depth(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2, depth1,
+plot_depth(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2, depth1,
   depth2, type = c("plotly", "ggplot")[1], export_data = FALSE)
 }
 \arguments{
-\item{table_name}{name of the table from CMAP}
+\item{tableName}{name of the table from CMAP}
 
-\item{sel_var}{select a variable in the table}
+\item{varName}{select a variable in the table}
 
 \item{lat1}{start latitude [degree N].}
 
@@ -40,7 +40,7 @@ Depth plot object
 }
 \examples{
 \donttest{
-library(cmap4r)
+
 #
 # Inpit variable:
 table_list <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
@@ -48,8 +48,8 @@ var_list <- c('argo_merge_chl_adj', 'CHL', 'CHL')
 #
 # selected argo_merge_chl_adj from tblArgoMerge_REP
 selIndex <- 1
-table_name <- table_list[selIndex]
-sel_var <- var_list[selIndex]
+tableName <- table_list[selIndex]
+varName <- var_list[selIndex]
 #
 # Range variable [lat,lon,time,depth]
 lat1 = 20; lat2 = 24
@@ -59,7 +59,7 @@ depth1 <- 0; depth2 =  1500
 
 #
 # Plot -- Depth profiles:
-p <- plot_depth(table_name, sel_var, lat1, lat2, lon1, lon2,
+p <- plot_depth(tableName, varName, lat1, lat2, lon1, lon2,
                         dt1, dt2,depth1, depth2, "plotly")
 # p
 #

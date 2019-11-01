@@ -4,14 +4,14 @@
 \alias{plot_regmap}
 \title{Regional map}
 \usage{
-plot_regmap(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2,
+plot_regmap(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL, type = c("plotly", "ggplot")[1],
   export_data = FALSE)
 }
 \arguments{
-\item{table_name}{name of table from CMAP}
+\item{tableName}{name of table from CMAP}
 
-\item{sel_var}{selected varable from the table}
+\item{varName}{selected varable from the table}
 
 \item{lat1}{start latitude [degree N].}
 
@@ -41,11 +41,11 @@ Regional map of a variable of interest at varying range of latitude and longitud
 }
 \examples{
 \donttest{
-library(cmap4r)
+
 #
 # Inpit variable:
-table_name <- "tblsst_AVHRR_OI_NRT"
-sel_var <- "sst"
+tableName <- "tblsst_AVHRR_OI_NRT"
+varName <- "sst"
 
 # Range variable [lat,lon,time,depth]
 lat1 = 10; lat2 = 70
@@ -55,9 +55,9 @@ depth1 <- NULL; depth2 =  NULL
 
 #
 ## Plot - regional map
-# out <- plot_regmap( table_name,sel_var, lat1, lat2, lon1, lon2,
+# out <- plot_regmap( tableName,varName, lat1, lat2, lon1, lon2,
 #                    dt1, dt2, depth1, depth2, type = 'ggplot')
-out <- plot_regmap(table_name, sel_var, lat1, lat2, lon1, lon2,
+out <- plot_regmap(tableName, varName, lat1, lat2, lon1, lon2,
                    dt1, dt2, depth1, depth2, type = "plotly")
 out
 }

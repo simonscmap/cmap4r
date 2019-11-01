@@ -2,7 +2,7 @@
 % Please edit documentation in R/authorization.R
 \name{set_authorization}
 \alias{set_authorization}
-\title{Set authorization/API key for accessing the CMAP database.}
+\title{Set/save the user API key for accessing the CMAP database.}
 \usage{
 set_authorization(reset = FALSE)
 }
@@ -10,11 +10,10 @@ set_authorization(reset = FALSE)
 \item{reset}{boolean variable for set authorization key for API access to the database}
 }
 \description{
-Set authorization/API key for accessing the CMAP database.
+Set/save the user API key for accessing the CMAP database.
 }
 \examples{
 \dontrun{
-library(cmap4r)
 
 # To set the API authorization key
 set_authorization()

@@ -2,54 +2,52 @@
 % Please edit documentation in R/get_data.R
 \name{get_timeseries}
 \alias{get_timeseries}
-\title{Retrieve timeseries data from  CMAP using space time range parameters}
+\title{Retrieve subset of a table  aggregated by time from the Simons CMAP databse using the space-time range inputs.}
 \usage{
-get_timeseries(table_name, sel_var, lat1, lat2, lon1, lon2, dt1, dt2,
+get_timeseries(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL, interval = NULL)
 }
 \arguments{
-\item{table_name}{table name in the database}
+\item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
 
-\item{sel_var}{select a variable in the table}
+\item{varName}{specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database.}
 
-\item{lat1}{start latitude [degree N].}
+\item{lat1}{start latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lat2}{end latitude [degree N].}
+\item{lat2}{end latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lon1}{start longitude [degree E].}
+\item{lon1}{start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.}
 
-\item{lon2}{end longitude [degree E].}
+\item{lon2}{end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.}
 
-\item{dt1}{start date or datetime.}
+\item{dt1}{start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'}
 
-\item{dt2}{end date or datetime.}
+\item{dt2}{end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'}
 
-\item{depth1}{start depth [m].}
+\item{depth1}{positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 
-\item{depth2}{end depth [m].}
+\item{depth2}{positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 
 \item{interval}{choose time series data aggregation at [weekly, montly, quaterly, annual, none]}
 }
 \value{
-subset of a table as data frame
+required aggregated output is ordered by time, lat, lon, and depth (if exists).
 }
 \description{
-Get subset of a table as data frame
+Retrieve subset of a table  aggregated by time from the Simons CMAP databse using the space-time range inputs.
 }
 \examples{
 \dontrun{
-library(cmap4r)
-#
 ## Input: Table name; variable name, space time range information
-table_name <- "tblHOT_Bottle" # table name
-sel_var <- "SiO4_bottle_hot" # choose variable
+tableName <- "tblHOT_Bottle" # table name
+varName <- "SiO4_bottle_hot" # choose variable
 # Range variable [lat,lon,time]
 lat1 = 22; lat2 = 23
 lon1 = -159; lon2 = -157
 dt1 = "1988-12-01"; dt2 = "2016-10-15"
 
 # Subset selection:
-tbl.subset <- get_timeseries(table_name, sel_var, lat1, lat2,
+tbl.subset <- get_timeseries(tableName, varName, lat1, lat2,
                                 lon1, lon2, dt1, dt2)
 head(tbl.subset)
 #
