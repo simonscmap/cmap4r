@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_data.R
 \name{get_timeseries}
 \alias{get_timeseries}
-\title{Retrieve subset of a table  aggregated by time from the Simons CMAP databse using the space-time range inputs.}
+\title{Retrieve the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). The output is aggregated by time, i.e., we compute the mean and standard deviation of a variable of interest in the specified range of inputs. Also, the function is capable of binning the timeseries data weekly, monthly, quarterly, or annually.}
 \usage{
 get_timeseries(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL, interval = NULL)
@@ -28,13 +28,13 @@ get_timeseries(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
 
 \item{depth2}{positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 
-\item{interval}{choose time series data aggregation at [weekly, montly, quaterly, annual, none]}
+\item{interval}{choose time series data aggregation at [weekly, montly, quaterly, annual, none]. Default none.}
 }
 \value{
 required aggregated output is ordered by time, lat, lon, and depth (if exists).
 }
 \description{
-Retrieve subset of a table  aggregated by time from the Simons CMAP databse using the space-time range inputs.
+Retrieve the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). The output is aggregated by time, i.e., we compute the mean and standard deviation of a variable of interest in the specified range of inputs. Also, the function is capable of binning the timeseries data weekly, monthly, quarterly, or annually.
 }
 \examples{
 \dontrun{

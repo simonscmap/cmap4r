@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_data.R
 \name{get_spacetime}
 \alias{get_spacetime}
-\title{Returns a subset of table using the specified space-time range inputs.}
+\title{Retrieve the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).}
 \usage{
 get_spacetime(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL)
@@ -32,7 +32,7 @@ get_spacetime(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
 required subset of the table is ordered by time, lat, lon, and depth (if exists).
 }
 \description{
-Returns a subset of table using the specified space-time range inputs.
+Retrieve the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).
 }
 \examples{
 \donttest{

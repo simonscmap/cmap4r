@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_data.R
 \name{get_depthprofile}
 \alias{get_depthprofile}
-\title{Retrieve subset of a table  aggregated by depth from the Simons CMAP databse using the space-time range inputs.}
+\title{Retrieve the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). The output is aggregated by depth, i.e., we compute the mean and standard deviation of a variable of interest in the specified range of inputs. Also, the function is capable of binning the timeseries data weekly, monthly, quarterly, or annually.}
 \usage{
 get_depthprofile(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1, depth2)
@@ -32,6 +32,9 @@ get_depthprofile(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
 required aggregated output is ordered by depth.
 }
 \description{
+Retrieve subset of a table  aggregated by depth from the Simons CMAP databse using the space-time range inputs.
+}
+\details{
 Compute mean and standard deviation at each depth level based on the range of lattitude, longitude and time inputs.
 }
 \examples{
