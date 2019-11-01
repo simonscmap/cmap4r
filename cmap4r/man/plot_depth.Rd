@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_cmap.R
 \name{plot_depth}
 \alias{plot_depth}
-\title{Plot variable of interest with varying depth}
+\title{Depth profile plot.}
 \usage{
 plot_depth(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2, depth1,
   depth2, type = c("plotly", "ggplot")[1], export_data = FALSE)
@@ -36,7 +36,7 @@ plot_depth(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2, depth1,
 a plot object of the chosen type
 }
 \description{
-Depth plot object
+Plot a variable of interest with varying depth after extracting the data (using get_depthprofile) from the Simons CMAP database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).
 }
 \examples{
 \donttest{

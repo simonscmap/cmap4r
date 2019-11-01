@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_cmap.R
 \name{plot_ts}
 \alias{plot_ts}
-\title{Plot variable of interest with varying time.}
+\title{Times eries plot}
 \usage{
 plot_ts(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL, type = c("plotly", "ggplot")[1],
@@ -37,7 +37,7 @@ plot_ts(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
 plot object of the chosen type
 }
 \description{
-Times eries plot object.
+Plot a variable of interest with varying time after extracting the data (using get_timeseries) from the Simons CMAP database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).
 }
 \examples{
 \donttest{

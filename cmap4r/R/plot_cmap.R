@@ -1,8 +1,10 @@
 
-#' Plot variable of interest with varying depth
+
+#' Depth profile plot. 
+#' 
+#' Plot a variable of interest with varying depth after extracting the data (using get_depthprofile) from the Simons CMAP database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). 
 #'
-#' Depth plot object
-#'
+#' 
 #' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
 #' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 
 #' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
@@ -91,10 +93,9 @@ plot_depth <- function(tableName, varName, lat1, lat2,
 
 
 
-
-#' Plot variable of interest with varying time.
-#'
-#' Times eries plot object.
+#' Times eries plot
+#' 
+#' Plot a variable of interest with varying time after extracting the data (using get_timeseries) from the Simons CMAP database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). 
 #'
 #' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
 #' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 
@@ -183,11 +184,14 @@ plot_ts <- function(tableName, varName, lat1, lat2,
 
 
 
+
+
 utils::globalVariables(c("..density.."))
-#' Plot histogram of the variable of interest
+#' Histogram plot 
+#' 
+#' Plot histogram of the variable of interest after extracting the data (using get_spacetime) from the Simons CMAP database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).
 #'
-#' Histogram object of chosen type
-#'
+#' 
 #' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
 #' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 
 #' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
@@ -200,7 +204,7 @@ utils::globalVariables(c("..density.."))
 #' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
 #' @param type choose a type of plot object: 'plotly','ggplot'. Default 'plotly'.
 #' @param export_data boolean variable to export data or not. The data will be saved in the working directory. Default FALSE.
-#' @return plot object of the chosen type
+#' @return plot object of the chosen type, i.e., plotly/ggplot
 #' @export
 #' @importFrom utils write.csv
 #' @importFrom plotly plot_ly layout last_plot
@@ -283,7 +287,7 @@ plot_hist <- function(tableName, varName, lat1, lat2,
 
 #' XY plot
 #'
-#' Scatter plot of two variable of interest
+#' Scatter plot of the two variable of interest.
 #'
 #' @param tableList table names from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
 #' @param varList specify short name of the corresponding table variables. Use "get_catalog()" to retrieve list of table variables on the database. 
@@ -389,9 +393,10 @@ plot_xy <- function(tableList, varList, lat1, lat2,
 
 
 
+
 #' Regional map
 #'
-#' Regional map of a variable of interest at varying range of latitude and longitude
+#' Plot the regional map of a variable of interest in a varying range of latitude and longitude after extracting the data (using get_spacetime) from the Simons CMAP database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). 
 #'
 #' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
 #' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 

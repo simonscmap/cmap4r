@@ -37,7 +37,7 @@ plot_regmap(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
 plot object of the chosen type
 }
 \description{
-Regional map of a variable of interest at varying range of latitude and longitude
+Plot the regional map of a variable of interest in a varying range of latitude and longitude after extracting the data (using get_spacetime) from the Simons CMAP database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).
 }
 \examples{
 \donttest{

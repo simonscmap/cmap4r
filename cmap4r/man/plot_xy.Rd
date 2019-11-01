@@ -39,7 +39,7 @@ plot_xy(tableList, varList, lat1, lat2, lon1, lon2, dt1, dt2,
 plot object of the chosen type
 }
 \description{
-Scatter plot of two variable of interest
+Scatter plot of the two variable of interest.
 }
 \examples{
 \donttest{

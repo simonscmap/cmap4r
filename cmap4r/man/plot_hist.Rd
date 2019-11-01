@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_cmap.R
 \name{plot_hist}
 \alias{plot_hist}
-\title{Plot histogram of the variable of interest}
+\title{Histogram plot}
 \usage{
 plot_hist(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL, type = c("plotly", "ggplot")[1],
@@ -34,10 +34,10 @@ plot_hist(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
 \item{export_data}{boolean variable to export data or not. The data will be saved in the working directory. Default FALSE.}
 }
 \value{
-plot object of the chosen type
+plot object of the chosen type, i.e., plotly/ggplot
 }
 \description{
-Histogram object of chosen type
+Plot histogram of the variable of interest after extracting the data (using get_spacetime) from the Simons CMAP database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).
 }
 \examples{
 \donttest{
