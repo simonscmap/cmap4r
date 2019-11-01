@@ -4,36 +4,36 @@
 \alias{plot_xy}
 \title{XY plot}
 \usage{
-plot_xy(table_list, var_list, lat1, lat2, lon1, lon2, dt1, dt2,
+plot_xy(tableList, varList, lat1, lat2, lon1, lon2, dt1, dt2,
   depth1 = NULL, depth2 = NULL, agg_var, type = c("plotly",
   "ggplot")[1], export_data = FALSE)
 }
 \arguments{
-\item{table_list}{list of  tables}
+\item{tableList}{table names from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
 
-\item{var_list}{list of  corresponding variable}
+\item{varList}{specify short name of the corresponding table variables. Use "get_catalog()" to retrieve list of table variables on the database.}
 
-\item{lat1}{start latitude [degree N].}
+\item{lat1}{start latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lat2}{end latitude [degree N].}
+\item{lat2}{end latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lon1}{start longitude [degree E].}
+\item{lon1}{start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.}
 
-\item{lon2}{end longitude [degree E].}
+\item{lon2}{end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.}
 
-\item{dt1}{start date or datetime.}
+\item{dt1}{start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'}
 
-\item{dt2}{end date or datetime.}
+\item{dt2}{end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'}
 
-\item{depth1}{start depth [m].}
+\item{depth1}{positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 
-\item{depth2}{end depth [m].}
+\item{depth2}{positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 
 \item{agg_var}{aggregate variable}
 
-\item{type}{choose a type of plot object: 'plotly','ggplot}
+\item{type}{choose a type of plot object: 'plotly','ggplot'. Default 'plotly'.}
 
-\item{export_data}{boolean variable to export data or not. The data will be saved in the working directory.}
+\item{export_data}{boolean variable to export data or not. The data will be saved in the working directory. Default FALSE.}
 }
 \value{
 plot object of the chosen type
@@ -46,8 +46,8 @@ Scatter plot of two variable of interest
 
 # Inpit variable:
 #
-table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
-var_list <- c("sst", "sla")
+tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
+varList <- c("sst", "sla")
 #
 # Range variable [lat,lon,time,depth]
 lat1 = 25; lat2 = 30
@@ -59,7 +59,7 @@ depth1 <- NULL; depth2 =  NULL
 agg_var <- "time"
 
 # xy plot
-out <- plot_xy(table_list, var_list, lat1, lat2, lon1, lon2,
+out <- plot_xy(tableList, varList, lat1, lat2, lon1, lon2,
                dt1, dt2, depth1, depth2, agg_var)
 out
 }

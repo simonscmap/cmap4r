@@ -121,7 +121,7 @@ get_section = function(tableName, varName, lat1, lat2,
 #' Retrieve subset of a table  aggregated by time from the Simons CMAP databse using the space-time range inputs. 
 #'
 #' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
-#' @param varName specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param varName specify short name of a variable in the table.  Use "get_catalog()" to retrieve list of table variables on the database. 
 #' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
 #' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
 #' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
@@ -183,7 +183,7 @@ get_timeseries <- function(tableName, varName, lat1, lat2,
 #' Compute mean and standard deviation at each depth level based on the range of lattitude, longitude and time inputs.  
 #'
 #' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
-#' @param varName specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 
 #' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
 #' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
 #' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.

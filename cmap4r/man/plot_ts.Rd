@@ -9,29 +9,29 @@ plot_ts(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
   export_data = FALSE)
 }
 \arguments{
-\item{tableName}{table with depth and variable of interest}
+\item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
 
-\item{varName}{select a variable in the table}
+\item{varName}{specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database.}
 
-\item{lat1}{start latitude [degree N].}
+\item{lat1}{start latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lat2}{end latitude [degree N].}
+\item{lat2}{end latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 
-\item{lon1}{start longitude [degree E].}
+\item{lon1}{start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.}
 
-\item{lon2}{end longitude [degree E].}
+\item{lon2}{end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.}
 
-\item{dt1}{start date or datetime.}
+\item{dt1}{start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'}
 
-\item{dt2}{end date or datetime.}
+\item{dt2}{end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'}
 
-\item{depth1}{start depth [m].}
+\item{depth1}{positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 
-\item{depth2}{end depth [m].}
+\item{depth2}{positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
 
-\item{type}{choose a type of plot object: 'plotly','ggplot}
+\item{type}{choose a type of plot object: 'plotly','ggplot. Default 'plotly'.}
 
-\item{export_data}{boolean variable to export data or not. The data will be saved in the working directory.}
+\item{export_data}{boolean variable to export data or not. The data will be saved in the working directory. Default FALSE.}
 }
 \value{
 plot object of the chosen type
@@ -44,13 +44,13 @@ Times eries plot object.
 
 #
 # Input variable:
-table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
-var_list <- c("sst", "sla", "NO3")
+tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
+varList <- c("sst", "sla", "NO3")
 #
 # selected "sst" from the table "tblSST_AVHRR_OI_NRT"
 selIndex <- 1
-tableName <- table_list[selIndex]
-varName <- var_list[selIndex]
+tableName <- tableList[selIndex]
+varName <- varList[selIndex]
 #
 # # Example I:
 # Range variable [lat,lon,time,depth]

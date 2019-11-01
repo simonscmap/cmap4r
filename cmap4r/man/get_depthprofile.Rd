@@ -10,7 +10,7 @@ get_depthprofile(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
 \arguments{
 \item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
 
-\item{varName}{specify short name of a variable in the table. Pass the input "*" to retrieve all fields in the table.  Use "get_catalog()" to retrieve list of table variables on the database.}
+\item{varName}{specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database.}
 
 \item{lat1}{start latitude [degree N] of the meridional cut; ranges from -90° to 90°.}
 

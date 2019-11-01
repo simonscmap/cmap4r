@@ -3,19 +3,19 @@
 #'
 #' Depth plot object
 #'
-#' @param tableName name of the table from CMAP
-#' @param varName select a variable in the table
-#' @param dt1 start date or datetime.
-#' @param dt2 end date or datetime.
-#' @param lat1 start latitude [degree N].
-#' @param lat2 end latitude [degree N].
-#' @param lon1 start longitude [degree E].
-#' @param lon2 end longitude [degree E].
-#' @param depth1 start depth [m].
-#' @param depth2 end depth [m].
-#' @param type choose a type of plot object: 'plotly','ggplot
-#' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
-#' @return plot object of the chosen type
+#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param type choose a type of plot object: 'plotly','ggplot. Default 'plotly'.
+#' @param export_data boolean variable to export data or not. The data will be saved in the working directory. Default FALSE.
+#' @return a plot object of the chosen type
 #' @export
 #' @import magrittr
 #' @importFrom utils write.csv
@@ -23,16 +23,15 @@
 #' @importFrom ggplot2 ggtitle ggplot geom_point theme xlab ylab aes_string element_text
 #' @examples
 #' \donttest{
-#' 
 #' #
 #' # Inpit variable:
-#' table_list <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
-#' var_list <- c('argo_merge_chl_adj', 'CHL', 'CHL')
+#' tableList <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
+#' varList <- c('argo_merge_chl_adj', 'CHL', 'CHL')
 #' #
 #' # selected argo_merge_chl_adj from tblArgoMerge_REP
 #' selIndex <- 1
-#' tableName <- table_list[selIndex]
-#' varName <- var_list[selIndex]
+#' tableName <- tableList[selIndex]
+#' varName <- varList[selIndex]
 #' #
 #' # Range variable [lat,lon,time,depth]
 #' lat1 = 20; lat2 = 24
@@ -97,18 +96,18 @@ plot_depth <- function(tableName, varName, lat1, lat2,
 #'
 #' Times eries plot object.
 #'
-#' @param tableName table with depth and variable of interest
-#' @param varName select a variable in the table
-#' @param dt1 start date or datetime.
-#' @param dt2 end date or datetime.
-#' @param lat1 start latitude [degree N].
-#' @param lat2 end latitude [degree N].
-#' @param lon1 start longitude [degree E].
-#' @param lon2 end longitude [degree E].
-#' @param depth1 start depth [m].
-#' @param depth2 end depth [m].
-#' @param type choose a type of plot object: 'plotly','ggplot
-#' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
+#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param type choose a type of plot object: 'plotly','ggplot. Default 'plotly'.
+#' @param export_data boolean variable to export data or not. The data will be saved in the working directory. Default FALSE.
 #' @return plot object of the chosen type
 #' @export
 #' @importFrom utils write.csv
@@ -119,13 +118,13 @@ plot_depth <- function(tableName, varName, lat1, lat2,
 #' 
 #' #
 #' # Input variable:
-#' table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
-#' var_list <- c("sst", "sla", "NO3")
+#' tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
+#' varList <- c("sst", "sla", "NO3")
 #' #
 #' # selected "sst" from the table "tblSST_AVHRR_OI_NRT"
 #' selIndex <- 1
-#' tableName <- table_list[selIndex]
-#' varName <- var_list[selIndex]
+#' tableName <- tableList[selIndex]
+#' varName <- varList[selIndex]
 #' #
 #' # # Example I:
 #' # Range variable [lat,lon,time,depth]
@@ -189,18 +188,18 @@ utils::globalVariables(c("..density.."))
 #'
 #' Histogram object of chosen type
 #'
-#' @param tableName name of the table from CMAP
-#' @param varName select a variable in the table
-#' @param dt1 start date or datetime.
-#' @param dt2 end date or datetime.
-#' @param lat1 start latitude [degree N].
-#' @param lat2 end latitude [degree N].
-#' @param lon1 start longitude [degree E].
-#' @param lon2 end longitude [degree E].
-#' @param depth1 start depth [m].
-#' @param depth2 end depth [m].
-#' @param type choose a type of plot object: 'plotly','ggplot
-#' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
+#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param type choose a type of plot object: 'plotly','ggplot'. Default 'plotly'.
+#' @param export_data boolean variable to export data or not. The data will be saved in the working directory. Default FALSE.
 #' @return plot object of the chosen type
 #' @export
 #' @importFrom utils write.csv
@@ -211,13 +210,13 @@ utils::globalVariables(c("..density.."))
 #' 
 #' #
 #' # Inpit variable:
-#' table_list <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
-#' var_list <- c("sst", "argo_merge_temperature_adj", "argo_merge_salinity_adj")
+#' tableList <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
+#' varList <- c("sst", "argo_merge_temperature_adj", "argo_merge_salinity_adj")
 #' #
 #' # variable "sst" selected from "tblSST_AVHRR_OI_NRT"
 #' selIndex <- 1
-#' tableName <- table_list[selIndex]
-#' varName <- var_list[selIndex]
+#' tableName <- tableList[selIndex]
+#' varName <- varList[selIndex]
 #' #
 #' # Range variable [lat,lon,time,depth]
 #' lat1 = 20; lat2 = 24
@@ -286,19 +285,19 @@ plot_hist <- function(tableName, varName, lat1, lat2,
 #'
 #' Scatter plot of two variable of interest
 #'
-#' @param table_list list of  tables
-#' @param var_list list of  corresponding variable
-#' @param dt1 start date or datetime.
-#' @param dt2 end date or datetime.
-#' @param lat1 start latitude [degree N].
-#' @param lat2 end latitude [degree N].
-#' @param lon1 start longitude [degree E].
-#' @param lon2 end longitude [degree E].
-#' @param depth1 start depth [m].
-#' @param depth2 end depth [m].
+#' @param tableList table names from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param varList specify short name of the corresponding table variables. Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
 #' @param agg_var aggregate variable
-#' @param type choose a type of plot object: 'plotly','ggplot
-#' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
+#' @param type choose a type of plot object: 'plotly','ggplot'. Default 'plotly'.
+#' @param export_data boolean variable to export data or not. The data will be saved in the working directory. Default FALSE.
 #' @return plot object of the chosen type
 #' @export
 #' @importFrom utils write.csv
@@ -309,8 +308,8 @@ plot_hist <- function(tableName, varName, lat1, lat2,
 #' 
 #' # Inpit variable:
 #' #
-#' table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
-#' var_list <- c("sst", "sla")
+#' tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
+#' varList <- c("sst", "sla")
 #' #
 #' # Range variable [lat,lon,time,depth]
 #' lat1 = 25; lat2 = 30
@@ -322,11 +321,11 @@ plot_hist <- function(tableName, varName, lat1, lat2,
 #' agg_var <- "time"
 #'
 #' # xy plot
-#' out <- plot_xy(table_list, var_list, lat1, lat2, lon1, lon2,
+#' out <- plot_xy(tableList, varList, lat1, lat2, lon1, lon2,
 #'                dt1, dt2, depth1, depth2, agg_var)
 #' out
 #' }
-plot_xy <- function(table_list, var_list, lat1, lat2,
+plot_xy <- function(tableList, varList, lat1, lat2,
                     lon1, lon2, dt1, dt2,
                     depth1 = NULL, depth2 = NULL, agg_var,
                     type = c("plotly", "ggplot")[1],
@@ -339,8 +338,8 @@ plot_xy <- function(table_list, var_list, lat1, lat2,
     temfun = get_spacetime
   }
   selIndex <- 1
-  tableName <- table_list[selIndex] # Specify table name I
-  varName <- var_list[selIndex] # Variable from table name I
+  tableName <- tableList[selIndex] # Specify table name I
+  varName <- varList[selIndex] # Variable from table name I
   tbl_subset_x <- temfun(tableName, varName, lat1, lat2,
                          lon1, lon2, dt1, dt2,
                          depth1, depth2)
@@ -348,8 +347,8 @@ plot_xy <- function(table_list, var_list, lat1, lat2,
 
 
   selIndex <- 2
-  tableName <- table_list[selIndex] # Specify table name II
-  varName <- var_list[selIndex] # Variable from table name II
+  tableName <- tableList[selIndex] # Specify table name II
+  varName <- varList[selIndex] # Variable from table name II
   tbl_subset_y <- temfun(tableName, varName, lat1, lat2,
                          lon1, lon2, dt1, dt2,
                          depth1, depth2)
@@ -362,17 +361,17 @@ plot_xy <- function(table_list, var_list, lat1, lat2,
 
   if (type == "plotly") {
     p <- plotly::plot_ly(
-      x = ~ df_plot[, var_list[1]], y = ~ df_plot[, var_list[2]],
+      x = ~ df_plot[, varList[1]], y = ~ df_plot[, varList[2]],
       mode = "markers", type = "scatter"
     )
     p <- p %>% plotly::layout(
       title = "XY Plot",
-      xaxis = list(title = var_list[1]),
-      yaxis = list(title = var_list[2])
+      xaxis = list(title = varList[1]),
+      yaxis = list(title = varList[2])
     )
   }
   if (type == "ggplot") {
-    p <- ggplot2::ggplot(df_plot, ggplot2::aes_string(x = var_list[1], y = var_list[2])) +
+    p <- ggplot2::ggplot(df_plot, ggplot2::aes_string(x = varList[1], y = varList[2])) +
       ggplot2::geom_point() +
       ggplot2::ggtitle("XY Plot") +
       ggplot2::theme(plot.title = ggplot2::element_text(hjust = 0.5))
@@ -394,18 +393,18 @@ plot_xy <- function(table_list, var_list, lat1, lat2,
 #'
 #' Regional map of a variable of interest at varying range of latitude and longitude
 #'
-#' @param tableName name of table from CMAP
-#' @param varName selected varable from the table
-#' @param dt1 start date or datetime.
-#' @param dt2 end date or datetime.
-#' @param lat1 start latitude [degree N].
-#' @param lat2 end latitude [degree N].
-#' @param lon1 start longitude [degree E].
-#' @param lon2 end longitude [degree E].
-#' @param depth1 start depth [m].
-#' @param depth2 end depth [m].
-#' @param type choose a type of plot object: 'plotly','ggplot
-#' @param export_data boolean variable to export data or not. The data will be saved in the working directory.
+#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param type choose a type of plot object: 'plotly','ggplot'. Default 'plotly'.
+#' @param export_data boolean variable to export data or not. The data will be saved in the working directory. Default FALSE.
 #' @return plot object of the chosen type
 #' @export
 #' @importFrom utils write.csv
