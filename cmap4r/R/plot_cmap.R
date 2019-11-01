@@ -26,7 +26,7 @@
 #' @importFrom ggplot2 ggtitle ggplot geom_point theme xlab ylab aes_string element_text
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' # Inpit variable:
 #' table_list <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
@@ -119,7 +119,7 @@ plot_depth <- function(table_name, sel_var, lat1, lat2,
 #' @importFrom ggplot2 ggtitle ggplot geom_point geom_line theme xlab ylab aes_string element_text
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' # Input variable:
 #' table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
@@ -211,7 +211,7 @@ utils::globalVariables(c("..density.."))
 #' @importFrom ggplot2 ggtitle ggplot xlab ylab theme geom_histogram geom_density aes_string element_text aes
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' # Inpit variable:
 #' table_list <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
@@ -309,7 +309,7 @@ plot_hist <- function(table_name, sel_var, lat1, lat2,
 #' @importFrom ggplot2 ggtitle ggplot xlab ylab theme geom_point geom_density aes_string element_text
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' # Inpit variable:
 #' #
 #' table_list <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
@@ -416,7 +416,7 @@ plot_xy <- function(table_list, var_list, lat1, lat2,
 #' @importFrom ggplot2 ggtitle ggplot xlab ylab theme geom_point geom_tile aes_string element_text
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' # Inpit variable:
 #' table_name <- "tblsst_AVHRR_OI_NRT"

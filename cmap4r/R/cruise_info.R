@@ -4,7 +4,7 @@
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Variable attribute:
 #' cruises_info <- cruises()
@@ -29,7 +29,7 @@ cruises <- function(){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Variable attribute:
 #' cruiseVar <- cruise_variables('SCOPE_Falkor1')
@@ -56,7 +56,7 @@ cruise_variables <- function(cruiseName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Variable attribute:
 #' cruiseByName <- cruise_by_name('KOK1606')
@@ -93,7 +93,7 @@ cruise_by_name <- function(cruisename){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Variable attribute:
 #' cruiseBounds <- cruise_bounds('KOK1606')
@@ -118,7 +118,7 @@ cruise_bounds <- function(cruisename){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Variable attribute:
 #' cruiseTrajectory  <- cruise_trajectory('KM1513')

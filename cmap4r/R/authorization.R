@@ -6,7 +6,6 @@
 #' @importFrom keyring key_delete key_set
 #' @examples
 #' \dontrun{
-#' library(cmap4r)
 #'
 #' # To set the API authorization key
 #' set_authorization()
@@ -38,7 +37,6 @@ set_authorization <- function(reset = FALSE){
 #' @export
 #' @examples
 #' \dontrun{
-#' library(cmap4r)
 #' # Output list with CMAP database access credentials
 #' initialize_cmap()
 #' }

@@ -224,7 +224,8 @@ compile <- function(sourceTable,
 #'   value is given, that would be applied to all target data sets.
 #' @return A dataset colocalized with the cruise.
 #' @export
-#' @examples \donttest{ library(cmap4r)
+#' @examples 
+#' \donttest{ 
 #'
 #' cruise='diel'
 #' targetTables=c('tblSeaFlow')

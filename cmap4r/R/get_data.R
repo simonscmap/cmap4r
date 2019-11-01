@@ -24,7 +24,7 @@
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name, space time range information
 #' table_name <- "tblsst_AVHRR_OI_NRT" # table name
@@ -88,7 +88,7 @@ get_spacetime <- function(table_name, sel_var, lat1, lat2,
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name, space time range information
 #' table_name <- "tblPisces_NRT" # table name
@@ -150,7 +150,7 @@ get_section = function(table_name, sel_var, lat1, lat2,
 #' @export
 #' @examples
 #' \dontrun{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name, space time range information
 #' table_name <- "tblHOT_Bottle" # table name
@@ -213,7 +213,7 @@ get_timeseries <- function(table_name, sel_var, lat1, lat2,
 #' @export
 #' @examples
 #' \dontrun{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name, space time range information
 #' table_name <- "tblArgoMerge_REP" # table name
@@ -270,7 +270,7 @@ get_depthprofile = function(table_name, sel_var, lat1, lat2,
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' manual_query = "SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRT
 #'   WHERE
@@ -309,7 +309,7 @@ exec_manualquery <- function(manual_query) {
 #' #' are ordered by time, lat, lon, and depth.
 #' #'
 #' #' {
-#' #' library(cmap4r)
+#' #' 
 #' #' table <- "tblsst_AVHRR_OI_NRT"
 #' #' variable <- "sst"
 #' #' lat1 = 10
@@ -338,7 +338,7 @@ exec_manualquery <- function(manual_query) {
 #'  interval choose time series data aggregation at [weekly, montly, quaterly, annual, none]
 #'  subset of a table as data frame
 #' {
-#' library(cmap4r)
+#' 
 #' #
 #' table <- "tblHOT_Bottle" # table name
 #' variable <- "SiO4_bottle_hot" # choose variable
@@ -368,7 +368,7 @@ exec_manualquery <- function(manual_query) {
 #' #'
 #' #'
 #' #' {
-#' #' library(cmap4r)
+#' #' 
 #' #' #
 #' #' ## Input: Table name; variable name, space time range information
 #' #' table = "tblArgoMerge_REP"

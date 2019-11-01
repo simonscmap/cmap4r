@@ -9,7 +9,7 @@
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name
 #' table_name <- "tblArgoMerge_REP" # table name
@@ -38,7 +38,7 @@ has_field<- function(tableName, varName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #'
 #' ## Input: Table name;
 #' table_name <- "tblArgoMerge_REP" # table name
@@ -62,7 +62,7 @@ get_head <- function(tableName, nrows = 5){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name;
 #' table_name <- "tblAMT13_Chisholm" # table name
@@ -89,7 +89,7 @@ get_columns <- function(tableName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Variable attribute:
 #' cmap.catalog <- get_catalog()
@@ -121,7 +121,7 @@ get_catalog <- function(){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name
 #' table_name <- "tblArgoMerge_REP" # table name
@@ -147,7 +147,7 @@ get_var <- function(tableName, varName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name
 #' table_name <- "tblArgoMerge_REP" # table name
@@ -199,7 +199,7 @@ get_var_long_name <- function(tableName, varName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name
 #' table_name <- "tblArgoMerge_REP" # table name
@@ -224,7 +224,7 @@ get_var_unit = function(tableName, varName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name
 #' table_name <- "tblArgoMerge_REP" # table name
@@ -251,7 +251,7 @@ get_var_resolution = function(tableName, varName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name
 #' table_name <- "tblArgoMerge_REP" # table name
@@ -276,7 +276,7 @@ get_var_coverage<- function(tableName, varName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input: Table name; variable name
 #' table_name <- "tblArgoMerge_REP" # table name
@@ -302,7 +302,7 @@ get_var_stat<- function(tableName, varName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input:
 #' table <- c("tblArgoMerge_REP") # table name
@@ -335,7 +335,7 @@ is_grid  = function(table_name, var_name){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input:
 #' table <- "tblDarwin_Plankton_Climatology" # table name
@@ -364,7 +364,7 @@ is_climatology <- function(tableName){
 #' @export
 #' @examples
 #' \donttest{
-#' library(cmap4r)
+#' 
 #' #
 #' ## Input:
 #' tables <- c('tblsst_AVHRR_OI_NRT', 'tblArgoMerge_REP') # table name
