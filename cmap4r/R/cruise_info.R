@@ -10,7 +10,7 @@
 #' cruises_info <- cruises()
 #' #
 #' }
-cruises <- function(){
+get_cruises <- function(){
   apiKey = get_api_key()
   myquery = "EXEC uspCruises"
   df = query(myquery, apiKey)
@@ -35,7 +35,7 @@ cruises <- function(){
 #' cruiseVar <- cruise_variables('SCOPE_Falkor1')
 #' #
 #' }
-cruise_variables <- function(cruiseName){
+get_cruise_variables <- function(cruiseName){
   df = cruise_by_name(cruiseName)
   exequery <- sprintf('SELECT * FROM dbo.udfCruiseVariables(%d) ',
                       df$ID[1])
@@ -62,7 +62,7 @@ cruise_variables <- function(cruiseName){
 #' cruiseByName <- cruise_by_name('KOK1606')
 #' #
 #' }
-cruise_by_name <- function(cruisename){
+get_cruise_by_name <- function(cruisename){
 
   ## Form EXEC statement.
   myquery = sprintf("EXEC uspCruiseByName '%s' ", cruisename)
@@ -99,11 +99,13 @@ cruise_by_name <- function(cruisename){
 #' cruiseBounds <- cruise_bounds('KOK1606')
 #' #
 #' }
-cruise_bounds <- function(cruisename){
+get_cruise_bounds <- function(cruisename){
   apiKey = get_api_key()
-  df = cruise_by_name(cruisename)
+  df = get_cruise_by_name(cruisename)
   myquery = sprintf("EXEC uspCruiseBounds %d", unlist(df[['ID']][1]))
-  df = query(myquery, apiKey)
+  suppressMessages({
+      df = query(myquery, apiKey)
+  })
   return(df)
 }
 
@@ -124,7 +126,7 @@ cruise_bounds <- function(cruisename){
 #' cruiseTrajectory  <- cruise_trajectory('KM1513')
 #' #
 #' }
-cruise_trajectory <- function(cruisename){
+get_cruise_trajectory <- function(cruisename){
   apiKey = get_api_key()
   df = cruise_by_name(cruisename)
   myquery = sprintf("EXEC uspCruiseTrajectory %d", unlist(df[['ID']][1]))

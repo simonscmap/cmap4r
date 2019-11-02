@@ -45,6 +45,13 @@
 
 
 
+<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -101,14 +108,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="1" data-path="catalog-of-data.html"><a href="catalog-of-data.html"><i class="fa fa-check"></i><b>1</b> Catalog of data</a></li>
 <li class="chapter" data-level="2" data-path="data-retrieval.html"><a href="data-retrieval.html"><i class="fa fa-check"></i><b>2</b> Data Retrieval</a><ul>
 <li class="chapter" data-level="2.1" data-path="data-retrieval.html"><a href="data-retrieval.html#getting-started-simpler-functions"><i class="fa fa-check"></i><b>2.1</b> Getting started &amp; simpler functions</a></li>
-<li class="chapter" data-level="2.2" data-path="data-retrieval.html"><a href="data-retrieval.html#download-data"><i class="fa fa-check"></i><b>2.2</b> Download data</a></li>
-<li class="chapter" data-level="2.3" data-path="data-retrieval.html"><a href="data-retrieval.html#summarize-data"><i class="fa fa-check"></i><b>2.3</b> Summarize data</a></li>
-<li class="chapter" data-level="2.4" data-path="data-retrieval.html"><a href="data-retrieval.html#colocalize-data"><i class="fa fa-check"></i><b>2.4</b> Colocalize data</a></li>
-<li class="chapter" data-level="2.5" data-path="data-retrieval.html"><a href="data-retrieval.html#issue-sql-query"><i class="fa fa-check"></i><b>2.5</b> Issue SQL query</a></li>
+<li class="chapter" data-level="2.2" data-path="data-retrieval.html"><a href="data-retrieval.html#cruises"><i class="fa fa-check"></i><b>2.2</b> Cruises</a></li>
+<li class="chapter" data-level="2.3" data-path="data-retrieval.html"><a href="data-retrieval.html#download-data"><i class="fa fa-check"></i><b>2.3</b> Download data</a></li>
+<li class="chapter" data-level="2.4" data-path="data-retrieval.html"><a href="data-retrieval.html#summarize-data"><i class="fa fa-check"></i><b>2.4</b> Summarize data</a></li>
+<li class="chapter" data-level="2.5" data-path="data-retrieval.html"><a href="data-retrieval.html#colocalize-data"><i class="fa fa-check"></i><b>2.5</b> Colocalize data</a></li>
+<li class="chapter" data-level="2.6" data-path="data-retrieval.html"><a href="data-retrieval.html#issue-sql-query"><i class="fa fa-check"></i><b>2.6</b> Issue SQL query</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="visualization.html"><a href="visualization.html"><i class="fa fa-check"></i><b>3</b> Visualization</a><ul>
-<li class="chapter" data-level="3.1" data-path="visualization.html"><a href="visualization.html#scatterplot-of-two-variables"><i class="fa fa-check"></i><b>3.1</b> Scatterplot of two variables</a></li>
-<li class="chapter" data-level="3.2" data-path="visualization.html"><a href="visualization.html#histograms"><i class="fa fa-check"></i><b>3.2</b> Histograms</a></li>
+<li class="chapter" data-level="3.1" data-path="visualization.html"><a href="visualization.html#regional-map"><i class="fa fa-check"></i><b>3.1</b> Regional map</a></li>
+<li class="chapter" data-level="3.2" data-path="visualization.html"><a href="visualization.html#time-series-plot"><i class="fa fa-check"></i><b>3.2</b> Time series plot</a></li>
+<li class="chapter" data-level="3.3" data-path="visualization.html"><a href="visualization.html#depth-profile-plot"><i class="fa fa-check"></i><b>3.3</b> Depth profile plot</a></li>
+<li class="chapter" data-level="3.4" data-path="visualization.html"><a href="visualization.html#xy-plot"><i class="fa fa-check"></i><b>3.4</b> XY plot</a></li>
+<li class="chapter" data-level="3.5" data-path="visualization.html"><a href="visualization.html#histograms"><i class="fa fa-check"></i><b>3.5</b> Histograms</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="faq.html"><a href="faq.html"><i class="fa fa-check"></i><b>4</b> FAQ</a></li>
 </ul>
@@ -130,8 +141,143 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="catalog-of-data" class="section level1">
 <h1><span class="header-section-number">1</span> Catalog of data</h1>
-<p>The catalog for the CMAP data is reproduced here.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">get_catalog</span>())</code></pre></div>
+<p>You can obtain the latest version of the data catalog for the CMAP data (<a href="https://cmap.readthedocs.io/en/latest/catalog/catalog.html" class="uri">https://cmap.readthedocs.io/en/latest/catalog/catalog.html</a>) to R using <code>get_catalog()</code>, partially reproduced here.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_catalog</span>() <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">select</span>(Variable, Table_Name, Unit, Sensor, Unit) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">20</span>) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Variable</th>
+<th align="left">Table_Name</th>
+<th align="left">Unit</th>
+<th align="left">Sensor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">vgosa</td>
+<td align="left">tblAltimetry_REP</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">vgos</td>
+<td align="left">tblAltimetry_REP</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="odd">
+<td align="left">sla</td>
+<td align="left">tblAltimetry_REP</td>
+<td align="left">m</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">adt</td>
+<td align="left">tblAltimetry_REP</td>
+<td align="left">m</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="odd">
+<td align="left">ugosa</td>
+<td align="left">tblAltimetry_REP</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">ugos</td>
+<td align="left">tblAltimetry_REP</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="odd">
+<td align="left">wind_speed_rms</td>
+<td align="left">tblWind_NRT</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">eastward_wind_rms</td>
+<td align="left">tblWind_NRT</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="odd">
+<td align="left">wind_stress</td>
+<td align="left">tblWind_NRT</td>
+<td align="left">Pa</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">eastward_wind</td>
+<td align="left">tblWind_NRT</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="odd">
+<td align="left">surface_downward_eastward_stress</td>
+<td align="left">tblWind_NRT</td>
+<td align="left">Pa</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">wind_speed</td>
+<td align="left">tblWind_NRT</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="odd">
+<td align="left">surface_downward_northward_stress</td>
+<td align="left">tblWind_NRT</td>
+<td align="left">Pa</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">northward_wind</td>
+<td align="left">tblWind_NRT</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="odd">
+<td align="left">northward_wind_rms</td>
+<td align="left">tblWind_NRT</td>
+<td align="left">m/s</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">sst</td>
+<td align="left">tblSST_AVHRR_OI_NRT</td>
+<td align="left">C</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="odd">
+<td align="left">ftle_bw_sla</td>
+<td align="left">tblLCS_REP</td>
+<td align="left">1/day</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">disp_bw_sla</td>
+<td align="left">tblLCS_REP</td>
+<td align="left">deg</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="odd">
+<td align="left">ftle_fw_sla</td>
+<td align="left">tblLCS_REP</td>
+<td align="left">1/day</td>
+<td align="left">Satellite</td>
+</tr>
+<tr class="even">
+<td align="left">disp_fw_sla</td>
+<td align="left">tblLCS_REP</td>
+<td align="left">deg</td>
+<td align="left">Satellite</td>
+</tr>
+</tbody>
+</table>
 
 </div>
             </section>

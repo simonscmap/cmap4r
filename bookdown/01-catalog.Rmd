@@ -1,7 +1,12 @@
 # Catalog of data
 
-The catalog for the CMAP data is reproduced here.
+You can obtain the latest version of the data catalog for the CMAP data
+(https://cmap.readthedocs.io/en/latest/catalog/catalog.html) to R using
+`get_catalog()`, partially reproduced here.
 
-```{r  message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
-print(get_catalog())
+```{r example-catalog, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+get_catalog() %>%
+  select(Variable, Table_Name, Unit, Sensor, Unit) %>%
+  head(20) %>%
+  kable()
 ```
