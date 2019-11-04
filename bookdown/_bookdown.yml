@@ -5,6 +5,6 @@ output:
     lib_dir: "book_assets"
   bookdown::html_book:
     keep_tex: yes
-output_dir: "docs"
+output_dir: "../docs"
 delete_merged_file: true
 ---
