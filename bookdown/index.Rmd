@@ -7,9 +7,20 @@ data about the ocean.  For further reading about Simons
 CMAP, refer to https://cmap.readthedocs.io/.
 
 
-```{r, out.width='50%', fig.align='center', echo=FALSE}
+```{r intro-figure, out.width='50%', fig.align='center', echo=FALSE}
 knitr::include_graphics('caustics_grid.png')
 ```
 
 There is a counterpart python package here:
 https://github.com/mdashkezari/opedia/tree/master/pypi
+
+
+
+```{r load-packages, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
+library(cmap4r)
+library(dplyr)
+library(knitr)
+knitr::opts_chunk$set(warning=FALSE)
+                      ## fig.width=14, fig.height=5, echo=FALSE, 
+                      ## message=FALSE, eval=TRUE, cache=FALSE
+```

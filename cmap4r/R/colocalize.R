@@ -251,7 +251,7 @@ along_track <- function(cruise, targetTables, targetVars, depth1, depth2,
                         temporalTolerance, latTolerance, lonTolerance,
                         depthTolerance){
   apiKey = get_api_key()
-  df = cruise_bounds(cruise)
+  df = get_cruise_bounds(cruise)
   dat = compile(sourceTable='tblCruise_Trajectory',
                 sourceVar=toString(df[,'ID']),
                 targetTables=targetTables,

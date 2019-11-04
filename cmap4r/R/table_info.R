@@ -258,7 +258,7 @@ get_var_resolution = function(tableName, varName){
 #' varCoverage
 #' #
 #' }
-get_var_coverage<- function(tableName, varName){
+get_var_coverage <- function(tableName, varName){
   mynames = c('Time_Min', 'Time_Max', 'Lat_Min', 'Lat_Max', 'Lon_Min', 'Lon_Max', 'Depth_Min', 'Depth_Max')
   return(get_var_catalog(tableName, varName)[, mynames])
 }
