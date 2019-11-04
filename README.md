@@ -85,4 +85,4 @@ There are many functions like `get_depthprofile` for retrieving data from the CM
 - `exec_manualquery`
 
 For a complete list and many more examples of data retrieval and visualization,
-please see the **tutorial** here https://simonscmap.github.io/.
+please see the **tutorial** here: https://simonscmap.github.io/cmap4r/.
