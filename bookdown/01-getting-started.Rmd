@@ -1,0 +1,28 @@
+# Getting started
+
+## Obtaining and saving API Key
+
+CMAP hosts data on a Microsoft SQL Server. To retrieve data from the database,
+`cmap4r` requires an API key. For this, the user needs to register on the
+[SimonsCMAP](https://simonscmap.com/register) website and navigate to the
+"APIKeys" tab on the webpage to obtain an API key. The package allows the user
+to save the key as a **keyring variable** which will be used for data retrieval
+whenever required.
+
+After installing `cmap4r` (using
+`devtools::install_github("simonscmap/cmap4r/cmap4r")`), use the
+`set_authorization()` function to set/reset the API Key. You will be prompted to
+enter the key on the command line or in a pop-up prompt.
+
+## Catalog of data
+
+You can obtain the latest version of the data catalog for the CMAP data
+(https://cmap.readthedocs.io/en/latest/catalog/catalog.html) to R using
+`get_catalog()`, partially reproduced here.
+
+```{r example-catalog, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+get_catalog() %>%
+  select(Variable, Table_Name, Unit, Sensor, Unit) %>%
+  head(20) %>%
+  kable()
+```

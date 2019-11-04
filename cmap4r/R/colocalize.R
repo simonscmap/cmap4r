@@ -71,10 +71,6 @@ atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
                     args[13], args[14], args[15], args[16], args[17])
 
   ## Issue query
-  ## browser()
-  ## a = query(myquery, apiKey)
-  ## a$time[1]
-  ## as.POSIXlt(a$time[1])
   return(query(myquery, apiKey)) ## query is API().query in Python
 }
 
@@ -146,7 +142,7 @@ compile <- function(sourceTable,
   for(ii in 1:length(targetTables)){
 
     ## Get data using atomic_match
-    utils::setTxtProgressBar(pb, ii)
+    ## utils::setTxtProgressBar(pb, ii)
     data = atomic_match(spName,
                         sourceTable,
                         sourceVar,

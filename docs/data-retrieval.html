@@ -29,7 +29,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="catalog-of-data.html">
+<link rel="prev" href="getting-started.html">
 <link rel="next" href="visualization.html">
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -104,15 +104,17 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About the ‘cmap4r’ R package</a></li>
-<li class="chapter" data-level="1" data-path="catalog-of-data.html"><a href="catalog-of-data.html"><i class="fa fa-check"></i><b>1</b> Catalog of data</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tutorial for the cmap4r R package</a></li>
+<li class="chapter" data-level="1" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a><ul>
+<li class="chapter" data-level="1.1" data-path="getting-started.html"><a href="getting-started.html#obtaining-and-saving-api-key"><i class="fa fa-check"></i><b>1.1</b> Obtaining and saving API Key</a></li>
+<li class="chapter" data-level="1.2" data-path="getting-started.html"><a href="getting-started.html#catalog-of-data"><i class="fa fa-check"></i><b>1.2</b> Catalog of data</a></li>
+</ul></li>
 <li class="chapter" data-level="2" data-path="data-retrieval.html"><a href="data-retrieval.html"><i class="fa fa-check"></i><b>2</b> Data Retrieval</a><ul>
-<li class="chapter" data-level="2.1" data-path="data-retrieval.html"><a href="data-retrieval.html#getting-started-simpler-functions"><i class="fa fa-check"></i><b>2.1</b> Getting started &amp; simpler functions</a></li>
+<li class="chapter" data-level="2.1" data-path="data-retrieval.html"><a href="data-retrieval.html#obtaining-data-summaries"><i class="fa fa-check"></i><b>2.1</b> Obtaining data summaries</a></li>
 <li class="chapter" data-level="2.2" data-path="data-retrieval.html"><a href="data-retrieval.html#cruises"><i class="fa fa-check"></i><b>2.2</b> Cruises</a></li>
 <li class="chapter" data-level="2.3" data-path="data-retrieval.html"><a href="data-retrieval.html#download-data"><i class="fa fa-check"></i><b>2.3</b> Download data</a></li>
-<li class="chapter" data-level="2.4" data-path="data-retrieval.html"><a href="data-retrieval.html#summarize-data"><i class="fa fa-check"></i><b>2.4</b> Summarize data</a></li>
-<li class="chapter" data-level="2.5" data-path="data-retrieval.html"><a href="data-retrieval.html#colocalize-data"><i class="fa fa-check"></i><b>2.5</b> Colocalize data</a></li>
-<li class="chapter" data-level="2.6" data-path="data-retrieval.html"><a href="data-retrieval.html#issue-sql-query"><i class="fa fa-check"></i><b>2.6</b> Issue SQL query</a></li>
+<li class="chapter" data-level="2.4" data-path="data-retrieval.html"><a href="data-retrieval.html#colocalize-data"><i class="fa fa-check"></i><b>2.4</b> Colocalize data</a></li>
+<li class="chapter" data-level="2.5" data-path="data-retrieval.html"><a href="data-retrieval.html#issue-sql-query"><i class="fa fa-check"></i><b>2.5</b> Issue SQL query</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="visualization.html"><a href="visualization.html"><i class="fa fa-check"></i><b>3</b> Visualization</a><ul>
 <li class="chapter" data-level="3.1" data-path="visualization.html"><a href="visualization.html#regional-map"><i class="fa fa-check"></i><b>3.1</b> Regional map</a></li>
@@ -141,33 +143,1354 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
             <section class="normal" id="section-">
 <div id="data-retrieval" class="section level1">
 <h1><span class="header-section-number">2</span> Data Retrieval</h1>
-<div id="getting-started-simpler-functions" class="section level2">
-<h2><span class="header-section-number">2.1</span> Getting started &amp; simpler functions</h2>
+<div id="obtaining-data-summaries" class="section level2">
+<h2><span class="header-section-number">2.1</span> Obtaining data summaries</h2>
 <p>Data in the CMAP database exists in tables, and can be accessed by specific table names, and variable names therein. For instance, sea surface temperature is from the table <code>&quot;tblSST_AVHRR_OI_NRT&quot;</code>, and the variable name is <code>&quot;sst&quot;</code>.</p>
 <p>Some simpler functions for accessing data are useful for obtaining summaries of the data prior to downloading the data itself.</p>
 <ul>
 <li>Name of variables (<code>get_columns()</code>)</li>
 <li>Type of variables, i.e., quantitative, qualitative, time, (<code>get_var_catalog()</code>)</li>
-<li>Size of the table (??),</li>
 <li>Space-time range information (<code>get_var_coverage</code>),</li>
 <li>Numerical variable range summary (<code>get_var_stat()</code>).</li>
 </ul>
-<p>These are used in the various following functions, which are designed to summarize data tables by extracting these table attributes. This is useful for learning about the tables without downloading them prior to analysis. Here are some key examples:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_head</span>(<span class="st">&quot;tblArgoMerge_REP&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()
-<span class="kw">get_var_coverage</span>(<span class="st">&quot;tblAltimetry_REP&quot;</span>, <span class="st">&quot;sla&quot;</span>)
-<span class="kw">get_var_resolution</span>(<span class="st">&quot;tblAltimetry_REP&quot;</span>, <span class="st">&quot;sla&quot;</span>)
-<span class="kw">get_var_unit</span>(<span class="st">&quot;tblAltimetry_REP&quot;</span>, <span class="st">&quot;sla&quot;</span>)
-## get_columns(&#39;tblAMT13_Chisholm&#39;) %&gt;% kable()</code></pre></div>
+<p>These are used in the various following functions, which are designed to summarize data tables by extracting these table attributes. This is useful for learning about the tables without downloading them prior to analysis. Here are some key examples (the piping using <code>%&gt;%</code> to <code>kable()</code> is just for formatting purposes):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_head</span>(<span class="st">&quot;tblArgoMerge_REP&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>() </code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">float_id</th>
+<th align="right">cycle</th>
+<th align="left">time</th>
+<th align="right">lat</th>
+<th align="right">lon</th>
+<th align="right">depth</th>
+<th align="right">position_qc</th>
+<th align="left">direction</th>
+<th align="left">data_mode</th>
+<th align="left">data_centre</th>
+<th align="left">argo_merge_cdnc</th>
+<th align="left">argo_merge_cdnc_qc</th>
+<th align="left">argo_merge_cdnc_adj</th>
+<th align="left">argo_merge_cdnc_adj_qc</th>
+<th align="left">argo_merge_cdnc_adj_err</th>
+<th align="right">argo_merge_pressure</th>
+<th align="right">argo_merge_pressure_qc</th>
+<th align="right">argo_merge_pressure_adj</th>
+<th align="right">argo_merge_pressure_adj_qc</th>
+<th align="right">argo_merge_pressure_adj_err</th>
+<th align="right">argo_merge_salinity</th>
+<th align="right">argo_merge_salinity_qc</th>
+<th align="right">argo_merge_salinity_adj</th>
+<th align="right">argo_merge_salinity_adj_qc</th>
+<th align="right">argo_merge_salinity_adj_err</th>
+<th align="right">argo_merge_temperature</th>
+<th align="right">argo_merge_temperature_qc</th>
+<th align="right">argo_merge_temperature_adj</th>
+<th align="right">argo_merge_temperature_adj_qc</th>
+<th align="right">argo_merge_temperature_adj_err</th>
+<th align="right">argo_merge_O2</th>
+<th align="right">argo_merge_O2_qc</th>
+<th align="left">argo_merge_O2_adj</th>
+<th align="left">argo_merge_O2_adj_qc</th>
+<th align="left">argo_merge_O2_adj_err</th>
+<th align="left">argo_merge_bbp</th>
+<th align="left">argo_merge_bbp_qc</th>
+<th align="left">argo_merge_bbp_adj</th>
+<th align="left">argo_merge_bbp_adj_qc</th>
+<th align="left">argo_merge_bbp_adj_err</th>
+<th align="left">argo_merge_bbp470</th>
+<th align="left">argo_merge_bbp470_qc</th>
+<th align="left">argo_merge_bbp470_adj</th>
+<th align="left">argo_merge_bbp470_adj_qc</th>
+<th align="left">argo_merge_bbp470_adj_err</th>
+<th align="left">argo_merge_bbp532</th>
+<th align="left">argo_merge_bbp532_qc</th>
+<th align="left">argo_merge_bbp532_adj</th>
+<th align="left">argo_merge_bbp532_adj_qc</th>
+<th align="left">argo_merge_bbp532_adj_err</th>
+<th align="left">argo_merge_bbp700</th>
+<th align="left">argo_merge_bbp700_qc</th>
+<th align="left">argo_merge_bbp700_adj</th>
+<th align="left">argo_merge_bbp700_adj_qc</th>
+<th align="left">argo_merge_bbp700_adj_err</th>
+<th align="left">argo_merge_turbidity</th>
+<th align="left">argo_merge_turbidity_qc</th>
+<th align="left">argo_merge_turbidity_adj</th>
+<th align="left">argo_merge_turbidity_adj_qc</th>
+<th align="left">argo_merge_turbidity_adj_err</th>
+<th align="left">argo_merge_cp</th>
+<th align="left">argo_merge_cp_qc</th>
+<th align="left">argo_merge_cp_adj</th>
+<th align="left">argo_merge_cp_adj_qc</th>
+<th align="left">argo_merge_cp_adj_err</th>
+<th align="left">argo_merge_cp660</th>
+<th align="left">argo_merge_cp660_qc</th>
+<th align="left">argo_merge_cp660_adj</th>
+<th align="left">argo_merge_cp660_adj_qc</th>
+<th align="left">argo_merge_cp660_adj_err</th>
+<th align="left">argo_merge_chl</th>
+<th align="left">argo_merge_chl_qc</th>
+<th align="left">argo_merge_chl_adj</th>
+<th align="left">argo_merge_chl_adj_qc</th>
+<th align="left">argo_merge_chl_adj_err</th>
+<th align="left">argo_merge_cdom</th>
+<th align="left">argo_merge_cdom_qc</th>
+<th align="left">argo_merge_cdom_adj</th>
+<th align="left">argo_merge_cdom_adj_qc</th>
+<th align="left">argo_merge_cdom_adj_err</th>
+<th align="left">argo_merge_NO3</th>
+<th align="left">argo_merge_NO3_qc</th>
+<th align="left">argo_merge_NO3_adj</th>
+<th align="left">argo_merge_NO3_adj_qc</th>
+<th align="left">argo_merge_NO3_adj_err</th>
+<th align="left">argo_merge_bisulfide</th>
+<th align="left">argo_merge_bisulfide_qc</th>
+<th align="left">argo_merge_bisulfide_adj</th>
+<th align="left">argo_merge_bisulfide_adj_qc</th>
+<th align="left">argo_merge_bisulfide_adj_err</th>
+<th align="left">argo_merge_ph</th>
+<th align="left">argo_merge_ph_qc</th>
+<th align="left">argo_merge_ph_adj</th>
+<th align="left">argo_merge_ph_adj_qc</th>
+<th align="left">argo_merge_ph_adj_err</th>
+<th align="left">argo_merge_down_irr</th>
+<th align="left">argo_merge_down_irr_qc</th>
+<th align="left">argo_merge_down_irr_adj</th>
+<th align="left">argo_merge_down_irr_adj_qc</th>
+<th align="left">argo_merge_down_irr_adj_err</th>
+<th align="left">argo_merge_down_irr380</th>
+<th align="left">argo_merge_down_irr380_qc</th>
+<th align="left">argo_merge_down_irr380_adj</th>
+<th align="left">argo_merge_down_irr380_adj_qc</th>
+<th align="left">argo_merge_down_irr380_adj_err</th>
+<th align="left">argo_merge_down_irr412</th>
+<th align="left">argo_merge_down_irr412_qc</th>
+<th align="left">argo_merge_down_irr412_adj</th>
+<th align="left">argo_merge_down_irr412_adj_qc</th>
+<th align="left">argo_merge_down_irr412_adj_err</th>
+<th align="left">argo_merge_down_irr443</th>
+<th align="left">argo_merge_down_irr443_qc</th>
+<th align="left">argo_merge_down_irr443_adj</th>
+<th align="left">argo_merge_down_irr443_adj_qc</th>
+<th align="left">argo_merge_down_irr443_adj_err</th>
+<th align="left">argo_merge_down_irr490</th>
+<th align="left">argo_merge_down_irr490_qc</th>
+<th align="left">argo_merge_down_irr490_adj</th>
+<th align="left">argo_merge_down_irr490_adj_qc</th>
+<th align="left">argo_merge_down_irr490_adj_err</th>
+<th align="left">argo_merge_down_irr555</th>
+<th align="left">argo_merge_down_irr555_qc</th>
+<th align="left">argo_merge_down_irr555_adj</th>
+<th align="left">argo_merge_down_irr555_adj_qc</th>
+<th align="left">argo_merge_down_irr555_adj_err</th>
+<th align="left">argo_merge_up_irr</th>
+<th align="left">argo_merge_up_irr_qc</th>
+<th align="left">argo_merge_up_irr_adj</th>
+<th align="left">argo_merge_up_irr_adj_qc</th>
+<th align="left">argo_merge_up_irr_adj_err</th>
+<th align="left">argo_merge_up_irr412</th>
+<th align="left">argo_merge_up_irr412_qc</th>
+<th align="left">argo_merge_up_irr412_adj</th>
+<th align="left">argo_merge_up_irr412_adj_qc</th>
+<th align="left">argo_merge_up_irr412_adj_err</th>
+<th align="left">argo_merge_up_irr443</th>
+<th align="left">argo_merge_up_irr443_qc</th>
+<th align="left">argo_merge_up_irr443_adj</th>
+<th align="left">argo_merge_up_irr443_adj_qc</th>
+<th align="left">argo_merge_up_irr443_adj_err</th>
+<th align="left">argo_merge_up_irr490</th>
+<th align="left">argo_merge_up_irr490_qc</th>
+<th align="left">argo_merge_up_irr490_adj</th>
+<th align="left">argo_merge_up_irr490_adj_qc</th>
+<th align="left">argo_merge_up_irr490_adj_err</th>
+<th align="left">argo_merge_up_irr555</th>
+<th align="left">argo_merge_up_irr555_qc</th>
+<th align="left">argo_merge_up_irr555_adj</th>
+<th align="left">argo_merge_up_irr555_adj_qc</th>
+<th align="left">argo_merge_up_irr555_adj_err</th>
+<th align="left">argo_merge_down_par</th>
+<th align="left">argo_merge_down_par_qc</th>
+<th align="left">argo_merge_down_par_adj</th>
+<th align="left">argo_merge_down_par_adj_qc</th>
+<th align="left">argo_merge_down_par_adj_err</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">2900114</td>
+<td align="right">189</td>
+<td align="left">2011-05-11</td>
+<td align="right">-59.138</td>
+<td align="right">95.245</td>
+<td align="right">1040.0</td>
+<td align="right">1</td>
+<td align="left">A</td>
+<td align="left">D</td>
+<td align="left">AO</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">1040.0</td>
+<td align="right">1</td>
+<td align="right">1040.4</td>
+<td align="right">1</td>
+<td align="right">2.4</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">1.544</td>
+<td align="right">1</td>
+<td align="right">1.544</td>
+<td align="right">1</td>
+<td align="right">0.002</td>
+<td align="right">184.1</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">2900114</td>
+<td align="right">189</td>
+<td align="left">2011-05-11</td>
+<td align="right">-59.138</td>
+<td align="right">95.245</td>
+<td align="right">1042.0</td>
+<td align="right">1</td>
+<td align="left">A</td>
+<td align="left">D</td>
+<td align="left">AO</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">1042.0</td>
+<td align="right">1</td>
+<td align="right">1042.4</td>
+<td align="right">1</td>
+<td align="right">2.4</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">1.542</td>
+<td align="right">1</td>
+<td align="right">1.542</td>
+<td align="right">1</td>
+<td align="right">0.002</td>
+<td align="right">184.2</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">2900114</td>
+<td align="right">189</td>
+<td align="left">2011-05-11</td>
+<td align="right">-59.138</td>
+<td align="right">95.245</td>
+<td align="right">1044.0</td>
+<td align="right">1</td>
+<td align="left">A</td>
+<td align="left">D</td>
+<td align="left">AO</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">1044.0</td>
+<td align="right">1</td>
+<td align="right">1044.4</td>
+<td align="right">1</td>
+<td align="right">2.4</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">1.541</td>
+<td align="right">1</td>
+<td align="right">1.541</td>
+<td align="right">1</td>
+<td align="right">0.002</td>
+<td align="right">184.3</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="even">
+<td align="right">2900114</td>
+<td align="right">189</td>
+<td align="left">2011-05-11</td>
+<td align="right">-59.138</td>
+<td align="right">95.245</td>
+<td align="right">1046.1</td>
+<td align="right">1</td>
+<td align="left">A</td>
+<td align="left">D</td>
+<td align="left">AO</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">1046.1</td>
+<td align="right">1</td>
+<td align="right">1046.5</td>
+<td align="right">1</td>
+<td align="right">2.4</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">1.542</td>
+<td align="right">1</td>
+<td align="right">1.542</td>
+<td align="right">1</td>
+<td align="right">0.002</td>
+<td align="right">184.3</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+<tr class="odd">
+<td align="right">2900114</td>
+<td align="right">189</td>
+<td align="left">2011-05-11</td>
+<td align="right">-59.138</td>
+<td align="right">95.245</td>
+<td align="right">1048.0</td>
+<td align="right">1</td>
+<td align="left">A</td>
+<td align="left">D</td>
+<td align="left">AO</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">1048.0</td>
+<td align="right">1</td>
+<td align="right">1048.4</td>
+<td align="right">1</td>
+<td align="right">2.4</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">34.739</td>
+<td align="right">1</td>
+<td align="right">0.01</td>
+<td align="right">1.542</td>
+<td align="right">1</td>
+<td align="right">1.542</td>
+<td align="right">1</td>
+<td align="right">0.002</td>
+<td align="right">184.3</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_var_coverage</span>(<span class="st">&quot;tblAltimetry_REP&quot;</span>, <span class="st">&quot;sla&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Time_Min</th>
+<th align="left">Time_Max</th>
+<th align="right">Lat_Min</th>
+<th align="right">Lat_Max</th>
+<th align="right">Lon_Min</th>
+<th align="right">Lon_Max</th>
+<th align="left">Depth_Min</th>
+<th align="left">Depth_Max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1993-01-01</td>
+<td align="left">2018-06-10</td>
+<td align="right">-89.875</td>
+<td align="right">89.875</td>
+<td align="right">-179.875</td>
+<td align="right">179.875</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_var_resolution</span>(<span class="st">&quot;tblAltimetry_REP&quot;</span>, <span class="st">&quot;sla&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Temporal_Resolution</th>
+<th align="left">Spatial_Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Daily</td>
+<td align="left">1/4° X 1/4°</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_var_unit</span>(<span class="st">&quot;tblAltimetry_REP&quot;</span>, <span class="st">&quot;sla&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Unit</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">m</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_columns</span>(<span class="st">&#39;tblSST_AVHRR_OI_NRT&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">lat</td>
+</tr>
+<tr class="even">
+<td align="left">lon</td>
+</tr>
+<tr class="odd">
+<td align="left">time</td>
+</tr>
+<tr class="even">
+<td align="left">sst</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="cruises" class="section level2">
 <h2><span class="header-section-number">2.2</span> Cruises</h2>
 <p>Out of the many data tables in CMAP, some are data collected and processed from cruises. Here are some examples of summarizing this data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cruisename =<span class="st"> &quot;KOK1606&quot;</span>
-<span class="kw">get_cruise_by_name</span>(cruisename) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()
-<span class="kw">get_cruise_bounds</span>(cruisename) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()
-<span class="kw">get_head</span>(<span class="st">&#39;tblFalkor_2018&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()
-## get_columns(&#39;tblAMT13_Chisholm&#39;) %&gt;% kable()</code></pre></div>
-<p>Each table contains many data “rows”, which are indexed by “keys” of the four values:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cruisename =<span class="st"> &quot;KOK1606&quot;</span> 
+<span class="kw">get_cruise_by_name</span>(cruisename) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">ID</th>
+<th align="left">Nickname</th>
+<th align="left">Name</th>
+<th align="left">Ship_Name</th>
+<th align="left">Start_Time</th>
+<th align="left">End_Time</th>
+<th align="right">Lat_Min</th>
+<th align="right">Lat_Max</th>
+<th align="right">Lon_Min</th>
+<th align="right">Lon_Max</th>
+<th align="left">Chief_Name</th>
+<th align="left">Keywords</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">589</td>
+<td align="left">Gradients_1</td>
+<td align="left">KOK1606</td>
+<td align="left">R/V Kaimikai O Kanaloa</td>
+<td align="left">2016-04-20 00:04:37</td>
+<td align="left">2016-05-04 02:33:45</td>
+<td align="right">21.4542</td>
+<td align="right">37.8864</td>
+<td align="right">-158.3355</td>
+<td align="right">-157.858</td>
+<td align="left">Virginia Armbrust</td>
+<td align="left">seaflow, simons, Scope_16</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_cruise_bounds</span>(cruisename) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">ID</th>
+<th align="left">dt1</th>
+<th align="left">dt2</th>
+<th align="right">lat1</th>
+<th align="right">lat2</th>
+<th align="right">lon1</th>
+<th align="right">lon2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">589</td>
+<td align="left">2016-04-20 00:04:37</td>
+<td align="left">2016-05-04 02:33:45</td>
+<td align="right">21.4542</td>
+<td align="right">37.8864</td>
+<td align="right">-158.3355</td>
+<td align="right">-157.858</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_head</span>(<span class="st">&#39;tblAMT13_Chisholm&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">time</th>
+<th align="right">lat</th>
+<th align="right">lon</th>
+<th align="right">depth</th>
+<th align="right">pbact_Chisholm</th>
+<th align="right">TQPCR_MED4_MIT9312_MIT9211_NATL2A_SS120_MIT9313_Chisholm</th>
+<th align="right">MED4PCR_Chisholm</th>
+<th align="right">MIT9312PCR_Chisholm</th>
+<th align="right">MIT9211PCR_Chisholm</th>
+<th align="right">NATL2APCR_Chisholm</th>
+<th align="right">SS120PCR_Chisholm</th>
+<th align="right">MIT9313PCR_Chisholm</th>
+<th align="right">sbact_Chisholm</th>
+<th align="left">density_AMT13</th>
+<th align="right">temp_C_AMT13</th>
+<th align="right">csal_ppt_AMT13</th>
+<th align="right">Light_Quanta_m2_sec_AMT13</th>
+<th align="right">chlA_AMT13</th>
+<th align="left">DCM_AMT13</th>
+<th align="left">05C_AMT13</th>
+<th align="left">25C_AMT13</th>
+<th align="left">03Density_AMT13</th>
+<th align="left">125Density_AMT13</th>
+<th align="left">TotalDepth_AMT13</th>
+<th align="left">MED4PCR_quality_Chisholm</th>
+<th align="left">MIT9312PCR_quality_Chisholm</th>
+<th align="right">MIT9211PCR_quality_Chisholm</th>
+<th align="left">NATL2APCR_quality_Chisholm</th>
+<th align="right">SS120PCR_quality_Chisholm</th>
+<th align="right">MIT9313PCR_quality_Chisholm</th>
+<th align="right">TQPCR_MED4_MIT9312_MIT9211_NATL2A_SS120_MIT9313_quality_Chisholm</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2003-09-14 09:55:00</td>
+<td align="right">47.983</td>
+<td align="right">-11.539</td>
+<td align="right">9.280</td>
+<td align="right">0.9206000</td>
+<td align="right">96901.054</td>
+<td align="right">95878.590</td>
+<td align="right">96.139927</td>
+<td align="right">1.000000</td>
+<td align="right">923.3245</td>
+<td align="right">1.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.2825333</td>
+<td align="left">NA</td>
+<td align="right">17.8958</td>
+<td align="right">35.6425</td>
+<td align="right">45.652811</td>
+<td align="right">0.0761</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">2003-09-14 09:55:00</td>
+<td align="right">47.983</td>
+<td align="right">-11.539</td>
+<td align="right">43.017</td>
+<td align="right">0.2690000</td>
+<td align="right">21001.014</td>
+<td align="right">19852.153</td>
+<td align="right">24.226982</td>
+<td align="right">1.000000</td>
+<td align="right">1121.9211</td>
+<td align="right">0.7138027</td>
+<td align="right">1.0000000</td>
+<td align="right">0.4385333</td>
+<td align="left">NA</td>
+<td align="right">16.3019</td>
+<td align="right">35.6470</td>
+<td align="right">9.754238</td>
+<td align="right">0.1072</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">2003-09-14 09:55:00</td>
+<td align="right">47.983</td>
+<td align="right">-11.539</td>
+<td align="right">53.629</td>
+<td align="right">0.1236000</td>
+<td align="right">4502.291</td>
+<td align="right">3847.637</td>
+<td align="right">6.132032</td>
+<td align="right">1.000000</td>
+<td align="right">645.5221</td>
+<td align="right">1.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.2341333</td>
+<td align="left">NA</td>
+<td align="right">15.2485</td>
+<td align="right">35.5911</td>
+<td align="right">4.237555</td>
+<td align="right">0.5024</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">2003-09-14 09:55:00</td>
+<td align="right">47.983</td>
+<td align="right">-11.539</td>
+<td align="right">62.327</td>
+<td align="right">0.0954667</td>
+<td align="right">2468.064</td>
+<td align="right">2120.974</td>
+<td align="right">4.158969</td>
+<td align="right">3.010477</td>
+<td align="right">338.6858</td>
+<td align="right">0.2588225</td>
+<td align="right">0.9763928</td>
+<td align="right">0.1315333</td>
+<td align="left">NA</td>
+<td align="right">14.6576</td>
+<td align="right">35.5787</td>
+<td align="right">2.620675</td>
+<td align="right">0.2852</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td align="left">2003-09-14 09:55:00</td>
+<td align="right">47.983</td>
+<td align="right">-11.539</td>
+<td align="right">78.587</td>
+<td align="right">0.0576667</td>
+<td align="right">2315.213</td>
+<td align="right">1420.991</td>
+<td align="right">2.133862</td>
+<td align="right">1.000000</td>
+<td align="right">889.0881</td>
+<td align="right">1.0000000</td>
+<td align="right">1.0000000</td>
+<td align="right">0.0554000</td>
+<td align="left">NA</td>
+<td align="right">13.8446</td>
+<td align="right">35.5778</td>
+<td align="right">1.134332</td>
+<td align="right">0.1979</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="left">NA</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_columns</span>(<span class="st">&#39;tblAMT13_Chisholm&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Columns</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">time</td>
+</tr>
+<tr class="even">
+<td align="left">lat</td>
+</tr>
+<tr class="odd">
+<td align="left">lon</td>
+</tr>
+<tr class="even">
+<td align="left">depth</td>
+</tr>
+<tr class="odd">
+<td align="left">pbact_Chisholm</td>
+</tr>
+<tr class="even">
+<td align="left">TQPCR_MED4_MIT9312_MIT9211_NATL2A_SS120_MIT9313_Chisholm</td>
+</tr>
+<tr class="odd">
+<td align="left">MED4PCR_Chisholm</td>
+</tr>
+<tr class="even">
+<td align="left">MIT9312PCR_Chisholm</td>
+</tr>
+<tr class="odd">
+<td align="left">MIT9211PCR_Chisholm</td>
+</tr>
+<tr class="even">
+<td align="left">NATL2APCR_Chisholm</td>
+</tr>
+</tbody>
+</table>
+<p>As you can see, each table contains many data “rows”, which are indexed by “keys” of the four values:</p>
 <p><strong>(Time, Latitude, Longitude, Depth)</strong></p>
 <p>Most functions in this package will involve using these data key values, or user-specified ranges of these keys, for certain operations. The most basic operation, explained next, is to download a dataset from a time and space range of interest.</p>
 </div>
@@ -180,46 +1503,114 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li>Upper and lower limits of the variables (<code>dt1</code>, <code>dt2</code>, <code>lon1</code>, <code>lon2</code>, <code>lat1</code>, <code>lat2</code>, <code>depth1</code>, <code>depth2</code>)</li>
 </ul>
 <p>These are used in the <code>space_time()</code> function, which downloads the data as a data frame.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat =<span class="st"> </span><span class="kw">get_spacetime</span>(<span class="dt">tableName =</span> <span class="st">&#39;tblsst_AVHRR_OI_NRT&#39;</span>,
-                     <span class="dt">varName =</span> <span class="st">&#39;sst&#39;</span>,
-                     <span class="dt">dt1 =</span> <span class="st">&#39;2016-04-30&#39;</span>,
-                     <span class="dt">dt2 =</span> <span class="st">&#39;2016-04-30&#39;</span>,
-                     <span class="dt">lon1 =</span> <span class="dv">69</span>,
-                     <span class="dt">lon2 =</span> <span class="dv">70</span>,
-                     <span class="dt">lat1 =</span> <span class="dv">-161</span>,
-                     <span class="dt">lat2 =</span> <span class="dv">-160</span>,
-                     <span class="dt">depth1 =</span> <span class="dv">0</span>,
-                     <span class="dt">depth2 =</span> <span class="dv">5</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()
-<span class="kw">head</span>(dat)</code></pre></div>
-<pre><code>## [1] &quot;||&quot; &quot;||&quot; &quot;||&quot; &quot;||&quot;</code></pre>
-</div>
-<div id="summarize-data" class="section level2">
-<h2><span class="header-section-number">2.4</span> Summarize data</h2>
-<p><strong>Code is outdated</strong></p>
-<p>A typical table’s attributes include:</p>
-<ul>
-<li>Name of variables,</li>
-<li>Type of variables, i.e., quantitative, qualitative, time,</li>
-<li>Size of the table,</li>
-<li>Space-time range information,</li>
-<li>Numerical variable range summary.</li>
-</ul>
-<p>These are used in the various following functions, which are designed to summarize data tables by extracting these table attributes. This is useful for learning about the tables without downloading them prior to analysis. Here are some key examples:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_spacetime</span>(<span class="dt">tableName =</span> <span class="st">&#39;tblArgoMerge_REP&#39;</span>,
+              <span class="dt">varName =</span> <span class="st">&#39;argo_merge_salinity_adj&#39;</span>,
+              <span class="dt">dt1=</span><span class="st">&#39;2015-05-01&#39;</span>,
+              <span class="dt">dt2=</span><span class="st">&#39;2015-05-30&#39;</span>,
+              <span class="dt">lat1=</span><span class="dv">28</span>,
+              <span class="dt">lat2=</span><span class="dv">38</span>,
+              <span class="dt">lon1=</span><span class="op">-</span><span class="dv">71</span>,
+              <span class="dt">lon2=</span><span class="op">-</span><span class="dv">50</span>,
+              <span class="dt">depth1=</span><span class="dv">0</span>,
+              <span class="dt">depth2=</span><span class="dv">100</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">time</th>
+<th align="right">lat</th>
+<th align="right">lon</th>
+<th align="right">depth</th>
+<th align="right">argo_merge_salinity_adj</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">4.3</td>
+<td align="right">36.71301</td>
+</tr>
+<tr class="even">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">6.0</td>
+<td align="right">36.71301</td>
+</tr>
+<tr class="odd">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">7.6</td>
+<td align="right">36.71099</td>
+</tr>
+<tr class="even">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">8.0</td>
+<td align="right">36.71101</td>
+</tr>
+<tr class="odd">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">10.0</td>
+<td align="right">36.70300</td>
+</tr>
+<tr class="even">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">11.7</td>
+<td align="right">36.69700</td>
+</tr>
+<tr class="odd">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">12.0</td>
+<td align="right">36.69701</td>
+</tr>
+<tr class="even">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">14.0</td>
+<td align="right">36.69500</td>
+</tr>
+<tr class="odd">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">16.0</td>
+<td align="right">36.69401</td>
+</tr>
+<tr class="even">
+<td align="left">2015-05-02</td>
+<td align="right">32.348</td>
+<td align="right">-63.45</td>
+<td align="right">16.7</td>
+<td align="right">36.69402</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="colocalize-data" class="section level2">
-<h2><span class="header-section-number">2.5</span> Colocalize data</h2>
+<h2><span class="header-section-number">2.4</span> Colocalize data</h2>
 <p>First of all, what does it mean to <em>colocalize</em>? Imagine a ship moving along a trajectory, whose location in space and time is recorded in latitude/longitude/time. Then, we’d like to obtain data like sea surface temperature or salinity, <em>as if we were recording it along the ship’s trajectory</em>. Colocalization simply means retrieving such data manually from the database, by querying from the <em>vicinity</em> (a rectangle) of each lat/lon/time triplet of interest, and summarizing it (e.g. taking the average).</p>
 <p>The size of the vicinity is define by the user-specified “slack” in longitude, latitude and time. For instance, one could ask for 1 degrees of slack in longitude and latitude, and 6 hours of slack in time.</p>
 <p>The main function is <code>along_track</code>, which colocalizes data for one or multiple tables and variables at a time. The available cruises can be found by running the function <code>cruises()</code>. The available data tables and variable names are listed in the catalog (<code>get_catalog()</code>, or from <a href="https://cmap.readthedocs.io/en/latest/catalog/catalog.html" class="uri">https://cmap.readthedocs.io/en/latest/catalog/catalog.html</a>). Here is a short example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cruise=<span class="st">&#39;diel&#39;</span>
-targetTables=<span class="kw">c</span>(<span class="st">&#39;tblSeaFlow&#39;</span>, <span class="st">&#39;tblPisces_NRT&#39;</span>)
-targetVars=<span class="kw">c</span>(<span class="st">&#39;synecho_abundance&#39;</span>, <span class="st">&#39;NO3&#39;</span>)
-depth1=<span class="dv">0</span>
-depth2=<span class="dv">5</span>
-temporalTolerance=<span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">4</span>)
-latTolerance=<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>)
-lonTolerance=<span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>)
-depthTolerance=<span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">5</span>)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cruise =<span class="st"> &#39;diel&#39;</span>
+targetTables =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tblSeaFlow&#39;</span>, <span class="st">&#39;tblPisces_NRT&#39;</span>)
+targetVars =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;synecho_abundance&#39;</span>, <span class="st">&#39;NO3&#39;</span>)
+depth1 =<span class="st"> </span><span class="dv">0</span>
+depth2 =<span class="st"> </span><span class="dv">5</span>
+temporalTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">4</span>)
+latTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>)
+lonTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>)
+depthTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">5</span>)
 dat =<span class="st"> </span><span class="kw">along_track</span>(cruise[<span class="dv">1</span>],
                   targetTables[<span class="dv">1</span>],
                   targetVars[<span class="dv">1</span>],
@@ -231,9 +1622,7 @@ dat =<span class="st"> </span><span class="kw">along_track</span>(cruise[<span c
                   depthTolerance[<span class="dv">1</span>])</code></pre></div>
 <pre><code>## 
   |                                                                       
-  |                                                                 |   0%
-  |                                                                       
-  |=================================================================| 100%</code></pre>
+  |                                                                 |   0%</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dat) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
 <table>
 <thead>
@@ -292,15 +1681,99 @@ dat =<span class="st"> </span><span class="kw">along_track</span>(cruise[<span c
 </table>
 </div>
 <div id="issue-sql-query" class="section level2">
-<h2><span class="header-section-number">2.6</span> Issue SQL query</h2>
+<h2><span class="header-section-number">2.5</span> Issue SQL query</h2>
 <p>(For advanced users) Simons CMAP datasets are hosted in a SQL database and the CMAP4R R package provides the user with a number of pre-developed methods to extract and retrieve subsets of the data. The rest of this documentation is dedicated to explore and explain these methods. In addition to the pre-developed functions described above, you may issue custom SQL query statement and returns the results in form of a data frame.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">exec_manualquery</span>(<span class="st">&quot;SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRTx</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat =<span class="st"> </span><span class="kw">exec_manualquery</span>(<span class="st">&quot;SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRT</span>
 <span class="st">         WHERE</span>
 <span class="st">         [time] BETWEEN &#39;2017-06-03&#39; AND &#39;2017-06-03&#39; AND</span>
 <span class="st">         lat BETWEEN 10 AND 55 AND</span>
 <span class="st">         lon BETWEEN -180 AND 100 AND</span>
 <span class="st">         depth BETWEEN 0 AND 0.5</span>
-<span class="st">         ORDER BY [time], lat, lon, depth&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<span class="st">         ORDER BY [time], lat, lon, depth&quot;</span>) 
+dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head</span>(<span class="dv">10</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">time</th>
+<th align="right">lat</th>
+<th align="right">lon</th>
+<th align="right">depth</th>
+<th align="right">Fe</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-180.0</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+<tr class="even">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-179.5</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-179.0</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+<tr class="even">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-178.5</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-178.0</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+<tr class="even">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-177.5</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-177.0</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+<tr class="even">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-176.5</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+<tr class="odd">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-176.0</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+<tr class="even">
+<td align="left">2017-06-03</td>
+<td align="right">10</td>
+<td align="right">-175.5</td>
+<td align="right">0.494025</td>
+<td align="right">1.5e-05</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -309,7 +1782,7 @@ dat =<span class="st"> </span><span class="kw">along_track</span>(cruise[<span c
           </div>
         </div>
       </div>
-<a href="catalog-of-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="getting-started.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="visualization.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
