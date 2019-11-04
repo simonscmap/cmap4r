@@ -6,7 +6,7 @@
 #
 check_authorization = function(query_out){
   if(rawToChar(query_out$content) == "Unauthorized"){
-    print("Please reset API authorization key")
+    message("Please reset API authorization key")
     return(FALSE)
   } else return(TRUE)
 }
@@ -66,11 +66,11 @@ check_rangevar <- function(range_var) {
   if( !any(names(range_var) %in% "lon"))
     stop("Longitude range is missing.")
   if( !any(names(range_var) %in% "time")){
-    print("Time range is missing. Using default date range.")
+    message("Time range is missing. Using default date range.")
     range_var$time <- c("2000-01-01", Sys.Date())
   }
   if( !any(names(range_var) %in% "depth")){
-    print("Depth range is missing. Using default date range.")
+    message("Depth range is missing. Using default date range.")
     range_var$depth <- c(0, 0)
   }
   return(range_var)
