@@ -19,9 +19,7 @@ Specify following parameters to retrieve the required data using **get_spacetime
 
 
 
-
-```{r}
-library(cmap4r)
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 tableName <- "tblsst_AVHRR_OI_NRT"
 varName <- "sst"
@@ -55,8 +53,8 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 Call **plot_ts** function to obtain **plot_ly/ggplot2** object. User can modify the plot object to produce a properly annotated visualization. 
 
 
-```{r}
-library(cmap4r)
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 # Input variable:
 tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
@@ -78,6 +76,7 @@ p <- plot_ts(tableName, varName, lat1, lat2, lon1, lon2,
 p
 ```
 
+
 ## Depth profile plot
 
 Create a depth profile plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_depthprofile** to download the data aggregated by depth.  
@@ -94,8 +93,9 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 Call **plot_depth** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
 
 
-```{r}
-library(cmap4r)
+
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 # Inpit variable:
 tableList <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
@@ -122,6 +122,7 @@ p
 
 
 
+
 ## XY plot
 
 Create a scatter plot of two table variables from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_timeseries/get_depthprofile/get_spacetime** to download the data. Why aggregate though? The two variables from the two tables might exist at different time/space resolutions. Because of this potential discrepancy in data resolution, averaging the two datasets at some resolution according to, say, `agg_var="time"`, by day, is a useful step before plotting a relationship between the two.
@@ -139,8 +140,8 @@ Call **plot_xy** function to obtain **plot_ly/ggplot2** object.  User can modify
 
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
-library(cmap4r)
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 # Inpit variable:
 tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
@@ -161,6 +162,9 @@ p <- plot_xy(tableList, varList, lat1, lat2, lon1, lon2,
 p
 ```
 
+
+
+
 ## Histograms 
 
 Create a histogram plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_spacetime** to download the data.  
@@ -175,8 +179,8 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 Call **plot_hist** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
-library(cmap4r)
+
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 # Inpit variable:
 tableList <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
@@ -197,7 +201,4 @@ p <- plot_hist(tableName, varName, lat1, lat2, lon1, lon2,
                dt1, dt2, depth1, depth2, "plotly")
 p
 ```
-
-
-
 
