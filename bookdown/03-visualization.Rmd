@@ -1,8 +1,5 @@
 # Visualization
 
-<!-- There are two built-in options for making plots -- scatter plots to compare two -->
-<!-- variable of interest, or histograms of individual variables. -->
-
 
 ## Regional map
 
@@ -16,8 +13,6 @@ Specify following parameters to retrieve the required data using **get_spacetime
 
 
 **plot_regmap** function download the data, and output a regional map plot object: **plot_ly/ggplot2** with "x axis" as "longitude" and "y axis" as "lattitude". User can modify the plot object to produce a properly annotated visualization. 
-
-
 
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
@@ -76,6 +71,7 @@ p <- plot_ts(tableName, varName, lat1, lat2, lon1, lon2,
 p
 ```
 
+
 ## Depth profile plot
 
 Create a depth profile plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_depthprofile** to download the data aggregated by depth.  
@@ -90,6 +86,7 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 
 
 Call **plot_depth** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
+
 
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
@@ -119,6 +116,7 @@ p
 
 
 
+
 ## XY plot
 
 Create a scatter plot of two table variables from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_timeseries/get_depthprofile/get_spacetime** to download the data. Why aggregate though? The two variables from the two tables might exist at different time/space resolutions. Because of this potential discrepancy in data resolution, averaging the two datasets at some resolution according to, say, `agg_var="time"`, by day, is a useful step before plotting a relationship between the two.
@@ -132,6 +130,7 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 
 
 Call **plot_xy** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
+
 
 
 
@@ -157,6 +156,9 @@ p <- plot_xy(tableList, varList, lat1, lat2, lon1, lon2,
 p
 ```
 
+
+
+
 ## Histograms 
 
 Create a histogram plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_spacetime** to download the data.  
@@ -169,6 +171,7 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 + Spatio-temporal range variable includes (latitude, longitude, depth, time)
 
 Call **plot_hist** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
+
 
 
 ```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
@@ -192,7 +195,4 @@ p <- plot_hist(tableName, varName, lat1, lat2, lon1, lon2,
                dt1, dt2, depth1, depth2, "plotly")
 p
 ```
-
-
-
 
