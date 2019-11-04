@@ -72,8 +72,9 @@ get_head <- function(tableName, nrows = 5){
 #' }
 get_columns <- function(tableName){
   apiKey = get_api_key()
-  return(query(sprintf("SELECT COLUMN_NAME [Columns] FROM INFORMATION_SCHEMA.COLUMNS WHERE tableName = N'%s'", tableName), apiKey))
+  return(query(sprintf("SELECT COLUMN_NAME [Columns] FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = N'%s'", tableName), apiKey))
 }
+
 
 
 
@@ -128,7 +129,7 @@ get_catalog <- function(){
 #' }
 get_var <- function(tableName, varName){
   apiKey = get_api_key()
-  myquery = sprintf("SELECT * FROM tblVariables WHERE tableName='%s' AND Short_Name='%s'", tableName, varName)
+  myquery = sprintf("SELECT * FROM tblVariables WHERE Table_Name='%s' AND Short_Name='%s'", tableName, varName)
   return(query(myquery, apiKey))
 }
 
@@ -155,7 +156,7 @@ get_var <- function(tableName, varName){
 #' }
 get_var_catalog <- function(tableName, varName){
   apiKey = get_api_key()
-  myquery = sprintf("SELECT * FROM [dbo].udfCatalog() WHERE tableName='%s' AND Variable='%s'" ,tableName, varName)
+  myquery = sprintf("SELECT * FROM [dbo].udfCatalog() WHERE Table_Name='%s' AND Variable='%s'" ,tableName, varName)
   return(query(myquery, apiKey))
 }
 
@@ -313,7 +314,7 @@ is_grid  = function(tableName, varName){
   grid = TRUE
   myquery = "SELECT Spatial_Res_ID, RTRIM(LTRIM(Spatial_Resolution)) AS Spatial_Resolution FROM tblVariables "
   myquery = paste(myquery, "JOIN tblSpatial_Resolutions ON [tblVariables].Spatial_Res_ID=[tblSpatial_Resolutions].ID ", sep = "")
-  myquery = paste(myquery,sprintf("WHERE tableName='%s' AND Short_Name='%s' ",tableName,varName), sep = "")
+  myquery = paste(myquery,sprintf("WHERE Table_Name='%s' AND Short_Name='%s' ",tableName,varName), sep = "")
   df <- query(myquery,apiKey)
   if (nrow(df)<1) return(NULL)
   if (tolower(df$Spatial_Resolution[1])=='irregular'){

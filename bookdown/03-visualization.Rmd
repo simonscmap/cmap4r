@@ -20,8 +20,7 @@ Specify following parameters to retrieve the required data using **get_spacetime
 
 
 
-```{r}
-library(cmap4r)
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 tableName <- "tblsst_AVHRR_OI_NRT"
 varName <- "sst"
@@ -55,8 +54,7 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 Call **plot_ts** function to obtain **plot_ly/ggplot2** object. User can modify the plot object to produce a properly annotated visualization. 
 
 
-```{r}
-library(cmap4r)
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 # Input variable:
 tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
@@ -94,8 +92,7 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 Call **plot_depth** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
 
 
-```{r}
-library(cmap4r)
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 # Inpit variable:
 tableList <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
@@ -139,8 +136,7 @@ Call **plot_xy** function to obtain **plot_ly/ggplot2** object.  User can modify
 
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
-library(cmap4r)
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 # Inpit variable:
 tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
@@ -175,8 +171,7 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 Call **plot_hist** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE, eval=FALSE}
-library(cmap4r)
+```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUR}
 
 # Inpit variable:
 tableList <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
