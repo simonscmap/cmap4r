@@ -107,7 +107,8 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Tutorial for the cmap4r R package</a></li>
 <li class="chapter" data-level="1" data-path="getting-started.html"><a href="getting-started.html"><i class="fa fa-check"></i><b>1</b> Getting started</a><ul>
 <li class="chapter" data-level="1.1" data-path="getting-started.html"><a href="getting-started.html#obtaining-and-saving-api-key"><i class="fa fa-check"></i><b>1.1</b> Obtaining and saving API Key</a></li>
-<li class="chapter" data-level="1.2" data-path="getting-started.html"><a href="getting-started.html#catalog-of-data"><i class="fa fa-check"></i><b>1.2</b> Catalog of data</a></li>
+<li class="chapter" data-level="1.2" data-path="getting-started.html"><a href="getting-started.html#installation-and-setup"><i class="fa fa-check"></i><b>1.2</b> Installation and setup</a></li>
+<li class="chapter" data-level="1.3" data-path="getting-started.html"><a href="getting-started.html#catalog-of-data"><i class="fa fa-check"></i><b>1.3</b> Catalog of data</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="data-retrieval.html"><a href="data-retrieval.html"><i class="fa fa-check"></i><b>2</b> Data Retrieval</a><ul>
 <li class="chapter" data-level="2.1" data-path="data-retrieval.html"><a href="data-retrieval.html#obtaining-data-summaries"><i class="fa fa-check"></i><b>2.1</b> Obtaining data summaries</a></li>
@@ -146,10 +147,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="obtaining-and-saving-api-key" class="section level2">
 <h2><span class="header-section-number">1.1</span> Obtaining and saving API Key</h2>
 <p>CMAP hosts data on a Microsoft SQL Server. To retrieve data from the database, <code>cmap4r</code> requires an API key. For this, the user needs to register on the <a href="https://simonscmap.com/register">SimonsCMAP</a> website and navigate to the “APIKeys” tab on the webpage to obtain an API key. The package allows the user to save the key as a <strong>keyring variable</strong> which will be used for data retrieval whenever required.</p>
-<p>After installing <code>cmap4r</code> (using <code>devtools::install_github(&quot;simonscmap/cmap4r/cmap4r&quot;)</code>), use the <code>set_authorization()</code> function to set/reset the API Key. You will be prompted to enter the key on the command line or in a pop-up prompt.</p>
+</div>
+<div id="installation-and-setup" class="section level2">
+<h2><span class="header-section-number">1.2</span> Installation and setup</h2>
+<p>First, open R in a command line or in an R console. In order to install the R package, first install the <a href="https://cran.r-project.org/web/packages/devtools/readme/README.html">devtools</a> R package using <code>install.packages(&quot;devtools&quot;)</code>.</p>
+<p>Next, install the <a href="https://github.com/simonscmap/cmap4r">cmap4r</a> R package using <code>devtools::install_github(&quot;simonscmap/cmap4r/cmap4r&quot;)</code>. There are some other dependencies to install as well:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Package for data processing:
+<span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)  
+
+## Packages for visualization:
+<span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)
+<span class="kw">install.packages</span>(<span class="st">&quot;plotly&quot;</span>)</code></pre></div>
+<p>Now, in your R session, run <code>set_authorization()</code> to set/reset the API Key. You will be prompted to enter the key on the command line or in a pop-up prompt. Alternatively, you can attempt to use any of the functions (e.g. <code>get_catalog()</code>) and you will be prompted to enter the key.</p>
 </div>
 <div id="catalog-of-data" class="section level2">
-<h2><span class="header-section-number">1.2</span> Catalog of data</h2>
+<h2><span class="header-section-number">1.3</span> Catalog of data</h2>
 <p>You can obtain the latest version of the data catalog for the CMAP data (<a href="https://cmap.readthedocs.io/en/latest/catalog/catalog.html" class="uri">https://cmap.readthedocs.io/en/latest/catalog/catalog.html</a>) to R using <code>get_catalog()</code>, partially reproduced here.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">get_catalog</span>() <span class="op">%&gt;%</span>
 <span class="st">  </span><span class="kw">select</span>(Variable, Table_Name, Unit, Sensor, Unit) <span class="op">%&gt;%</span>
