@@ -36,7 +36,7 @@ get_cruises <- function(){
 #' #
 #' }
 get_cruise_variables <- function(cruiseName){
-  df = cruise_by_name(cruiseName)
+  df = get_cruise_by_name(cruiseName)
   exequery <- sprintf('SELECT * FROM dbo.udfCruiseVariables(%d) ',
                       df$ID[1])
   apiKey = get_api_key()
@@ -128,7 +128,7 @@ get_cruise_bounds <- function(cruisename){
 #' }
 get_cruise_trajectory <- function(cruisename){
   apiKey = get_api_key()
-  df = cruise_by_name(cruisename)
+  df = get_cruise_by_name(cruisename)
   myquery = sprintf("EXEC uspCruiseTrajectory %d", unlist(df[['ID']][1]))
   df = query(myquery, apiKey)
 
