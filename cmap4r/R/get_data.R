@@ -14,8 +14,8 @@
 #' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
 #' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
 #' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
-#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
-#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.
 #' @return required subset of the table is ordered by time, lat, lon, and depth (if exists).
 #' @export
 #' @examples
@@ -178,11 +178,18 @@ get_timeseries <- function(tableName, varName, lat1, lat2,
 
 
 
-#' Retrieve the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). The output is aggregated by depth, i.e., we compute the mean and standard deviation of a variable of interest in the specified range of inputs. Also, the function is capable of binning the timeseries data weekly, monthly, quarterly, or annually.
+#' Retrieve the subset of a table from the Simons CMAP database using the
+#' space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1,
+#' depth2). The output is aggregated by depth, i.e., we compute the mean and
+#' standard deviation of a variable of interest in the specified range of
+#' inputs. Also, the function is capable of binning the timeseries data weekly,
+#' monthly, quarterly, or annually.
 #' 
-#' Retrieve subset of a table  aggregated by depth from the Simons CMAP databse using the space-time range inputs. 
+#' Retrieve subset of a table aggregated by depth from the Simons CMAP databse
+#' using the space-time range inputs.
 #' 
-#' Compute mean and standard deviation at each depth level based on the range of lattitude, longitude and time inputs.  
+#' Compute mean and standard deviation at each depth level based on the range of
+#' lattitude, longitude and time inputs.
 #'
 #' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
 #' @param varName specify short name of a variable in the table. Use "get_catalog()" to retrieve list of table variables on the database. 

@@ -123,7 +123,7 @@ get_cruise_bounds <- function(cruisename){
 #' 
 #' #
 #' ## Variable attribute:
-#' cruiseTrajectory  <- cruise_trajectory('KM1513')
+#' cruiseTrajectory  <- get_cruise_trajectory('KM1513')
 #' #
 #' }
 get_cruise_trajectory <- function(cruisename){
