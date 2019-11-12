@@ -117,9 +117,18 @@ process_response_to_tibble <- function(response, route){
   #if(route == "/api/data/query?"){
   # print(route)
   if (grep("api", route)){
+
     ## Handling CSV responses.
+
+    ## ## Old
+    ## a = invisible(httr::content(response, "raw"))
+    ## a = suppressMessages(readr::read_csv(a))
+
+    ## New: add a in case the first line is blank, add a header.
+    headers = substr(suppressMessages(httr::content(response, "text")), 1, 1) != '\n'
     a = invisible(httr::content(response, "raw"))
-    a = suppressMessages(readr::read_csv(a))
+    a = suppressMessages(readr::read_csv(a, col_names=headers))
+
   } else if (grep("dataretrieval", route)){
   # } else if (route == "/dataretrieval/query?"){
     ## Handling JSON responses.
@@ -194,11 +203,11 @@ query <- function(myquery, apiKey){
 
 # Returns a subset of data according to space-time constraints. (Identical function in python.)
 subset <- function(spName, table, variable, dt1, dt2, lat1, lat2, lon1,
-                   lon2, depth1, depth2, apiKey){
-        query = sprintf('EXEC %s ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', spName)
-        args = list(table, variable, dt1, dt2, lat1, lat2,
-                    lon1, lon2, depth1, depth2)
-        return(stored_proc(query, args, apiKey))
+             lon2, depth1, depth2, apiKey){
+  query = sprintf('EXEC %s ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', spName)
+  args = list(table, variable, dt1, dt2, lat1, lat2,
+              lon1, lon2, depth1, depth2)
+  return(stored_proc(query, args, apiKey))
 }
 
 # Executes a stored procedure. (Near-identical function in python.) Executes a
@@ -206,30 +215,31 @@ subset <- function(spName, table, variable, dt1, dt2, lat1, lat2, lon1,
 # \code{query()}.
 #' @importFrom assertthat assert_that is.string
 stored_proc <- function(query, args, apiKey){
-        payload =list(tableName = args[1],
-                      fields = args[2],
-                      dt1 = args[3],
-                      dt2 = args[4],
-                      lat1 = args[5],
-                      lat2 = args[6],
-                      lon1 = args[7],
-                      lon2 = args[8],
-                      depth1 = args[9],
-                      depth2 = args[10],
-                      spName = strsplit(toString(query), " ")[[1]][2])
+  payload =list(tableName = args[1],
+                fields = args[2],
+                dt1 = args[3],
+                dt2 = args[4],
+                lat1 = args[5],
+                lat2 = args[6],
+                lon1 = args[7],
+                lon2 = args[8],
+                depth1 = args[9],
+                depth2 = args[10],
+                spName = strsplit(toString(query), " ")[[1]][2])
 
-        ## ## Special handling of dates (temporary)
-        ## payload$dt1 = paste0(payload$dt1, " 00:00:00")
-        ## payload$dt2 = paste0(payload$dt2, " 00:00:00")
+  ## ## Special handling of dates (temporary)
+  ## payload$dt1 = paste0(payload$dt1, " 00:00:00")
+  ## payload$dt2 = paste0(payload$dt2, " 00:00:00")
 
-        assertthat::assert_that(validate_sp_args(args[[1]],
-                                                 args[[2]], args[[3]],
-                                     args[[4]], args[[5]],
-                                     args[[6]], args[[7]],
-                                     args[[8]], args[[9]], args[[10]]))
-        # route = '/dataretrieval/sp?'     # JSON format, deprecated
-        route = '/api/data/sp?'     # CSV format
-        request(payload, route = route, apiKey)}
+  assertthat::assert_that(validate_sp_args(args[[1]],
+                                           args[[2]], args[[3]],
+                               args[[4]], args[[5]],
+                               args[[6]], args[[7]],
+                               args[[8]], args[[9]], args[[10]]))
+  # route = '/dataretrieval/sp?'     # JSON format, deprecated
+  route = '/api/data/sp?'     # CSV format
+  request(payload, route = route, apiKey)
+}
 
 
 
@@ -250,14 +260,12 @@ request <- function(payload, route, apiKey){
   url = paste0(baseURL,
                route,
                url_safe_query)
-  # print(url)
   header = httr::add_headers(Authorization = paste0("Api-Key ", apiKey))
   response = httr::GET(url, header)
 
   ## TODO: Consider using RETRY("GET", "http://invalidhostname/"), since the
   ## initial request sometimes fails.
 
-  ## if(!check_error(response)) browser() ## temporary
   stopifnot(check_error(response))
   return(process_response_to_tibble(response,
                                     route)) ## The second argument is until

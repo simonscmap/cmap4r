@@ -222,7 +222,7 @@ get_timeseries <- function(tableName, varName, lat1, lat2,
 #' head(tbl.subset)
 #' #
 #' }
-get_depthprofile = function(tableName, varName, lat1, lat2,
+get_depthprofile <- function(tableName, varName, lat1, lat2,
                             lon1, lon2, dt1, dt2,
                             depth1, depth2) {
   range_var <- list()
@@ -277,6 +277,7 @@ get_depthprofile = function(tableName, varName, lat1, lat2,
 exec_manualquery <- function(manual_query) {
   apiKey = get_api_key()
   out <- query(manual_query,apiKey)
+
   return(out)
 }
 

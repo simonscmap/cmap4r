@@ -80,11 +80,10 @@ atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
 
 
 
-# Match one dataset with another on hand.
-# Loops through the target data sets and match them with the source data set
-# according to the the accosiated tolerance parameters.
-# Returns a compiled dataframe of the source and matched target data
-#   sets.
+#' Match one dataset with another on hand.  Loops through the target data sets
+#' and match them with the source data set according to the the accoiated
+#' tolerance parameters.  Returns a compiled dataframe of the source and matched
+#' target data sets.
 #' @importFrom utils txtProgressBar setTxtProgressBar
 compile <- function(sourceTable,
                     sourceVar,
