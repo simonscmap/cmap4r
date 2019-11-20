@@ -398,8 +398,65 @@ get_metadata <- function(tables, variables){
 
 
 
-
-
+#' Retrieve the number of observations in the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).
+#'
+#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
+#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.
+#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.
+#' @return required subset of the table is ordered by time, lat, lon, and depth (if exists).
+#' @export
+#' @examples
+#' \donttest{
+#' ## Input: Table name; variable name, space time range information
+#' tableName <- "tblsst_AVHRR_OI_NRT" # table name
+#' # Range variable [lat,lon,time]
+#' lat1 = 10; lat2 = 70
+#' lon1 = -180; lon2 = -80
+#' dt1 = "2016-04-30"; dt2 = "2016-04-30"
+#' #
+#' ## Subset selection:
+#' ncount <- get_count(tableName, lat1, lat2, lon1, lon2, dt1, dt2)
+#' ncount
+#' #
+#' }
+get_count = function(tableName, lat1 = NULL, lat2 = NULL, 
+                     lon1 = NULL, lon2 = NULL, 
+                     dt1 = NULL, dt2 = NULL,
+                     depth1 = NULL, depth2 = NULL){
+  range_var <- list()
+  range_var$time <- c(dt1, dt2)
+  range_var$lat <- c(lat1, lat2)
+  range_var$lon <- c(lon1, lon2)
+  range_var$depth <- c(depth1, depth2)
+  if(length(range_var)!=0){
+    tout <- NULL
+    for (tmp in names(range_var)) {
+      if(length(range_var[[tmp]])==1)
+        range_var[[tmp]] <- rep(range_var[[tmp]],2)
+      if(tmp == 'time')
+        range_var[[tmp]] <- paste("\n",range_var[[tmp]],"\n", sep = '')
+      tout <- c( tout, paste(tmp, 'between',range_var[[tmp]][1],'and',range_var[[tmp]][2]))
+    }
+    filt_query <- paste0(tout, collapse = ' and ')
+    sub_query <- sprintf("select count(*) from %s where",tableName )
+    full_query <- paste(sub_query, filt_query)
+    full_query <- gsub('\n',"'",full_query)
+    tmp <- exec_manualquery(full_query)
+    ncount <- as.numeric(names(tmp))
+  }
+  else {
+    ab <- get_catalog()
+    index <- tolower(ab$Table_Name) == tolower(tableName)
+    ncount <- max(ab$Variable_Count[index],na.rm = T)
+  }
+  return(ncount)
+}
 
 
 
