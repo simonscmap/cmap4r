@@ -15,7 +15,7 @@ Specify following parameters to retrieve the required data using **get_spacetime
 **plot_regmap** function download the data, and output a regional map plot object: **plot_ly/ggplot2** with "x axis" as "longitude" and "y axis" as "lattitude". User can modify the plot object to produce a properly annotated visualization. 
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+```{r plot1, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
 
 tableName <- "tblsst_AVHRR_OI_NRT"
 varName <- "sst"
@@ -49,7 +49,7 @@ Specify the following  parameters to retrieve the required data from the  **Simo
 Call **plot_ts** function to obtain **plot_ly/ggplot2** object. User can modify the plot object to produce a properly annotated visualization. 
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+```{r plot2, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
 # Input variable:
 tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
 varList <- c("sst", "sla", "NO3")
@@ -88,7 +88,7 @@ Call **plot_depth** function to obtain **plot_ly/ggplot2** object.  User can mod
 
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+```{r plot3, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
 
 # Inpit variable:
 tableList <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
@@ -134,8 +134,8 @@ Call **plot_xy** function to obtain **plot_ly/ggplot2** object.  User can modify
 
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
-# Inpit variable:
+```{r plot4, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+# Input variable:
 tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
 varList <- c("sst", "sla")
 
@@ -172,7 +172,7 @@ Call **plot_hist** function to obtain **plot_ly/ggplot2** object.  User can modi
 
 
 
-```{r message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+```{r plot5, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
 # Inpit variable:
 tableList <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
 varList <- c("sst", "argo_merge_temperature_adj", "argo_merge_salinity_adj")

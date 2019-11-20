@@ -24,9 +24,9 @@ get_spacetime(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
 
 \item{dt2}{end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'}
 
-\item{depth1}{positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
+\item{depth1}{positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.}
 
-\item{depth2}{positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.}
+\item{depth2}{positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.}
 }
 \value{
 required subset of the table is ordered by time, lat, lon, and depth (if exists).

@@ -121,7 +121,7 @@ process_response_to_tibble <- function(response, route){
     a = invisible(httr::content(response, "raw"))
     a = suppressMessages(readr::read_csv(a))
   } else if (grep("dataretrieval", route)){
-  # } else if (route == "/dataretrieval/query?"){
+    # } else if (route == "/dataretrieval/query?"){
     ## Handling JSON responses.
     a = invisible(httr::content(response, "text"))
     a = unlist(strsplit(a, "\n", fixed=TRUE))
@@ -131,7 +131,7 @@ process_response_to_tibble <- function(response, route){
     ## now becomes a list. Just make it a proper list.
     a = do.call(rbind,a)
     rownames(a) = NULL
-
+    
     ## ## This works when getting cruise bounds
     ## a = invisible(httr::content(response, "parsed"))
     ## a[which(sapply(a, is.null))]=NA
@@ -195,10 +195,10 @@ query <- function(myquery, apiKey){
 # Returns a subset of data according to space-time constraints. (Identical function in python.)
 subset <- function(spName, table, variable, dt1, dt2, lat1, lat2, lon1,
                    lon2, depth1, depth2, apiKey){
-        query = sprintf('EXEC %s ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', spName)
-        args = list(table, variable, dt1, dt2, lat1, lat2,
-                    lon1, lon2, depth1, depth2)
-        return(stored_proc(query, args, apiKey))
+  query = sprintf('EXEC %s ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', spName)
+  args = list(table, variable, dt1, dt2, lat1, lat2,
+              lon1, lon2, depth1, depth2)
+  return(stored_proc(query, args, apiKey))
 }
 
 # Executes a stored procedure. (Near-identical function in python.) Executes a
@@ -206,30 +206,30 @@ subset <- function(spName, table, variable, dt1, dt2, lat1, lat2, lon1,
 # \code{query()}.
 #' @importFrom assertthat assert_that is.string
 stored_proc <- function(query, args, apiKey){
-        payload =list(tableName = args[1],
-                      fields = args[2],
-                      dt1 = args[3],
-                      dt2 = args[4],
-                      lat1 = args[5],
-                      lat2 = args[6],
-                      lon1 = args[7],
-                      lon2 = args[8],
-                      depth1 = args[9],
-                      depth2 = args[10],
-                      spName = strsplit(toString(query), " ")[[1]][2])
-
-        ## ## Special handling of dates (temporary)
-        ## payload$dt1 = paste0(payload$dt1, " 00:00:00")
-        ## payload$dt2 = paste0(payload$dt2, " 00:00:00")
-
-        assertthat::assert_that(validate_sp_args(args[[1]],
-                                                 args[[2]], args[[3]],
-                                     args[[4]], args[[5]],
-                                     args[[6]], args[[7]],
-                                     args[[8]], args[[9]], args[[10]]))
-        # route = '/dataretrieval/sp?'     # JSON format, deprecated
-        route = '/api/data/sp?'     # CSV format
-        request(payload, route = route, apiKey)}
+  payload =list(tableName = args[1],
+                fields = args[2],
+                dt1 = args[3],
+                dt2 = args[4],
+                lat1 = args[5],
+                lat2 = args[6],
+                lon1 = args[7],
+                lon2 = args[8],
+                depth1 = args[9],
+                depth2 = args[10],
+                spName = strsplit(toString(query), " ")[[1]][2])
+  
+  ## ## Special handling of dates (temporary)
+  ## payload$dt1 = paste0(payload$dt1, " 00:00:00")
+  ## payload$dt2 = paste0(payload$dt2, " 00:00:00")
+  
+  assertthat::assert_that(validate_sp_args(args[[1]],
+                                           args[[2]], args[[3]],
+                                           args[[4]], args[[5]],
+                                           args[[6]], args[[7]],
+                                           args[[8]], args[[9]], args[[10]]))
+  # route = '/dataretrieval/sp?'     # JSON format, deprecated
+  route = '/api/data/sp?'     # CSV format
+  request(payload, route = route, apiKey)}
 
 
 
@@ -241,10 +241,10 @@ stored_proc <- function(query, args, apiKey){
 #' @importFrom readr read_csv
 #' @importFrom httr add_headers GET
 request <- function(payload, route, apiKey){
-
+  
   ## Hard coded
   baseURL = 'https://simonscmap.com'
-
+  
   ## Form URL query and send + retrieve
   url_safe_query = urlencode_python(payload)
   url = paste0(baseURL,
@@ -255,15 +255,15 @@ request <- function(payload, route, apiKey){
   # print(url)
   # print(header)
   response = httr::GET(url, header)
-
+  
   ## TODO: Consider using RETRY("GET", "http://invalidhostname/"), since the
   ## initial request sometimes fails.
-
+  
   ## if(!check_error(response)) browser() ## temporary
   stopifnot(check_error(response))
   return(process_response_to_tibble(response,
                                     route)) ## The second argument is until
-                                            ## Mohammad fixes this issue.
+  ## Mohammad fixes this issue.
 }
 
 

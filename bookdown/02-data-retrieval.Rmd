@@ -8,7 +8,7 @@ apiKey = "5e05c500-d68d-11e9-9d3b-4f83fcec4710"
 ```
 # Data Retrieval
 
-## Getting started & simpler functions
+## Obtaining data summaries
 
 Data in the CMAP database exists in tables, and can be accessed by specific
 table names, and variable names therein. For instance, sea surface temperature
@@ -19,22 +19,22 @@ the data prior to downloading the data itself.
 
 + Name of variables (`get_columns()`)
 + Type of variables, i.e., quantitative, qualitative, time, (`get_var_catalog()`)
-+ Size of the table (??),
 + Space-time range information (`get_var_coverage`),
 + Numerical variable range summary (`get_var_stat()`).
 
 These are used in the various following functions, which are designed to
 summarize data tables by extracting these table attributes. This is useful for
 learning about the tables without downloading them prior to analysis. Here are
-some key examples:
+some key examples (the piping using `%>%` to `kable()` is just for formatting
+purposes):
 
 
-```{r simpler-functions, eval=FALSE}
-get_head("tblArgoMerge_REP") %>% kable()
-get_var_coverage("tblAltimetry_REP", "sla")
-get_var_resolution("tblAltimetry_REP", "sla")
-get_var_unit("tblAltimetry_REP", "sla")
-## get_columns('tblAMT13_Chisholm') %>% kable()
+```{r simpler-functions, eval=TRUE, echo=TRUE}
+get_head("tblArgoMerge_REP") %>% kable() 
+get_var_coverage("tblAltimetry_REP", "sla") %>% kable()
+get_var_resolution("tblAltimetry_REP", "sla") %>% kable()
+get_var_unit("tblAltimetry_REP", "sla") %>% kable()
+get_columns('tblSST_AVHRR_OI_NRT') %>% kable()
 ```
 
 ## Cruises
@@ -42,16 +42,16 @@ get_var_unit("tblAltimetry_REP", "sla")
 Out of the many data tables in CMAP, some are data collected and processed from
 cruises. Here are some examples of summarizing this data.
 
-```{r simpler-functions-cruises, eval=FALSE}
-cruisename = "KOK1606"
+```{r simpler-functions-cruises, eval=TRUE, echo=TRUE}
+cruisename = "KOK1606" 
 get_cruise_by_name(cruisename) %>% kable()
 get_cruise_bounds(cruisename) %>% kable()
-get_head('tblFalkor_2018') %>% kable()
-## get_columns('tblAMT13_Chisholm') %>% kable()
+get_head('tblAMT13_Chisholm') %>% kable()
+get_columns('tblAMT13_Chisholm') %>% head(10) %>% kable()
 ```
 
-Each table contains many data "rows", which are indexed by "keys" of the four
-values:
+As you can see, each table contains many data "rows", which are indexed by
+"keys" of the four values:
 
 **(Time, Latitude, Longitude, Depth)**
 
@@ -73,36 +73,18 @@ specifies the following:
 These are used in the `space_time()` function, which downloads the data as a data
 frame.
 
-```{r message=FALSE, warning=FALSE, echo=TRUE}
-dat = get_spacetime(tableName = 'tblsst_AVHRR_OI_NRT',
-                     varName = 'sst',
-                     dt1 = '2016-04-30',
-                     dt2 = '2016-04-30',
-                     lon1 = 69,
-                     lon2 = 70,
-                     lat1 = -161,
-                     lat2 = -160,
-                     depth1 = 0,
-                     depth2 = 5) %>% kable()
-head(dat)
+```{r spacetime, message=FALSE, warning=FALSE, echo=TRUE}
+get_spacetime(tableName = 'tblArgoMerge_REP',
+              varName = 'argo_merge_salinity_adj',
+              dt1='2015-05-01',
+              dt2='2015-05-30',
+              lat1=28,
+              lat2=38,
+              lon1=-71,
+              lon2=-50,
+              depth1=0,
+              depth2=100) %>% head(10) %>% kable()
 ```
-
-## Summarize data
-
-**Code is outdated** 
-
-A typical table's attributes include:
-
-+ Name of variables,
-+ Type of variables, i.e., quantitative, qualitative, time, 
-+ Size of the table,
-+ Space-time range information,
-+ Numerical variable range summary.
-
-These are used in the various following functions, which are designed to
-summarize data tables by extracting these table attributes. This is useful for
-learning about the tables without downloading them prior to analysis. Here are
-some key examples:
 
 
 ## Colocalize data
@@ -126,16 +108,16 @@ listed in the catalog (`get_catalog()`, or from
 https://cmap.readthedocs.io/en/latest/catalog/catalog.html). Here is a short
 example:
 
-```{r colocalize, eval=TRUE}
-cruise='diel'
-targetTables=c('tblSeaFlow', 'tblPisces_NRT')
-targetVars=c('synecho_abundance', 'NO3')
-depth1=0
-depth2=5
-temporalTolerance=c(0, 4)
-latTolerance=c(0, 0.25)
-lonTolerance=c(0, 0.25)
-depthTolerance=c(5, 5)
+```{r colocalize, message=FALSE, eval=TRUE, echo=TRUE}
+cruise = 'diel'
+targetTables = c('tblSeaFlow', 'tblPisces_NRT')
+targetVars = c('synecho_abundance', 'NO3')
+depth1 = 0
+depth2 = 5
+temporalTolerance = c(0, 4)
+latTolerance = c(0, 0.25)
+lonTolerance = c(0, 0.25)
+depthTolerance = c(5, 5)
 dat = along_track(cruise[1],
                   targetTables[1],
                   targetVars[1],
@@ -145,6 +127,8 @@ dat = along_track(cruise[1],
                   latTolerance[1],
                   lonTolerance[1],
                   depthTolerance[1])
+```
+```{r colocalize-print, echo=TRUE, eval=TRUE}
 head(dat) %>% kable()
 ```
 
@@ -158,12 +142,13 @@ functions described above, you may issue custom SQL query statement and returns
 the results in form of a data frame.
 
 
-```{r manual-query, eval=FALSE}
-exec_manualquery("SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRTx
+```{r manual-query, eval=TRUE}
+dat = exec_manualquery("SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRT
          WHERE
          [time] BETWEEN '2017-06-03' AND '2017-06-03' AND
          lat BETWEEN 10 AND 55 AND
          lon BETWEEN -180 AND 100 AND
          depth BETWEEN 0 AND 0.5
-         ORDER BY [time], lat, lon, depth") %>% kable()
+         ORDER BY [time], lat, lon, depth") 
+dat %>% head(10) %>% kable()
 ```

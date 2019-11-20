@@ -1,18 +1,20 @@
-# About the 'cmap4r' R package {-}
+# Tutorial for the cmap4r R package {-}
 
 
-`cmap4r` is an R package which contains methods to easily access and download
-from the "Simons CMAP", a database which contains openly available quantitative
-data about the ocean.  For further reading about Simons
-CMAP, refer to https://cmap.readthedocs.io/.
+[cmap4r](https://github.com/simonscmap/cmap4r) is an R package which contains
+methods to easily access and download from the "Simons CMAP", a database which
+contains openly available quantitative data about the ocean.  For further
+reading about Simons CMAP, refer to https://cmap.readthedocs.io/.
 
 
 ```{r intro-figure, out.width='50%', fig.align='center', echo=FALSE}
 knitr::include_graphics('caustics_grid.png')
 ```
+The package source is located here: 
+https://github.com/simonscmap/cmap4r
 
 There is a counterpart python package here:
-https://github.com/mdashkezari/opedia/tree/master/pypi
+https://github.com/simonscmap/pycmap/
 
 
 
@@ -20,7 +22,8 @@ https://github.com/mdashkezari/opedia/tree/master/pypi
 library(cmap4r)
 library(dplyr)
 library(knitr)
-knitr::opts_chunk$set(warning=FALSE)
+knitr::opts_chunk$set(warning=FALSE,
                       ## fig.width=14, fig.height=5, echo=FALSE, 
-                      ## message=FALSE, eval=TRUE, cache=FALSE
+                      echo=TRUE,
+                      message=FALSE, eval=TRUE, cache=FALSE)
 ```

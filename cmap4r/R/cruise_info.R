@@ -63,14 +63,14 @@ get_cruise_variables <- function(cruiseName){
 #' #
 #' }
 get_cruise_by_name <- function(cruisename){
-
+  
   ## Form EXEC statement.
   myquery = sprintf("EXEC uspCruiseByName '%s' ", cruisename)
-
+  
   ## Issue query
   apiKey = get_api_key()
   df = query(myquery, apiKey)
-
+  
   ## Check results
   if(nrow(df)<1){
     stop(sprintf('Invalid cruise name: %s' , cruisename))
@@ -104,7 +104,7 @@ get_cruise_bounds <- function(cruisename){
   df = get_cruise_by_name(cruisename)
   myquery = sprintf("EXEC uspCruiseBounds %d", unlist(df[['ID']][1]))
   suppressMessages({
-      df = query(myquery, apiKey)
+    df = query(myquery, apiKey)
   })
   return(df)
 }
@@ -131,10 +131,10 @@ get_cruise_trajectory <- function(cruisename){
   df = cruise_by_name(cruisename)
   myquery = sprintf("EXEC uspCruiseTrajectory %d", unlist(df[['ID']][1]))
   df = query(myquery, apiKey)
-
+  
   ## ## Temporary, until Mohammad fixes the query issue
   ## df[["time"]] = sapply(df[["time"]], substr, 1, 19)
-
+  
   return(df)
 }
 
