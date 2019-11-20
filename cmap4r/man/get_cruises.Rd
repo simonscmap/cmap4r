@@ -14,7 +14,7 @@ Returns a dataframe containing a list of all of the hosted cruise names.
 
 #
 ## Variable attribute:
-cruises_info <- cruises()
+cruises_info <- get_cruises()
 #
 }
 }

@@ -17,7 +17,7 @@ Returns a dataframe containing all registered variables (at Simons CMAP) during 
 
 #
 ## Variable attribute:
-cruiseVar <- cruise_variables('SCOPE_Falkor1')
+cruiseVar <- get_cruise_variables('SCOPE_Falkor1')
 #
 }
 }

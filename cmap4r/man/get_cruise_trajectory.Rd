@@ -17,7 +17,7 @@ Returns a dataframe containing the cruise trajectory (Identical function in pyth
 
 #
 ## Variable attribute:
-cruiseTrajectory  <- cruise_trajectory('KM1513')
+cruiseTrajectory  <- get_cruise_trajectory('KM1513')
 #
 }
 }

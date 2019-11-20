@@ -17,7 +17,7 @@ Returns a dataframe containing cruise info using cruise name.
 
 #
 ## Variable attribute:
-cruiseByName <- cruise_by_name('KOK1606')
+cruiseByName <- get_cruise_by_name('KOK1606')
 #
 }
 }

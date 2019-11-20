@@ -7,7 +7,7 @@
 #' 
 #' #
 #' ## Variable attribute:
-#' cruises_info <- cruises()
+#' cruises_info <- get_cruises()
 #' #
 #' }
 get_cruises <- function(){
@@ -32,7 +32,7 @@ get_cruises <- function(){
 #' 
 #' #
 #' ## Variable attribute:
-#' cruiseVar <- cruise_variables('SCOPE_Falkor1')
+#' cruiseVar <- get_cruise_variables('SCOPE_Falkor1')
 #' #
 #' }
 get_cruise_variables <- function(cruiseName){
@@ -59,7 +59,7 @@ get_cruise_variables <- function(cruiseName){
 #' 
 #' #
 #' ## Variable attribute:
-#' cruiseByName <- cruise_by_name('KOK1606')
+#' cruiseByName <- get_cruise_by_name('KOK1606')
 #' #
 #' }
 get_cruise_by_name <- function(cruisename){
@@ -96,7 +96,7 @@ get_cruise_by_name <- function(cruisename){
 #' 
 #' #
 #' ## Variable attribute:
-#' cruiseBounds <- cruise_bounds('KOK1606')
+#' cruiseBounds <- get_cruise_bounds('KOK1606')
 #' #
 #' }
 get_cruise_bounds <- function(cruisename){
@@ -123,7 +123,7 @@ get_cruise_bounds <- function(cruisename){
 #' 
 #' #
 #' ## Variable attribute:
-#' cruiseTrajectory  <- cruise_trajectory('KM1513')
+#' cruiseTrajectory  <- get_cruise_trajectory('KM1513')
 #' #
 #' }
 get_cruise_trajectory <- function(cruisename){

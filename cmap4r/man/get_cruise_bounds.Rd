@@ -17,7 +17,7 @@ Returns a dataframe containing cruise boundaries in space and time.
 
 #
 ## Variable attribute:
-cruiseBounds <- cruise_bounds('KOK1606')
+cruiseBounds <- get_cruise_bounds('KOK1606')
 #
 }
 }

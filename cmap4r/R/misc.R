@@ -250,8 +250,10 @@ request <- function(payload, route, apiKey){
   url = paste0(baseURL,
                route,
                url_safe_query)
-  # print(url)
+  
   header = httr::add_headers(Authorization = paste0("Api-Key ", apiKey))
+  # print(url)
+  # print(header)
   response = httr::GET(url, header)
 
   ## TODO: Consider using RETRY("GET", "http://invalidhostname/"), since the
