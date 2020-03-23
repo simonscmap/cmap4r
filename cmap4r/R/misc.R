@@ -61,16 +61,16 @@ get_metadata_noref <- function(table, variable){
 # @param range_var output after a query
 #' @import magrittr
 check_rangevar <- function(range_var) {
-  if( !any(names(range_var) %in% "lat"))
+  if ( !any(names(range_var) %in% "lat"))
     stop("Latitude range is missing.")
-  if( !any(names(range_var) %in% "lon"))
+  if ( !any(names(range_var) %in% "lon"))
     stop("Longitude range is missing.")
-  if( !any(names(range_var) %in% "time")){
-    message("Time range is missing. Using default date range.")
+  if ( !any(names(range_var) %in% "time")) {
+    # message("Time range is missing. Using default date range.")
     range_var$time <- c("2000-01-01", Sys.Date())
   }
-  if( !any(names(range_var) %in% "depth")){
-    message("Depth range is missing. Using default date range.")
+  if ( !any(names(range_var) %in% "depth")) {
+    # message("Depth range is missing. Using default date range.")
     range_var$depth <- c(0, 0)
   }
   return(range_var)
@@ -114,12 +114,21 @@ check_error <- function(response){
 #' @importFrom readr read_csv
 #' @importFrom httr content
 process_response_to_tibble <- function(response, route){
+  # save(list = ls(), file = 'aditya1.rda')
   #if(route == "/api/data/query?"){
   # print(route)
   if (grep("api", route)){
     ## Handling CSV responses.
-    a = invisible(httr::content(response, "raw"))
-    a = suppressMessages(readr::read_csv(a))
+    # a = invisible(httr::content(response, "raw"))
+    # a = suppressMessages(readr::read_csv(a))
+    a = suppressMessages(readr::read_csv(response$content, n_max = 1))
+    data(catalog_vartype)
+    index <- pmatch(colnames(a), catalog_vartype$Variable)
+    ctype <- as.character(catalog_vartype$dtype[index])
+    ctype[is.na(ctype)] <- '?'
+    a = suppressMessages(
+      readr::read_csv(response$content, 
+                      col_types = paste0(ctype, collapse = '')))
   } else if (grep("dataretrieval", route)){
     # } else if (route == "/dataretrieval/query?"){
     ## Handling JSON responses.

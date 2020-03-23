@@ -394,7 +394,7 @@ get_metadata <- function(tables, variables){
 
 
 
-
+# romCatalog boolean variable to obtain number of observation in a table from the simons CMAP catalog 
 
 
 
@@ -434,27 +434,42 @@ get_count = function(tableName, lat1 = NULL, lat2 = NULL,
   range_var$lat <- c(lat1, lat2)
   range_var$lon <- c(lon1, lon2)
   range_var$depth <- c(depth1, depth2)
-  if(length(range_var)!=0){
-    tout <- NULL
-    for (tmp in names(range_var)) {
-      if(length(range_var[[tmp]])==1)
-        range_var[[tmp]] <- rep(range_var[[tmp]],2)
-      if(tmp == 'time')
-        range_var[[tmp]] <- paste("\n",range_var[[tmp]],"\n", sep = '')
-      tout <- c( tout, paste(tmp, 'between',range_var[[tmp]][1],'and',range_var[[tmp]][2]))
-    }
-    filt_query <- paste0(tout, collapse = ' and ')
-    sub_query <- sprintf("select count(*) from %s where",tableName )
-    full_query <- paste(sub_query, filt_query)
-    full_query <- gsub('\n',"'",full_query)
-    tmp <- exec_manualquery(full_query)
-    ncount <- as.numeric(names(tmp))
-  }
-  else {
+  
+  # in case if only table names are provided 
+  if (length(range_var) == 0) {
     ab <- get_catalog()
     index <- tolower(ab$Table_Name) == tolower(tableName)
-    ncount <- max(ab$Variable_Count[index],na.rm = T)
+    range_var$time <- c(ab$Time_Min[index], ab$Time_Max[index])
+    range_var$lat <- c(ab$Lat_Min[index], ab$Lat_Max[index])
+    range_var$lon <- c(ab$Lon_Min[index], ab$Lon_Max[index])
+    range_var$depth <- c(ab$Depth_Min[index], ab$Depth_Max[index])
+    range_var <- lapply(range_var, function(x){
+      if (any(is.na(x))) x = NULL
+      x
+    })
+    range_var[sapply(range_var, is.null)] <- NULL
   }
+  # if (!fromCatalog) {
+  tout <- NULL
+  for (tmp in names(range_var)) {
+    if (length(range_var[[tmp]]) == 1)
+      range_var[[tmp]] <- rep(range_var[[tmp]],2)
+    if (tmp == 'time')
+      range_var[[tmp]] <- paste("\n",range_var[[tmp]],"\n", sep = '')
+    tout <- c( tout, paste(tmp, 'between',range_var[[tmp]][1],'and',range_var[[tmp]][2]))
+  }
+  filt_query <- paste0(tout, collapse = ' and ')
+  sub_query <- sprintf("select count(*) from %s where",tableName )
+  full_query <- paste(sub_query, filt_query)
+  full_query <- gsub('\n',"'",full_query)
+  tmp <- exec_manualquery(full_query)
+  ncount <- as.numeric(names(tmp))
+  # }
+  # else {
+  #   ab <- get_catalog()
+  #   index <- tolower(ab$Table_Name) == tolower(tableName)
+  #   ncount <- max(ab$Variable_Count[index],na.rm = T)
+  # }
   return(ncount)
 }
 
