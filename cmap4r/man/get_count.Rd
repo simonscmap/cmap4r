@@ -6,7 +6,7 @@
 \usage{
 get_count(tableName, lat1 = NULL, lat2 = NULL, lon1 = NULL,
   lon2 = NULL, dt1 = NULL, dt2 = NULL, depth1 = NULL,
-  depth2 = NULL)
+  depth2 = NULL, fromCatalog = FALSE)
 }
 \arguments{
 \item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
@@ -26,6 +26,8 @@ get_count(tableName, lat1 = NULL, lat2 = NULL, lon1 = NULL,
 \item{depth1}{positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.}
 
 \item{depth2}{positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.}
+
+\item{fromCatalog}{boolean variable to obtain number of observation in a table from the simons CMAP catalog}
 }
 \value{
 required subset of the table is ordered by time, lat, lon, and depth (if exists).

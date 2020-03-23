@@ -409,6 +409,7 @@ get_metadata <- function(tables, variables){
 #' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
 #' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.
 #' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.
+#' @param fromCatalog boolean variable to obtain number of observation in a table from the simons CMAP catalog 
 #' @return required subset of the table is ordered by time, lat, lon, and depth (if exists).
 #' @export
 #' @examples
@@ -428,51 +429,79 @@ get_metadata <- function(tables, variables){
 get_count = function(tableName, lat1 = NULL, lat2 = NULL, 
                      lon1 = NULL, lon2 = NULL, 
                      dt1 = NULL, dt2 = NULL,
-                     depth1 = NULL, depth2 = NULL){
+                     depth1 = NULL, depth2 = NULL,
+                     fromCatalog = FALSE){
   range_var <- list()
   range_var$time <- c(dt1, dt2)
   range_var$lat <- c(lat1, lat2)
   range_var$lon <- c(lon1, lon2)
   range_var$depth <- c(depth1, depth2)
-  
-  # in case if only table names are provided 
-  if (length(range_var) == 0) {
-    ab <- get_catalog()
-    index <- tolower(ab$Table_Name) == tolower(tableName)
-    range_var$time <- c(ab$Time_Min[index], ab$Time_Max[index])
-    range_var$lat <- c(ab$Lat_Min[index], ab$Lat_Max[index])
-    range_var$lon <- c(ab$Lon_Min[index], ab$Lon_Max[index])
-    range_var$depth <- c(ab$Depth_Min[index], ab$Depth_Max[index])
-    range_var <- lapply(range_var, function(x){
-      if (any(is.na(x))) x = NULL
-      x
-    })
-    range_var[sapply(range_var, is.null)] <- NULL
+  if (!fromCatalog) {
+    # in case if only table names are provided 
+    if (length(range_var) == 0) {
+      full_query <- sprintf("select count(*) from %s",tableName)
+    } else {
+      tout <- NULL
+      for (tmp in names(range_var)) {
+        if (length(range_var[[tmp]]) == 1)
+          range_var[[tmp]] <- rep(range_var[[tmp]],2)
+        if (tmp == 'time')
+          range_var[[tmp]] <- paste("\n",range_var[[tmp]],"\n", sep = '')
+        tout <- c( tout, paste(tmp, 'between',range_var[[tmp]][1],'and',range_var[[tmp]][2]))
+      }
+      filt_query <- paste0(tout, collapse = ' and ')
+      sub_query <- sprintf("select count(*) from %s where",tableName )
+      full_query <- "select count(*) from tblESV"
+      full_query <- paste(sub_query, filt_query)
+      full_query <- gsub('\n',"'",full_query)
+    }
+    tmp <- exec_manualquery(full_query)
+    ncount <- as.numeric(names(tmp))
+  } else {
+      ab <- get_catalog()
+      index <- tolower(ab$Table_Name) == tolower(tableName)
+      ncount <- max(ab$Variable_Count[index],na.rm = T)
   }
-  # if (!fromCatalog) {
-  tout <- NULL
-  for (tmp in names(range_var)) {
-    if (length(range_var[[tmp]]) == 1)
-      range_var[[tmp]] <- rep(range_var[[tmp]],2)
-    if (tmp == 'time')
-      range_var[[tmp]] <- paste("\n",range_var[[tmp]],"\n", sep = '')
-    tout <- c( tout, paste(tmp, 'between',range_var[[tmp]][1],'and',range_var[[tmp]][2]))
-  }
-  filt_query <- paste0(tout, collapse = ' and ')
-  sub_query <- sprintf("select count(*) from %s where",tableName )
-  full_query <- paste(sub_query, filt_query)
-  full_query <- gsub('\n',"'",full_query)
-  tmp <- exec_manualquery(full_query)
-  ncount <- as.numeric(names(tmp))
-  # }
-  # else {
-  #   ab <- get_catalog()
-  #   index <- tolower(ab$Table_Name) == tolower(tableName)
-  #   ncount <- max(ab$Variable_Count[index],na.rm = T)
-  # }
   return(ncount)
 }
 
 
 
 
+
+
+# # in case if only table names are provided 
+# if (length(range_var) == 0) {
+#   ab <- get_catalog()
+#   index <- tolower(ab$Table_Name) == tolower(tableName)
+#   range_var$time <- c(ab$Time_Min[index], ab$Time_Max[index])
+#   range_var$lat <- c(ab$Lat_Min[index], ab$Lat_Max[index])
+#   range_var$lon <- c(ab$Lon_Min[index], ab$Lon_Max[index])
+#   range_var$depth <- c(ab$Depth_Min[index], ab$Depth_Max[index])
+#   range_var <- lapply(range_var, function(x){
+#     if (any(is.na(x))) x = NULL
+#     x
+#   })
+#   range_var[sapply(range_var, is.null)] <- NULL
+# }
+# # if (!fromCatalog) {
+# tout <- NULL
+# for (tmp in names(range_var)) {
+#   if (length(range_var[[tmp]]) == 1)
+#     range_var[[tmp]] <- rep(range_var[[tmp]],2)
+#   if (tmp == 'time')
+#     range_var[[tmp]] <- paste("\n",range_var[[tmp]],"\n", sep = '')
+#   tout <- c( tout, paste(tmp, 'between',range_var[[tmp]][1],'and',range_var[[tmp]][2]))
+# }
+# filt_query <- paste0(tout, collapse = ' and ')
+# sub_query <- sprintf("select count(*) from %s where",tableName )
+# full_query <- paste(sub_query, filt_query)
+# full_query <- gsub('\n',"'",full_query)
+# tmp <- exec_manualquery(full_query)
+# ncount <- as.numeric(names(tmp))
+# }
+# else {
+#   ab <- get_catalog()
+#   index <- tolower(ab$Table_Name) == tolower(tableName)
+#   ncount <- max(ab$Variable_Count[index],na.rm = T)
+# }
