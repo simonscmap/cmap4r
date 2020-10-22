@@ -49,7 +49,7 @@ After installing `cmap4r`, use the `set_authorization` function to set/reset the
 library(cmap4r)
 
 # To set the API authorization key
-set_authorization()
+set_authorization(cmap_key = "enter_api_key")
 
 # To reset the authorization key
 set_authorization(reset = TRUE)
