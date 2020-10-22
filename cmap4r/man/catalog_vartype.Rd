@@ -4,10 +4,12 @@
 \name{catalog_vartype}
 \alias{catalog_vartype}
 \title{Variable type from the catalog}
-\format{A tibble object of variable type: 
+\format{
+A tibble object of variable type: 
 \describe{
   \item{catalog_vartype}{Variable type catalog.}
-}}
+}
+}
 \usage{
 data(catalog_vartype)
 }

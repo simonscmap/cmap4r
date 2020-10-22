@@ -4,8 +4,18 @@
 \alias{get_section}
 \title{Retrieve section of a table from the Simons CMAP databse using spatio-temporal range parameters.}
 \usage{
-get_section(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
-  depth1 = NULL, depth2 = NULL)
+get_section(
+  tableName,
+  varName,
+  lat1,
+  lat2,
+  lon1,
+  lon2,
+  dt1,
+  dt2,
+  depth1 = NULL,
+  depth2 = NULL
+)
 }
 \arguments{
 \item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}

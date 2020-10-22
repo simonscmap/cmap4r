@@ -4,12 +4,14 @@
 \alias{initialize_cmap}
 \title{Initialize the CMAP database access credentials.}
 \usage{
-initialize_cmap(base_url = NULL, route = NULL)
+initialize_cmap(base_url = NULL, route = NULL, cmap_key = NULL)
 }
 \arguments{
 \item{base_url}{base url for the database. Default: 'https://simonscmap.com'}
 
 \item{route}{data retrieval route of the database.  Default: "/api/data/sp?"}
+
+\item{cmap_key}{api key of the cmap database}
 }
 \description{
 Initialize the CMAP database access credentials.

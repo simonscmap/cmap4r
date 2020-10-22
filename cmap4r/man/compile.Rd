@@ -7,9 +7,24 @@ and match them with the source data set according to the the accoiated
 tolerance parameters.  Returns a compiled dataframe of the source and matched
 target data sets.}
 \usage{
-compile(sourceTable, sourceVar, targetTables, targetVars, dt1, dt2, lat1,
-  lat2, lon1, lon2, depth1, depth2, temporalTolerance, latTolerance,
-  lonTolerance, depthTolerance)
+compile(
+  sourceTable,
+  sourceVar,
+  targetTables,
+  targetVars,
+  dt1,
+  dt2,
+  lat1,
+  lat2,
+  lon1,
+  lon2,
+  depth1,
+  depth2,
+  temporalTolerance,
+  latTolerance,
+  lonTolerance,
+  depthTolerance
+)
 }
 \description{
 Match one dataset with another on hand.  Loops through the target data sets

@@ -4,8 +4,20 @@
 \alias{plot_depth}
 \title{Depth profile plot.}
 \usage{
-plot_depth(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2, depth1,
-  depth2, type = c("plotly", "ggplot")[1], export_data = FALSE)
+plot_depth(
+  tableName,
+  varName,
+  lat1,
+  lat2,
+  lon1,
+  lon2,
+  dt1,
+  dt2,
+  depth1,
+  depth2,
+  type = c("plotly", "ggplot")[1],
+  export_data = FALSE
+)
 }
 \arguments{
 \item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}

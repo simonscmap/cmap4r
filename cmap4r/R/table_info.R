@@ -451,7 +451,7 @@ get_count = function(tableName, lat1 = NULL, lat2 = NULL,
       }
       filt_query <- paste0(tout, collapse = ' and ')
       sub_query <- sprintf("select count(*) from %s where",tableName )
-      full_query <- "select count(*) from tblESV"
+      # full_query <- "select count(*) from tblESV"
       full_query <- paste(sub_query, filt_query)
       full_query <- gsub('\n',"'",full_query)
     }

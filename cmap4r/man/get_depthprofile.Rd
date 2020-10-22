@@ -9,8 +9,18 @@ standard deviation of a variable of interest in the specified range of
 inputs. Also, the function is capable of binning the timeseries data weekly,
 monthly, quarterly, or annually.}
 \usage{
-get_depthprofile(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
-  depth1, depth2)
+get_depthprofile(
+  tableName,
+  varName,
+  lat1,
+  lat2,
+  lon1,
+  lon2,
+  dt1,
+  dt2,
+  depth1,
+  depth2
+)
 }
 \arguments{
 \item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}

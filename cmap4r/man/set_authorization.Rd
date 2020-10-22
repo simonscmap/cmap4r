@@ -4,10 +4,12 @@
 \alias{set_authorization}
 \title{Set/save the user API key for accessing the CMAP database.}
 \usage{
-set_authorization(reset = FALSE)
+set_authorization(reset = FALSE, cmap_key = NULL)
 }
 \arguments{
 \item{reset}{boolean variable for set authorization key for API access to the database}
+
+\item{cmap_key}{api key of the cmap database}
 }
 \description{
 Set/save the user API key for accessing the CMAP database.

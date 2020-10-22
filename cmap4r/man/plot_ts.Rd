@@ -4,9 +4,20 @@
 \alias{plot_ts}
 \title{Times eries plot}
 \usage{
-plot_ts(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
-  depth1 = NULL, depth2 = NULL, type = c("plotly", "ggplot")[1],
-  export_data = FALSE)
+plot_ts(
+  tableName,
+  varName,
+  lat1,
+  lat2,
+  lon1,
+  lon2,
+  dt1,
+  dt2,
+  depth1 = NULL,
+  depth2 = NULL,
+  type = c("plotly", "ggplot")[1],
+  export_data = FALSE
+)
 }
 \arguments{
 \item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}

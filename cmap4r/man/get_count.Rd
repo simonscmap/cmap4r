@@ -4,9 +4,18 @@
 \alias{get_count}
 \title{Retrieve the number of observations in the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).}
 \usage{
-get_count(tableName, lat1 = NULL, lat2 = NULL, lon1 = NULL,
-  lon2 = NULL, dt1 = NULL, dt2 = NULL, depth1 = NULL,
-  depth2 = NULL, fromCatalog = FALSE)
+get_count(
+  tableName,
+  lat1 = NULL,
+  lat2 = NULL,
+  lon1 = NULL,
+  lon2 = NULL,
+  dt1 = NULL,
+  dt2 = NULL,
+  depth1 = NULL,
+  depth2 = NULL,
+  fromCatalog = FALSE
+)
 }
 \arguments{
 \item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}

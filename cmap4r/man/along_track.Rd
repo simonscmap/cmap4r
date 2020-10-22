@@ -6,8 +6,17 @@
   the cruise track with the specified variable(s). THIS IS THE MAIN
   COLOCALIZATION function for a cruise.}
 \usage{
-along_track(cruise, targetTables, targetVars, depth1, depth2,
-  temporalTolerance, latTolerance, lonTolerance, depthTolerance)
+along_track(
+  cruise,
+  targetTables,
+  targetVars,
+  depth1,
+  depth2,
+  temporalTolerance,
+  latTolerance,
+  lonTolerance,
+  depthTolerance
+)
 }
 \arguments{
 \item{cruise}{String of the name of cruise. You can see the list of cruises

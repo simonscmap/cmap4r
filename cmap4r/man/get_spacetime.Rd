@@ -4,8 +4,18 @@
 \alias{get_spacetime}
 \title{Retrieve the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2).}
 \usage{
-get_spacetime(tableName, varName, lat1, lat2, lon1, lon2, dt1, dt2,
-  depth1 = NULL, depth2 = NULL)
+get_spacetime(
+  tableName,
+  varName,
+  lat1,
+  lat2,
+  lon1,
+  lon2,
+  dt1,
+  dt2,
+  depth1 = NULL,
+  depth2 = NULL
+)
 }
 \arguments{
 \item{tableName}{table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}

@@ -4,9 +4,21 @@
 \alias{plot_xy}
 \title{XY plot}
 \usage{
-plot_xy(tableList, varList, lat1, lat2, lon1, lon2, dt1, dt2,
-  depth1 = NULL, depth2 = NULL, agg_var, type = c("plotly",
-  "ggplot")[1], export_data = FALSE)
+plot_xy(
+  tableList,
+  varList,
+  lat1,
+  lat2,
+  lon1,
+  lon2,
+  dt1,
+  dt2,
+  depth1 = NULL,
+  depth2 = NULL,
+  agg_var,
+  type = c("plotly", "ggplot")[1],
+  export_data = FALSE
+)
 }
 \arguments{
 \item{tableList}{table names from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database.}
