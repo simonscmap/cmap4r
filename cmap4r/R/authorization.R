@@ -25,7 +25,6 @@ set_authorization <- function(reset = FALSE, cmap_key = NULL){
       service = "cmap_api", password = cmap_key
     )
   }
-  })
 }
 
 

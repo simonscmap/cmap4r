@@ -109,14 +109,16 @@ https://cmap.readthedocs.io/en/latest/catalog/catalog.html). Here is a short
 example:
 
 ```{r colocalize, message=FALSE, eval=TRUE, echo=TRUE}
-cruise = 'diel'
+## cruise = 'Diel'
+cruise = 'MGL1704'
 targetTables = c('tblSeaFlow', 'tblPisces_NRT')
-targetVars = c('synecho_abundance', 'NO3')
+targetVars = c('abundance_synecho', 'NO3')
+## targetVars = c('synecho_abundance', 'NO3')
 depth1 = 0
 depth2 = 5
-temporalTolerance = c(0, 4)
-latTolerance = c(0, 0.25)
-lonTolerance = c(0, 0.25)
+temporalTolerance = c(0, 10)
+latTolerance = c(0, 5)##0.25)
+lonTolerance = c(0, 5)##0.25)
 depthTolerance = c(5, 5)
 dat = along_track(cruise[1],
                   targetTables[1],
