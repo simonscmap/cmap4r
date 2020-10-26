@@ -20,7 +20,7 @@
 #' var_exist
 #' #
 #' }
-has_field = function(tableName, varName){
+has_field <- function(tableName, varName){
   apiKey = get_api_key()
   myquery = sprintf("SELECT COL_LENGTH('%s', '%s') AS RESULT ",
                     tableName, varName)
@@ -230,8 +230,8 @@ get_var_unit = function(tableName, varName){
 #' varResolution <- get_var_resolution(tableName, varName)
 #' varResolution
 #' #
-#' }
-get_var_resolution = function(tableName, varName){
+#'
+get_var_resolution <- function(tableName, varName){
   return(get_var_catalog(tableName, varName)[,c('Temporal_Resolution',
                                                 'Spatial_Resolution')])
 }

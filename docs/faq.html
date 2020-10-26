@@ -145,6 +145,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="faq" class="section level1">
 <h1><span class="header-section-number">4</span> FAQ</h1>
 <p>Empty now, will be updated.</p>
+<p><strong>Q</strong>: On a linux machine, my authentication becomes outdated after hibernation</p>
+<p><strong>A</strong>: Under Ubuntu, the keyring is automatically locked by default while hibernating. When starting Ubuntu after hibernation, it prompts you for the keyring password.</p>
+<p>To disable this lock:</p>
+<p>Go in Applications &gt; System Tools &gt; Configuration Editor Uncheck /apps/gnome-power-manager/lock/gnome_keyring_hibernate Note: you can also launch the config editor with the gconf-editor command.</p>
+<p>Reference <a href="link">http://positon.org/no-keyring-lock-at-hibernation</a>:</p>
 
 </div>
             </section>

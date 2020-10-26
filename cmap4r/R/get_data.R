@@ -93,9 +93,9 @@ get_spacetime <- function(tableName, varName, lat1, lat2,
 #' head(tbl.subset)
 #' #
 #' }
-get_section = function(tableName, varName, lat1, lat2,
-                       lon1, lon2, dt1, dt2,
-                       depth1 = NULL, depth2 = NULL) {
+get_section <- function(tableName, varName, lat1, lat2,
+                        lon1, lon2, dt1, dt2,
+                        depth1 = NULL, depth2 = NULL) {
   range_var <- list()
   range_var$lat <- c(lat1, lat2)
   range_var$lon <- c(lon1, lon2)
@@ -119,20 +119,37 @@ get_section = function(tableName, varName, lat1, lat2,
 
 
 
-#' Retrieve the subset of a table from the Simons CMAP databse using the space-time range inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). The output is aggregated by time, i.e., we compute the mean and standard deviation of a variable of interest in the specified range of inputs. Also, the function is capable of binning the timeseries data weekly, monthly, quarterly, or annually. 
+#' Retrieve the subset of a table from Simons CMAP using the space-time range
+#' inputs (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). The output is
+#' aggregated by time, i.e., we compute the mean and standard deviation of a
+#' variable of interest in the specified range of inputs. Also, the function is
+#' capable of binning the timeseries data weekly, monthly, quarterly, or
+#' annually.
 #'
-#' @param tableName table name from the Simons CMAP database. Use "get_catalog()" to retrieve list of tables on the database. 
-#' @param varName specify short name of a variable in the table.  Use "get_catalog()" to retrieve list of table variables on the database. 
-#' @param dt1 start date or datetime (lower bound of temporal cut). Example values: '2016-05-25' or '2017-12-10 17:25:00'
-#' @param dt2 end date or datetime (upper bound of temporal cut). Example values: '2016-04-30' or '2016-04-30 17:25:00'
-#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90° to 90°.
-#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90° to 90°.
-#' @param lon1 start longitude [degree E]  of the zonal cut; ranges from  -180° to 180°.
-#' @param lon2 end longitude [degree E] of the zonal cut; ranges from  -180° to 180°.
-#' @param depth1 positive value specifying the start depth [m] of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
-#' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor.
-#' @param interval choose time series data aggregation at [weekly, montly, quaterly, annual, none]. Default none. 
-#' @return required aggregated output is ordered by time, lat, lon, and depth (if exists).
+#' @param tableName table name from the Simons CMAP database. Use
+#'   "get_catalog()" to retrieve list of tables on the database.
+#' @param varName specify short name of a variable in the table.  Use
+#'   "get_catalog()" to retrieve list of table variables on the database.
+#' @param dt1 start date or datetime (lower bound of temporal cut). Example
+#'   values: '2016-05-25' or '2017-12-10 17:25:00'
+#' @param dt2 end date or datetime (upper bound of temporal cut). Example
+#'   values: '2016-04-30' or '2016-04-30 17:25:00'
+#' @param lat1 start latitude [degree N] of the meridional cut; ranges from -90°
+#'   to 90°.
+#' @param lat2 end latitude [degree N] of the meridional cut; ranges from -90°
+#'   to 90°.
+#' @param lon1 start longitude [degree E] of the zonal cut; ranges from -180° to
+#'   180°.
+#' @param lon2 end longitude [degree E] of the zonal cut; ranges from -180° to
+#'   180°.
+#' @param depth1 positive value specifying the start depth [m] of the vertical
+#'   cut. Note that depth is 0 at surface and grows towards ocean floor.
+#' @param depth2 positive value specifying the end depth [m]of the vertical
+#'   cut. Note that depth is 0 at surface and grows towards ocean floor.
+#' @param interval choose time series data aggregation at [weekly, montly,
+#'   quarterly, annual, none]. Default none.
+#' @return required aggregated output is ordered by time, lat, lon, and depth
+#'   (if exists).
 #' @export
 #' @examples
 #' \dontrun{

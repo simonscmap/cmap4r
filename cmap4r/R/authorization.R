@@ -17,7 +17,7 @@
 set_authorization <- function(reset = FALSE, cmap_key = NULL){
   if (reset){
     keyring::key_delete("cmap_api")
-    message("CMAP API authorization key has been deteted.")
+    ## message("CMAP API authorization key has been detected.")
   } else {
     if (is.null(cmap_key)) stop("CMAP authorization key not provided.")
     # message("Enter CMAP API authorization key:")
@@ -25,6 +25,7 @@ set_authorization <- function(reset = FALSE, cmap_key = NULL){
       service = "cmap_api", password = cmap_key
     )
   }
+  })
 }
 
 
@@ -75,4 +76,3 @@ initialize_cmap <- function(base_url=NULL, route = NULL, cmap_key = NULL){
   # }
   return(list(base_url = base_url,route = route, api_key = api_key))
 }
-

@@ -4,7 +4,7 @@
 #
 # query_out output after a query
 #
-check_authorization = function(query_out){
+check_authorization <- function(query_out){
   if(rawToChar(query_out$content) == "Unauthorized"){
     message("Please reset API authorization key")
     return(FALSE)
@@ -186,16 +186,18 @@ validate_sp_args <- function(table,
 }
 
 
-# Takes a custom query, issues a request to the API, and returns the results
-# in form of a dataframe.
-# @param myquery An "EXEC ..." string.
-# @param apiKey The API Key.
+#' Takes a custom query, issues a request to the API, and returns the results
+#' in form of a dataframe.
+#' @param myquery An "EXEC ..." string.
+#' @param apiKey The API Key.
 query <- function(myquery, apiKey){
   ## Form query
   payload = list(query = myquery)
   # route = '/dataretrieval/query?'     # JSON format, deprecated
   route = '/api/data/query?'     # CSV format
+  suppressWarnings({
   request(payload, route, apiKey)
+  })
 }
 
 
@@ -294,8 +296,11 @@ urlencode_python <- function(payload){
 
 
 
-# Helper to check variable name or table name with the catalog.
+#' Helper to check variable name or table name with the catalog.
+#'
 #' @import magrittr
+#'
+#' @export
 check_with_catalog <- function(thing, type=c("varName", "tableName"), apiKey){
   type = match.arg(type)
   catalog = get_catalog()

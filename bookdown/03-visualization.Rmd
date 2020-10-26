@@ -118,9 +118,18 @@ p
 
 ## XY plot
 
-Create a scatter plot of two table variables from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_timeseries/get_depthprofile/get_spacetime** to download the data. Why aggregate though? The two variables from the two tables might exist at different time/space resolutions. Because of this potential discrepancy in data resolution, averaging the two datasets at some resolution according to, say, `agg_var="time"`, by day, is a useful step before plotting a relationship between the two.
+Create a scatter plot of two table variables from the **Simons CMAP** database
+using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2,
+depth1, depth2). Internally, the plot function calls
+**get_timeseries/get_depthprofile/get_spacetime** to download the data. Why
+aggregate though? The two variables from the two tables might exist at different
+time/space resolutions. Because of this potential discrepancy in data
+resolution, averaging the two datasets at some resolution according to, say,
+`agg_var="time"`, by day, is a useful step before plotting a relationship
+between the two.
 
-Specify the following  parameters to retrieve the required data from the  **Simons CMAP**. 
+Specify the following parameters to retrieve the required data from the **Simons
+CMAP**.
 
 + Table list (list of tableName)
 + Variable list to be extracted (list of variable name)

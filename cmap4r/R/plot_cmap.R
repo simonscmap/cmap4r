@@ -334,6 +334,9 @@ plot_xy <- function(tableList, varList, lat1, lat2,
                     depth1 = NULL, depth2 = NULL, agg_var,
                     type = c("plotly", "ggplot")[1],
                     export_data = FALSE) {
+
+
+  ## Pick function to use for aggregation
   if ( agg_var == 'time' ){
     temfun = get_timeseries
   } else if ( agg_var=='depth' ){
@@ -341,6 +344,9 @@ plot_xy <- function(tableList, varList, lat1, lat2,
   } else {
     temfun = get_spacetime
   }
+
+
+  ## Get first table
   selIndex <- 1
   tableName <- tableList[selIndex] # Specify table name I
   varName <- varList[selIndex] # Variable from table name I
@@ -350,6 +356,7 @@ plot_xy <- function(tableList, varList, lat1, lat2,
   tbl_subset_x <- data.frame(tbl_subset_x)
 
 
+  ## Get second table
   selIndex <- 2
   tableName <- tableList[selIndex] # Specify table name II
   varName <- varList[selIndex] # Variable from table name II
@@ -361,8 +368,10 @@ plot_xy <- function(tableList, varList, lat1, lat2,
   ## Suggested:
   # stopifnot(same_resolution(tbl_subset_x, tbl_subset_y))
 
+  ## Simply merge the two tables
   df_plot <- merge(tbl_subset_x, tbl_subset_y, agg_var)
 
+  ## Make plot
   if (type == "plotly") {
     p <- plotly::plot_ly(
       x = ~ df_plot[, varList[1]], y = ~ df_plot[, varList[2]],

@@ -92,8 +92,8 @@ get_spacetime(tableName = 'tblArgoMerge_REP',
 First of all, what does it mean to *colocalize*? Imagine a ship moving along a
 trajectory, whose location in space and time is recorded in
 latitude/longitude/time. Then, we'd like to obtain data like sea surface
-temperature or salinity, *as if we were recording it along the ship's
-trajectory*. Colocalization simply means retrieving such data manually from the
+temperature or salinity, *as if* we were recording it along the ship's
+trajectory. Colocalization simply means retrieving such data manually from the
 database, by querying from the *vicinity* (a rectangle) of each lat/lon/time
 triplet of interest, and summarizing it (e.g. taking the average).
 

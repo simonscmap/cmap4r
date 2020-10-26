@@ -19,16 +19,3 @@ resolution of a table variable as dataframe
 Returns a single-row dataframe from the database  catalog  containing the
 variable's spatial and temporal resolutions.
 }
-\examples{
-\donttest{
-#
-## Input: Table name; variable name
-tableName <- "tblArgoMerge_REP" # table name
-varName <- "argo_merge_chl_adj" # variable name
-#
-## Variable attribute:
-varResolution <- get_var_resolution(tableName, varName)
-varResolution
-#
-}
-}

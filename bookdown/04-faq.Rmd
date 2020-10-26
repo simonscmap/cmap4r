@@ -1,3 +1,15 @@
 # FAQ
 
 Empty now, will be updated.
+
+**Q**: On a linux machine, my authentication becomes outdated after hibernation
+
+**A**: Under Ubuntu, the keyring is automatically locked by default while hibernating. When starting Ubuntu after hibernation, it prompts you for the keyring password.
+
+To disable this lock:
+
+Go in Applications > System Tools > Configuration Editor
+Uncheck /apps/gnome-power-manager/lock/gnome_keyring_hibernate
+Note: you can also launch the config editor with the gconf-editor command.
+
+Reference [http://positon.org/no-keyring-lock-at-hibernation](link):
