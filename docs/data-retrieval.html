@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="" xml:lang="">
 <head>
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title></title>
   <meta name="description" content="" />
-  <meta name="generator" content="bookdown 0.12 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.20 and GitBook 2.6.7" />
 
   <meta property="og:title" content="" />
   <meta property="og:type" content="book" />
@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="getting-started.html">
-<link rel="next" href="visualization.html">
+<link rel="prev" href="getting-started.html"/>
+<link rel="next" href="visualization.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -38,6 +38,7 @@
 <link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
 
 
 
@@ -45,13 +46,15 @@
 
 
 
-<script src="libs/htmlwidgets-1.3/htmlwidgets.js"></script>
-<script src="libs/plotly-binding-4.9.0/plotly.js"></script>
+
+
+<script src="libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
+<script src="libs/plotly-binding-4.9.2.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-1.46.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-1.46.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.1.0.1/css/crosstalk.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.1.0.1/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-1.52.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-1.52.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
@@ -125,6 +128,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <li class="chapter" data-level="3.5" data-path="visualization.html"><a href="visualization.html#histograms"><i class="fa fa-check"></i><b>3.5</b> Histograms</a></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="faq.html"><a href="faq.html"><i class="fa fa-check"></i><b>4</b> FAQ</a></li>
+<li class="chapter" data-level="5" data-path="examples.html"><a href="examples.html"><i class="fa fa-check"></i><b>5</b> Examples</a><ul>
+<li class="chapter" data-level="5.1" data-path="examples.html"><a href="examples.html#compare-in-situ-on-site-sunlight-data-to-remote-sensing-satellite-data."><i class="fa fa-check"></i><b>5.1</b> Compare in-situ (on-site) sunlight data to remote sensing (satellite) data.</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -169,11 +175,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <th align="left">direction</th>
 <th align="left">data_mode</th>
 <th align="left">data_centre</th>
-<th align="left">argo_merge_cdnc</th>
+<th align="right">argo_merge_cdnc</th>
 <th align="left">argo_merge_cdnc_qc</th>
-<th align="left">argo_merge_cdnc_adj</th>
+<th align="right">argo_merge_cdnc_adj</th>
 <th align="left">argo_merge_cdnc_adj_qc</th>
-<th align="left">argo_merge_cdnc_adj_err</th>
+<th align="right">argo_merge_cdnc_adj_err</th>
 <th align="right">argo_merge_pressure</th>
 <th align="right">argo_merge_pressure_qc</th>
 <th align="right">argo_merge_pressure_adj</th>
@@ -191,129 +197,133 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <th align="right">argo_merge_temperature_adj_err</th>
 <th align="right">argo_merge_O2</th>
 <th align="right">argo_merge_O2_qc</th>
-<th align="left">argo_merge_O2_adj</th>
+<th align="right">argo_merge_O2_adj</th>
 <th align="left">argo_merge_O2_adj_qc</th>
-<th align="left">argo_merge_O2_adj_err</th>
-<th align="left">argo_merge_bbp</th>
+<th align="right">argo_merge_O2_adj_err</th>
+<th align="right">argo_merge_bbp</th>
 <th align="left">argo_merge_bbp_qc</th>
-<th align="left">argo_merge_bbp_adj</th>
+<th align="right">argo_merge_bbp_adj</th>
 <th align="left">argo_merge_bbp_adj_qc</th>
-<th align="left">argo_merge_bbp_adj_err</th>
-<th align="left">argo_merge_bbp470</th>
+<th align="right">argo_merge_bbp_adj_err</th>
+<th align="right">argo_merge_bbp470</th>
 <th align="left">argo_merge_bbp470_qc</th>
-<th align="left">argo_merge_bbp470_adj</th>
+<th align="right">argo_merge_bbp470_adj</th>
 <th align="left">argo_merge_bbp470_adj_qc</th>
-<th align="left">argo_merge_bbp470_adj_err</th>
-<th align="left">argo_merge_bbp532</th>
+<th align="right">argo_merge_bbp470_adj_err</th>
+<th align="right">argo_merge_bbp532</th>
 <th align="left">argo_merge_bbp532_qc</th>
-<th align="left">argo_merge_bbp532_adj</th>
+<th align="right">argo_merge_bbp532_adj</th>
 <th align="left">argo_merge_bbp532_adj_qc</th>
-<th align="left">argo_merge_bbp532_adj_err</th>
-<th align="left">argo_merge_bbp700</th>
+<th align="right">argo_merge_bbp532_adj_err</th>
+<th align="right">argo_merge_bbp700</th>
 <th align="left">argo_merge_bbp700_qc</th>
-<th align="left">argo_merge_bbp700_adj</th>
+<th align="right">argo_merge_bbp700_adj</th>
 <th align="left">argo_merge_bbp700_adj_qc</th>
-<th align="left">argo_merge_bbp700_adj_err</th>
-<th align="left">argo_merge_turbidity</th>
+<th align="right">argo_merge_bbp700_adj_err</th>
+<th align="right">argo_merge_turbidity</th>
 <th align="left">argo_merge_turbidity_qc</th>
-<th align="left">argo_merge_turbidity_adj</th>
+<th align="right">argo_merge_turbidity_adj</th>
 <th align="left">argo_merge_turbidity_adj_qc</th>
-<th align="left">argo_merge_turbidity_adj_err</th>
-<th align="left">argo_merge_cp</th>
+<th align="right">argo_merge_turbidity_adj_err</th>
+<th align="right">argo_merge_cp</th>
 <th align="left">argo_merge_cp_qc</th>
-<th align="left">argo_merge_cp_adj</th>
+<th align="right">argo_merge_cp_adj</th>
 <th align="left">argo_merge_cp_adj_qc</th>
-<th align="left">argo_merge_cp_adj_err</th>
-<th align="left">argo_merge_cp660</th>
+<th align="right">argo_merge_cp_adj_err</th>
+<th align="right">argo_merge_cp660</th>
 <th align="left">argo_merge_cp660_qc</th>
-<th align="left">argo_merge_cp660_adj</th>
+<th align="right">argo_merge_cp660_adj</th>
 <th align="left">argo_merge_cp660_adj_qc</th>
-<th align="left">argo_merge_cp660_adj_err</th>
-<th align="left">argo_merge_chl</th>
+<th align="right">argo_merge_cp660_adj_err</th>
+<th align="right">argo_merge_chl</th>
 <th align="left">argo_merge_chl_qc</th>
-<th align="left">argo_merge_chl_adj</th>
+<th align="right">argo_merge_chl_adj</th>
 <th align="left">argo_merge_chl_adj_qc</th>
-<th align="left">argo_merge_chl_adj_err</th>
-<th align="left">argo_merge_cdom</th>
+<th align="right">argo_merge_chl_adj_err</th>
+<th align="right">argo_merge_cdom</th>
 <th align="left">argo_merge_cdom_qc</th>
-<th align="left">argo_merge_cdom_adj</th>
+<th align="right">argo_merge_cdom_adj</th>
 <th align="left">argo_merge_cdom_adj_qc</th>
-<th align="left">argo_merge_cdom_adj_err</th>
-<th align="left">argo_merge_NO3</th>
+<th align="right">argo_merge_cdom_adj_err</th>
+<th align="right">argo_merge_NO3</th>
 <th align="left">argo_merge_NO3_qc</th>
-<th align="left">argo_merge_NO3_adj</th>
+<th align="right">argo_merge_NO3_adj</th>
 <th align="left">argo_merge_NO3_adj_qc</th>
-<th align="left">argo_merge_NO3_adj_err</th>
-<th align="left">argo_merge_bisulfide</th>
+<th align="right">argo_merge_NO3_adj_err</th>
+<th align="right">argo_merge_bisulfide</th>
 <th align="left">argo_merge_bisulfide_qc</th>
-<th align="left">argo_merge_bisulfide_adj</th>
+<th align="right">argo_merge_bisulfide_adj</th>
 <th align="left">argo_merge_bisulfide_adj_qc</th>
-<th align="left">argo_merge_bisulfide_adj_err</th>
-<th align="left">argo_merge_ph</th>
+<th align="right">argo_merge_bisulfide_adj_err</th>
+<th align="right">argo_merge_ph</th>
 <th align="left">argo_merge_ph_qc</th>
-<th align="left">argo_merge_ph_adj</th>
+<th align="right">argo_merge_ph_adj</th>
 <th align="left">argo_merge_ph_adj_qc</th>
-<th align="left">argo_merge_ph_adj_err</th>
-<th align="left">argo_merge_down_irr</th>
+<th align="right">argo_merge_ph_adj_err</th>
+<th align="right">argo_merge_down_irr</th>
 <th align="left">argo_merge_down_irr_qc</th>
-<th align="left">argo_merge_down_irr_adj</th>
+<th align="right">argo_merge_down_irr_adj</th>
 <th align="left">argo_merge_down_irr_adj_qc</th>
-<th align="left">argo_merge_down_irr_adj_err</th>
-<th align="left">argo_merge_down_irr380</th>
+<th align="right">argo_merge_down_irr_adj_err</th>
+<th align="right">argo_merge_down_irr380</th>
 <th align="left">argo_merge_down_irr380_qc</th>
-<th align="left">argo_merge_down_irr380_adj</th>
+<th align="right">argo_merge_down_irr380_adj</th>
 <th align="left">argo_merge_down_irr380_adj_qc</th>
-<th align="left">argo_merge_down_irr380_adj_err</th>
-<th align="left">argo_merge_down_irr412</th>
+<th align="right">argo_merge_down_irr380_adj_err</th>
+<th align="right">argo_merge_down_irr412</th>
 <th align="left">argo_merge_down_irr412_qc</th>
-<th align="left">argo_merge_down_irr412_adj</th>
+<th align="right">argo_merge_down_irr412_adj</th>
 <th align="left">argo_merge_down_irr412_adj_qc</th>
-<th align="left">argo_merge_down_irr412_adj_err</th>
-<th align="left">argo_merge_down_irr443</th>
+<th align="right">argo_merge_down_irr412_adj_err</th>
+<th align="right">argo_merge_down_irr443</th>
 <th align="left">argo_merge_down_irr443_qc</th>
-<th align="left">argo_merge_down_irr443_adj</th>
+<th align="right">argo_merge_down_irr443_adj</th>
 <th align="left">argo_merge_down_irr443_adj_qc</th>
-<th align="left">argo_merge_down_irr443_adj_err</th>
-<th align="left">argo_merge_down_irr490</th>
+<th align="right">argo_merge_down_irr443_adj_err</th>
+<th align="right">argo_merge_down_irr490</th>
 <th align="left">argo_merge_down_irr490_qc</th>
-<th align="left">argo_merge_down_irr490_adj</th>
+<th align="right">argo_merge_down_irr490_adj</th>
 <th align="left">argo_merge_down_irr490_adj_qc</th>
-<th align="left">argo_merge_down_irr490_adj_err</th>
-<th align="left">argo_merge_down_irr555</th>
+<th align="right">argo_merge_down_irr490_adj_err</th>
+<th align="right">argo_merge_down_irr555</th>
 <th align="left">argo_merge_down_irr555_qc</th>
-<th align="left">argo_merge_down_irr555_adj</th>
+<th align="right">argo_merge_down_irr555_adj</th>
 <th align="left">argo_merge_down_irr555_adj_qc</th>
-<th align="left">argo_merge_down_irr555_adj_err</th>
-<th align="left">argo_merge_up_irr</th>
+<th align="right">argo_merge_down_irr555_adj_err</th>
+<th align="right">argo_merge_up_irr</th>
 <th align="left">argo_merge_up_irr_qc</th>
-<th align="left">argo_merge_up_irr_adj</th>
+<th align="right">argo_merge_up_irr_adj</th>
 <th align="left">argo_merge_up_irr_adj_qc</th>
-<th align="left">argo_merge_up_irr_adj_err</th>
-<th align="left">argo_merge_up_irr412</th>
+<th align="right">argo_merge_up_irr_adj_err</th>
+<th align="right">argo_merge_up_irr412</th>
 <th align="left">argo_merge_up_irr412_qc</th>
-<th align="left">argo_merge_up_irr412_adj</th>
+<th align="right">argo_merge_up_irr412_adj</th>
 <th align="left">argo_merge_up_irr412_adj_qc</th>
-<th align="left">argo_merge_up_irr412_adj_err</th>
-<th align="left">argo_merge_up_irr443</th>
+<th align="right">argo_merge_up_irr412_adj_err</th>
+<th align="right">argo_merge_up_irr443</th>
 <th align="left">argo_merge_up_irr443_qc</th>
-<th align="left">argo_merge_up_irr443_adj</th>
+<th align="right">argo_merge_up_irr443_adj</th>
 <th align="left">argo_merge_up_irr443_adj_qc</th>
-<th align="left">argo_merge_up_irr443_adj_err</th>
-<th align="left">argo_merge_up_irr490</th>
+<th align="right">argo_merge_up_irr443_adj_err</th>
+<th align="right">argo_merge_up_irr490</th>
 <th align="left">argo_merge_up_irr490_qc</th>
-<th align="left">argo_merge_up_irr490_adj</th>
+<th align="right">argo_merge_up_irr490_adj</th>
 <th align="left">argo_merge_up_irr490_adj_qc</th>
-<th align="left">argo_merge_up_irr490_adj_err</th>
-<th align="left">argo_merge_up_irr555</th>
+<th align="right">argo_merge_up_irr490_adj_err</th>
+<th align="right">argo_merge_up_irr555</th>
 <th align="left">argo_merge_up_irr555_qc</th>
-<th align="left">argo_merge_up_irr555_adj</th>
+<th align="right">argo_merge_up_irr555_adj</th>
 <th align="left">argo_merge_up_irr555_adj_qc</th>
-<th align="left">argo_merge_up_irr555_adj_err</th>
-<th align="left">argo_merge_down_par</th>
+<th align="right">argo_merge_up_irr555_adj_err</th>
+<th align="right">argo_merge_down_par</th>
 <th align="left">argo_merge_down_par_qc</th>
-<th align="left">argo_merge_down_par_adj</th>
+<th align="right">argo_merge_down_par_adj</th>
 <th align="left">argo_merge_down_par_adj_qc</th>
-<th align="left">argo_merge_down_par_adj_err</th>
+<th align="right">argo_merge_down_par_adj_err</th>
+<th align="right">year</th>
+<th align="right">month</th>
+<th align="right">week</th>
+<th align="right">dayofyear</th>
 </tr>
 </thead>
 <tbody>
@@ -328,11 +338,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left">A</td>
 <td align="left">D</td>
 <td align="left">AO</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">1040.0</td>
 <td align="right">1</td>
 <td align="right">1040.4</td>
@@ -350,129 +360,133 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0.002</td>
 <td align="right">184.1</td>
 <td align="right">0</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">2011</td>
+<td align="right">5</td>
+<td align="right">20</td>
+<td align="right">131</td>
 </tr>
 <tr class="even">
 <td align="right">2900114</td>
@@ -485,11 +499,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left">A</td>
 <td align="left">D</td>
 <td align="left">AO</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">1042.0</td>
 <td align="right">1</td>
 <td align="right">1042.4</td>
@@ -507,129 +521,133 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0.002</td>
 <td align="right">184.2</td>
 <td align="right">0</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">2011</td>
+<td align="right">5</td>
+<td align="right">20</td>
+<td align="right">131</td>
 </tr>
 <tr class="odd">
 <td align="right">2900114</td>
@@ -642,11 +660,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left">A</td>
 <td align="left">D</td>
 <td align="left">AO</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">1044.0</td>
 <td align="right">1</td>
 <td align="right">1044.4</td>
@@ -664,129 +682,133 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0.002</td>
 <td align="right">184.3</td>
 <td align="right">0</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">2011</td>
+<td align="right">5</td>
+<td align="right">20</td>
+<td align="right">131</td>
 </tr>
 <tr class="even">
 <td align="right">2900114</td>
@@ -799,11 +821,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left">A</td>
 <td align="left">D</td>
 <td align="left">AO</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">1046.1</td>
 <td align="right">1</td>
 <td align="right">1046.5</td>
@@ -821,129 +843,133 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0.002</td>
 <td align="right">184.3</td>
 <td align="right">0</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">2011</td>
+<td align="right">5</td>
+<td align="right">20</td>
+<td align="right">131</td>
 </tr>
 <tr class="odd">
 <td align="right">2900114</td>
@@ -956,11 +982,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left">A</td>
 <td align="left">D</td>
 <td align="left">AO</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">1048.0</td>
 <td align="right">1</td>
 <td align="right">1048.4</td>
@@ -978,129 +1004,133 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0.002</td>
 <td align="right">184.3</td>
 <td align="right">0</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
+<td align="right">NA</td>
 <td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">2011</td>
+<td align="right">5</td>
+<td align="right">20</td>
+<td align="right">131</td>
 </tr>
 </tbody>
 </table>
@@ -1179,6 +1209,18 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <tr class="even">
 <td align="left">sst</td>
 </tr>
+<tr class="odd">
+<td align="left">year</td>
+</tr>
+<tr class="even">
+<td align="left">month</td>
+</tr>
+<tr class="odd">
+<td align="left">week</td>
+</tr>
+<tr class="even">
+<td align="left">dayofyear</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1252,38 +1294,38 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <th align="right">lat</th>
 <th align="right">lon</th>
 <th align="right">depth</th>
-<th align="right">pbact_Chisholm</th>
-<th align="right">TQPCR_MED4_MIT9312_MIT9211_NATL2A_SS120_MIT9313_Chisholm</th>
-<th align="right">MED4PCR_Chisholm</th>
-<th align="right">MIT9312PCR_Chisholm</th>
-<th align="right">MIT9211PCR_Chisholm</th>
-<th align="right">NATL2APCR_Chisholm</th>
-<th align="right">SS120PCR_Chisholm</th>
-<th align="right">MIT9313PCR_Chisholm</th>
-<th align="right">sbact_Chisholm</th>
-<th align="left">density_AMT13</th>
+<th align="right">Pro_abundance</th>
+<th align="right">Pro_total_ecotype_abundance</th>
+<th align="right">Pro_eMED4_abundance</th>
+<th align="right">Pro_eMIT9312_abundance</th>
+<th align="right">Pro_eMIT9211_abundance</th>
+<th align="right">Pro_eNATL2A_abundance</th>
+<th align="right">Pro_eSS120_abundance</th>
+<th align="right">Pro_eMIT9313_abundance</th>
+<th align="right">Syn_abundance</th>
+<th align="right">density_AMT13</th>
 <th align="right">temp_C_AMT13</th>
 <th align="right">csal_ppt_AMT13</th>
 <th align="right">Light_Quanta_m2_sec_AMT13</th>
 <th align="right">chlA_AMT13</th>
-<th align="left">DCM_AMT13</th>
-<th align="left">05C_AMT13</th>
-<th align="left">25C_AMT13</th>
-<th align="left">03Density_AMT13</th>
-<th align="left">125Density_AMT13</th>
-<th align="left">TotalDepth_AMT13</th>
-<th align="left">MED4PCR_quality_Chisholm</th>
-<th align="left">MIT9312PCR_quality_Chisholm</th>
-<th align="right">MIT9211PCR_quality_Chisholm</th>
-<th align="left">NATL2APCR_quality_Chisholm</th>
-<th align="right">SS120PCR_quality_Chisholm</th>
-<th align="right">MIT9313PCR_quality_Chisholm</th>
-<th align="right">TQPCR_MED4_MIT9312_MIT9211_NATL2A_SS120_MIT9313_quality_Chisholm</th>
+<th align="right">DCM_AMT13</th>
+<th align="right">MLD_05C_AMT13</th>
+<th align="right">MLD_25C_AMT13</th>
+<th align="right">MLD_03Density_AMT13</th>
+<th align="right">MLD_125Density_AMT13</th>
+<th align="right">TotalDepth_AMT13</th>
+<th align="right">Pro_eMED4_abundance_quality</th>
+<th align="right">Pro_eMIT9312_abundance_quality</th>
+<th align="right">Pro_eMIT9211_abundance_quality</th>
+<th align="right">Pro_eNATL2A_abundance_quality</th>
+<th align="right">Pro_eSS120_abundance_quality</th>
+<th align="right">Pro_eMIT9313_abundance_quality</th>
+<th align="right">Pro_total_ecotype_abundance_quality</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2003-09-14 09:55:00</td>
+<td align="left">2003-09-16 09:55:00</td>
 <td align="right">47.983</td>
 <td align="right">-11.539</td>
 <td align="right">9.280</td>
@@ -1296,27 +1338,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">1.0000000</td>
 <td align="right">1.0000000</td>
 <td align="right">0.2825333</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">17.8958</td>
 <td align="right">35.6425</td>
 <td align="right">45.652811</td>
 <td align="right">0.0761</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">2003-09-14 09:55:00</td>
+<td align="left">2003-09-16 09:55:00</td>
 <td align="right">47.983</td>
 <td align="right">-11.539</td>
 <td align="right">43.017</td>
@@ -1329,27 +1371,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0.7138027</td>
 <td align="right">1.0000000</td>
 <td align="right">0.4385333</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">16.3019</td>
 <td align="right">35.6470</td>
 <td align="right">9.754238</td>
 <td align="right">0.1072</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="odd">
-<td align="left">2003-09-14 09:55:00</td>
+<td align="left">2003-09-16 09:55:00</td>
 <td align="right">47.983</td>
 <td align="right">-11.539</td>
 <td align="right">53.629</td>
@@ -1362,27 +1404,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">1.0000000</td>
 <td align="right">1.0000000</td>
 <td align="right">0.2341333</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">15.2485</td>
 <td align="right">35.5911</td>
 <td align="right">4.237555</td>
 <td align="right">0.5024</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
-<td align="left">2003-09-14 09:55:00</td>
+<td align="left">2003-09-16 09:55:00</td>
 <td align="right">47.983</td>
 <td align="right">-11.539</td>
 <td align="right">62.327</td>
@@ -1395,27 +1437,27 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">0.2588225</td>
 <td align="right">0.9763928</td>
 <td align="right">0.1315333</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">14.6576</td>
 <td align="right">35.5787</td>
 <td align="right">2.620675</td>
 <td align="right">0.2852</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
 <td align="right">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">2003-09-14 09:55:00</td>
+<td align="left">2003-09-16 09:55:00</td>
 <td align="right">47.983</td>
 <td align="right">-11.539</td>
 <td align="right">78.587</td>
@@ -1428,21 +1470,21 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="right">1.0000000</td>
 <td align="right">1.0000000</td>
 <td align="right">0.0554000</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">13.8446</td>
 <td align="right">35.5778</td>
 <td align="right">1.134332</td>
 <td align="right">0.1979</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
+<td align="right">NA</td>
 <td align="right">0</td>
-<td align="left">NA</td>
+<td align="right">NA</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1470,32 +1512,32 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <td align="left">depth</td>
 </tr>
 <tr class="odd">
-<td align="left">pbact_Chisholm</td>
+<td align="left">Pro_abundance</td>
 </tr>
 <tr class="even">
-<td align="left">TQPCR_MED4_MIT9312_MIT9211_NATL2A_SS120_MIT9313_Chisholm</td>
+<td align="left">Pro_total_ecotype_abundance</td>
 </tr>
 <tr class="odd">
-<td align="left">MED4PCR_Chisholm</td>
+<td align="left">Pro_eMED4_abundance</td>
 </tr>
 <tr class="even">
-<td align="left">MIT9312PCR_Chisholm</td>
+<td align="left">Pro_eMIT9312_abundance</td>
 </tr>
 <tr class="odd">
-<td align="left">MIT9211PCR_Chisholm</td>
+<td align="left">Pro_eMIT9211_abundance</td>
 </tr>
 <tr class="even">
-<td align="left">NATL2APCR_Chisholm</td>
+<td align="left">Pro_eNATL2A_abundance</td>
 </tr>
 </tbody>
 </table>
-<p>As you can see, each table contains many data “rows”, which are indexed by “keys” of the four values:</p>
+<p>As you can see, each table contains many data &quot;rows&quot;, which are indexed by &quot;keys&quot; of the four values:</p>
 <p><strong>(Time, Latitude, Longitude, Depth)</strong></p>
 <p>Most functions in this package will involve using these data key values, or user-specified ranges of these keys, for certain operations. The most basic operation, explained next, is to download a dataset from a time and space range of interest.</p>
 </div>
 <div id="download-data" class="section level2">
 <h2><span class="header-section-number">2.3</span> Download data</h2>
-<p>When retrieving all data from <strong>CMAP</strong> in a “rectangle” of space and time, specifies the following:</p>
+<p>When retrieving all data from <strong>CMAP</strong> in a &quot;rectangle&quot; of space and time, specifies the following:</p>
 <ul>
 <li>Name of table (<code>table</code>)</li>
 <li>Names of variables in that table (<code>variable</code>)</li>
@@ -1598,17 +1640,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="colocalize-data" class="section level2">
 <h2><span class="header-section-number">2.4</span> Colocalize data</h2>
-<p>First of all, what does it mean to <em>colocalize</em>? Imagine a ship moving along a trajectory, whose location in space and time is recorded in latitude/longitude/time. Then, we’d like to obtain data like sea surface temperature or salinity, <em>as if we were recording it along the ship’s trajectory</em>. Colocalization simply means retrieving such data manually from the database, by querying from the <em>vicinity</em> (a rectangle) of each lat/lon/time triplet of interest, and summarizing it (e.g. taking the average).</p>
-<p>The size of the vicinity is define by the user-specified “slack” in longitude, latitude and time. For instance, one could ask for 1 degrees of slack in longitude and latitude, and 6 hours of slack in time.</p>
+<p>First of all, what does it mean to <em>colocalize</em>? Imagine a ship moving along a trajectory, whose location in space and time is recorded in latitude/longitude/time. Then, we'd like to obtain data like sea surface temperature or salinity, <em>as if</em> we were recording it along the ship's trajectory. Colocalization simply means retrieving such data manually from the database, by querying from the <em>vicinity</em> (a rectangle) of each lat/lon/time triplet of interest, and summarizing it (e.g. taking the average).</p>
+<p>The size of the vicinity is define by the user-specified &quot;slack&quot; in longitude, latitude and time. For instance, one could ask for 1 degrees of slack in longitude and latitude, and 6 hours of slack in time.</p>
 <p>The main function is <code>along_track</code>, which colocalizes data for one or multiple tables and variables at a time. The available cruises can be found by running the function <code>cruises()</code>. The available data tables and variable names are listed in the catalog (<code>get_catalog()</code>, or from <a href="https://cmap.readthedocs.io/en/latest/catalog/catalog.html" class="uri">https://cmap.readthedocs.io/en/latest/catalog/catalog.html</a>). Here is a short example:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cruise =<span class="st"> &#39;diel&#39;</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## cruise = &#39;Diel&#39;
+cruise =<span class="st"> &#39;MGL1704&#39;</span>
 targetTables =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;tblSeaFlow&#39;</span>, <span class="st">&#39;tblPisces_NRT&#39;</span>)
-targetVars =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;synecho_abundance&#39;</span>, <span class="st">&#39;NO3&#39;</span>)
+targetVars =<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;abundance_synecho&#39;</span>, <span class="st">&#39;NO3&#39;</span>)
+## targetVars = c(&#39;synecho_abundance&#39;, &#39;NO3&#39;)
 depth1 =<span class="st"> </span><span class="dv">0</span>
 depth2 =<span class="st"> </span><span class="dv">5</span>
-temporalTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">4</span>)
-latTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>)
-lonTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="fl">0.25</span>)
+temporalTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>)
+latTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">5</span>)##0.25)
+lonTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">5</span>)##0.25)
 depthTolerance =<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">5</span>)
 dat =<span class="st"> </span><span class="kw">along_track</span>(cruise[<span class="dv">1</span>],
                   targetTables[<span class="dv">1</span>],
@@ -1620,8 +1664,8 @@ dat =<span class="st"> </span><span class="kw">along_track</span>(cruise[<span c
                   lonTolerance[<span class="dv">1</span>],
                   depthTolerance[<span class="dv">1</span>])</code></pre></div>
 <pre><code>## 
-  |                                                                       
-  |                                                                 |   0%</code></pre>
+  |                                                                                                                              
+  |                                                                                                                        |   0%</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(dat) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">kable</span>()</code></pre></div>
 <table>
 <thead>
@@ -1629,51 +1673,51 @@ dat =<span class="st"> </span><span class="kw">along_track</span>(cruise[<span c
 <th align="left">time</th>
 <th align="right">lat</th>
 <th align="right">lon</th>
-<th align="right">synecho_abundance</th>
-<th align="right">synecho_abundance_std</th>
+<th align="right">abundance_synecho</th>
+<th align="right">abundance_synecho_std</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">2015-07-25 00:19:45</td>
-<td align="right">21.3146</td>
-<td align="right">-158.1914</td>
+<td align="left">2017-05-26 22:34:53</td>
+<td align="right">21.3164</td>
+<td align="right">-157.8767</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td align="left">2015-07-25 00:22:45</td>
-<td align="right">21.3236</td>
-<td align="right">-158.1977</td>
+<td align="left">2017-05-26 22:37:53</td>
+<td align="right">21.3164</td>
+<td align="right">-157.8767</td>
 <td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">2015-07-25 00:25:45</td>
-<td align="right">21.3327</td>
-<td align="right">-158.2040</td>
-<td align="right">11.231785</td>
+<td align="left">2017-05-26 22:40:53</td>
+<td align="right">21.3164</td>
+<td align="right">-157.8767</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td align="left">2015-07-25 00:28:46</td>
-<td align="right">21.3397</td>
-<td align="right">-158.2087</td>
-<td align="right">8.571613</td>
+<td align="left">2017-05-26 22:43:54</td>
+<td align="right">21.3164</td>
+<td align="right">-157.8767</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="odd">
-<td align="left">2015-07-25 00:31:46</td>
-<td align="right">21.3485</td>
-<td align="right">-158.2144</td>
-<td align="right">7.894531</td>
+<td align="left">2017-05-26 22:46:54</td>
+<td align="right">21.3164</td>
+<td align="right">-157.8767</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 <tr class="even">
-<td align="left">2015-07-25 00:34:46</td>
-<td align="right">21.3573</td>
-<td align="right">-158.2201</td>
-<td align="right">8.283477</td>
+<td align="left">2017-05-26 22:49:54</td>
+<td align="right">21.3164</td>
+<td align="right">-157.8767</td>
+<td align="right">NA</td>
 <td align="right">NA</td>
 </tr>
 </tbody>
@@ -1787,11 +1831,13 @@ dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">head
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
 <script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
 <script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
@@ -1799,12 +1845,11 @@ gitbook.start({
 "github": false,
 "facebook": true,
 "twitter": true,
-"google": false,
 "linkedin": false,
 "weibo": false,
 "instapaper": false,
 "vk": false,
-"all": ["facebook", "google", "twitter", "linkedin", "weibo", "instapaper"]
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
 },
 "fontsettings": {
 "theme": "white",
@@ -1816,6 +1861,10 @@ gitbook.start({
 "text": null
 },
 "history": {
+"link": null,
+"text": null
+},
+"view": {
 "link": null,
 "text": null
 },

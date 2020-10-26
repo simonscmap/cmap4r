@@ -29,8 +29,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="faq.html"/>
 
-<link rel="next" href="getting-started.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -148,22 +148,66 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<!--bookdown:title:end-->
-<!--bookdown:title:start-->
-<div id="tutorial-for-the-cmap4r-r-package" class="section level1 unnumbered">
-<h1>Tutorial for the cmap4r R package</h1>
-<p><a href="https://github.com/simonscmap/cmap4r">cmap4r</a> is an R package which contains methods to easily access and download from the &quot;Simons CMAP&quot;, a database which contains openly available quantitative data about the ocean. For further reading about Simons CMAP, refer to <a href="https://cmap.readthedocs.io/" class="uri">https://cmap.readthedocs.io/</a>.</p>
-<p><img src="caustics_grid.png" width="50%" style="display: block; margin: auto;" /> The package source is located here: <a href="https://github.com/simonscmap/cmap4r" class="uri">https://github.com/simonscmap/cmap4r</a></p>
-<p>There is a counterpart python package here: <a href="https://github.com/simonscmap/pycmap/" class="uri">https://github.com/simonscmap/pycmap/</a></p>
+<div id="examples" class="section level1">
+<h1><span class="header-section-number">5</span> Examples</h1>
+<div id="compare-in-situ-on-site-sunlight-data-to-remote-sensing-satellite-data." class="section level2">
+<h2><span class="header-section-number">5.1</span> Compare in-situ (on-site) sunlight data to remote sensing (satellite) data.</h2>
+<p>The intensity of sunlight is usually measured as &quot;Photosynetheically Active Radiation&quot;, or PAR for short.</p>
+<p>First, we query PAR from two sources of data -- one <em>colocalized</em> from a remote sensing (satellite) table, and one from an in-situ (on-site) cruise data table in Simons CMAP.</p>
+<p>The colocalization is done as follows:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tabname =<span class="st"> &quot;tblModis_PAR&quot;</span>
+varname =<span class="st"> &quot;PAR&quot;</span>
+dat =<span class="st"> </span><span class="kw">along_track</span>(<span class="st">&quot;MGL1704&quot;</span>,
+                  <span class="dt">targetTables =</span> tabname,
+                  <span class="dt">targetVars =</span> varname,
+                  <span class="dt">temporalTolerance =</span> <span class="dv">1</span>,
+                  <span class="dt">latTolerance =</span> <span class="fl">0.25</span>,
+                  <span class="dt">lonTolerance =</span> <span class="fl">0.25</span>,
+                  <span class="dt">depthTolerance =</span> depthTolerance,
+                  <span class="dt">depth1 =</span> <span class="dv">0</span>,
+                  <span class="dt">depth2 =</span> <span class="dv">5</span>)</code></pre></div>
+<pre><code>## 
+  |                                                                                                                              
+  |                                                                                                                        |   0%</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">## Clean time
+dat[,<span class="st">&quot;time&quot;</span>] =<span class="st"> </span><span class="kw">as_datetime</span>(<span class="kw">substr</span>(dat[,<span class="st">&quot;time&quot;</span>], <span class="dv">1</span>,<span class="dv">20</span>))</code></pre></div>
+<p>The in-situ cruise data is queried as follows (the date range of the MGL1704 Gradients 2 cruise are the relevant colocalization parameters here; everything else is intentionally broad):</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tabname =<span class="st"> &quot;tblCruise_PAR&quot;</span>
+varname =<span class="st"> &quot;par&quot;</span>
+dat2 =<span class="st"> </span><span class="kw">get_spacetime</span>(<span class="dt">tableName =</span> tabname,
+                    <span class="dt">varName =</span> varname,
+                    <span class="dt">dt1 =</span> <span class="st">&#39;2017-05-26&#39;</span>,
+                    <span class="dt">dt2 =</span> <span class="st">&#39;2017-06-14&#39;</span>,
+                    <span class="dt">lat1 =</span> <span class="dv">-2000</span>,
+                    <span class="dt">lat2 =</span> <span class="dv">2000</span>,
+                    <span class="dt">lon1 =</span> <span class="dv">-2000</span>,
+                    <span class="dt">lon2 =</span> <span class="dv">2000</span>,
+                    <span class="dt">depth1 =</span> <span class="dv">0</span>,
+                    <span class="dt">depth2 =</span> <span class="dv">100</span>)</code></pre></div>
+<p>Now, join the two datasets and clean them:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dat =<span class="st"> </span><span class="kw">full_join</span>(dat2, dat) <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">rename</span>(<span class="dt">cruise_par =</span> par, <span class="dt">sat_par =</span> PAR) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">time =</span> <span class="kw">as_datetime</span>(time)) <span class="op">%&gt;%</span>
+<span class="st">  </span><span class="kw">arrange</span>(time)</code></pre></div>
+<p>Then plot them together (after standardizing) in a single plot.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="dt">x =</span> dat<span class="op">$</span>time,
+     <span class="dt">y =</span> dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(cruise_par) <span class="op">%&gt;%</span><span class="kw">scale</span>(), <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>),
+     <span class="dt">ylab =</span> <span class="st">&quot;Standardized PAR&quot;</span>,
+     <span class="dt">xlab =</span> <span class="st">&quot;Date&quot;</span>)
+<span class="kw">lines</span>(<span class="dt">x =</span> dat<span class="op">$</span>time,
+      <span class="dt">y =</span> dat <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">select</span>(sat_par) <span class="op">%&gt;%</span><span class="kw">scale</span>(), <span class="dt">type=</span><span class="st">&#39;l&#39;</span>, <span class="dt">col=</span><span class="st">&#39;red&#39;</span>)
+<span class="kw">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="dt">col=</span><span class="kw">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>), <span class="dt">lwd=</span><span class="dv">2</span>, <span class="dt">lty =</span> <span class="dv">1</span>, <span class="dt">legend=</span><span class="kw">c</span>(<span class="st">&quot;In-situ&quot;</span>, <span class="st">&quot;Remote-sensing&quot;</span>))</code></pre></div>
+<p><img src="_main_files/figure-html/plot-1.png" width="100%" style="display: block; margin: auto;" /></p>
+<p>We can see that remote sensing PAR is messy (probably due to factors like cloud cover) compared to the consistent, non-erratic daily fluctiation of in-situ PAR.</p>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="faq.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="getting-started.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
