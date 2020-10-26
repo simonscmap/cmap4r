@@ -1,0 +1,554 @@
+# Tutorial for the cmap4r R package {-}
+
+
+[cmap4r](https://github.com/simonscmap/cmap4r) is an R package which contains
+methods to easily access and download from the "Simons CMAP", a database which
+contains openly available quantitative data about the ocean.  For further
+reading about Simons CMAP, refer to https://cmap.readthedocs.io/.
+
+
+```{r intro-figure, out.width='50%', fig.align='center', echo=FALSE}
+knitr::include_graphics('caustics_grid.png')
+```
+The package source is located here: 
+https://github.com/simonscmap/cmap4r
+
+There is a counterpart python package here:
+https://github.com/simonscmap/pycmap/
+
+
+
+```{r load-packages, message=FALSE, warning=FALSE, echo=FALSE, eval=TRUE}
+library(cmap4r)
+library(dplyr)
+library(knitr)
+knitr::opts_chunk$set(warning=FALSE,
+                      ## fig.width=14, fig.height=5, echo=FALSE, 
+                      echo=TRUE,
+                      message=FALSE, eval=TRUE, cache=FALSE)
+```
+
+<!--chapter:end:index.Rmd-->
+
+# Getting started
+
+## Obtaining and saving API Key
+
+CMAP hosts data on a Microsoft SQL Server. To retrieve data from the database,
+`cmap4r` requires an API key. For this, the user needs to register on the
+[SimonsCMAP](https://simonscmap.com/register) website and navigate to the
+"APIKeys" tab on the webpage to obtain an API key. The package allows the user
+to save the key as a **keyring variable** which will be used for data retrieval
+whenever required.
+
+## Installation and setup
+
+First, open R in a command line or in an R console. In order to install the R
+package, first install the
+[devtools](https://cran.r-project.org/web/packages/devtools/readme/README.html)
+R package using `install.packages("devtools")`.
+
+Next, install the [cmap4r](https://github.com/simonscmap/cmap4r) R package using
+`devtools::install_github("simonscmap/cmap4r/cmap4r")`. There are some other
+dependencies to install as well:
+
+```{r, eval=FALSE, echo=TRUE}
+## Package for data processing:
+install.packages("dplyr")  
+
+## Packages for visualization:
+install.packages("ggplot2")
+install.packages("plotly")
+```
+
+Now, in your R session, run `set_authorization()` to set/reset the API Key. You
+will be prompted to enter the key on the command line or in a pop-up
+prompt. Alternatively, you can attempt to use any of the functions
+(e.g. `get_catalog()`) and you will be prompted to enter the key.
+
+## Catalog of data
+
+You can obtain the latest version of the data catalog for the CMAP data
+(https://cmap.readthedocs.io/en/latest/catalog/catalog.html) to R using
+`get_catalog()`, partially reproduced here.
+
+```{r example-catalog, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+get_catalog() %>%
+  select(Variable, Table_Name, Unit, Sensor, Unit) %>%
+  head(20) %>%
+  kable()
+```
+
+<!--chapter:end:01-getting-started.Rmd-->
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.width=12, fig.height=8,fig.align = "center",
+                      out.width = "100%")
+library(DBI)
+library(dplyr)
+apiKey = "5e05c500-d68d-11e9-9d3b-4f83fcec4710"
+## library(cmap4r)
+```
+# Data Retrieval
+
+## Obtaining data summaries
+
+Data in the CMAP database exists in tables, and can be accessed by specific
+table names, and variable names therein. For instance, sea surface temperature
+is from the table `"tblSST_AVHRR_OI_NRT"`, and the variable name is `"sst"`.
+
+Some simpler functions for accessing data are useful for obtaining summaries of
+the data prior to downloading the data itself.
+
++ Name of variables (`get_columns()`)
++ Type of variables, i.e., quantitative, qualitative, time, (`get_var_catalog()`)
++ Space-time range information (`get_var_coverage`),
++ Numerical variable range summary (`get_var_stat()`).
+
+These are used in the various following functions, which are designed to
+summarize data tables by extracting these table attributes. This is useful for
+learning about the tables without downloading them prior to analysis. Here are
+some key examples (the piping using `%>%` to `kable()` is just for formatting
+purposes):
+
+
+```{r simpler-functions, eval=TRUE, echo=TRUE}
+get_head("tblArgoMerge_REP") %>% kable() 
+get_var_coverage("tblAltimetry_REP", "sla") %>% kable()
+get_var_resolution("tblAltimetry_REP", "sla") %>% kable()
+get_var_unit("tblAltimetry_REP", "sla") %>% kable()
+get_columns('tblSST_AVHRR_OI_NRT') %>% kable()
+```
+
+## Cruises
+
+Out of the many data tables in CMAP, some are data collected and processed from
+cruises. Here are some examples of summarizing this data.
+
+```{r simpler-functions-cruises, eval=TRUE, echo=TRUE}
+cruisename = "KOK1606" 
+get_cruise_by_name(cruisename) %>% kable()
+get_cruise_bounds(cruisename) %>% kable()
+get_head('tblAMT13_Chisholm') %>% kable()
+get_columns('tblAMT13_Chisholm') %>% head(10) %>% kable()
+```
+
+As you can see, each table contains many data "rows", which are indexed by
+"keys" of the four values:
+
+**(Time, Latitude, Longitude, Depth)**
+
+Most functions in this package will involve using these data key values, or
+user-specified ranges of these keys, for certain operations. The most basic
+operation, explained next, is to download a dataset from a time and space range
+of interest.
+
+## Download data
+
+When retrieving all data from **CMAP** in a "rectangle" of space and time,
+specifies the following:
+
++ Name of table (`table`)
++ Names of variables in that table (`variable`)
++ Upper and lower limits of the variables (`dt1`, `dt2`, `lon1`, `lon2`, `lat1`,
+  `lat2`, `depth1`, `depth2`)
+
+These are used in the `space_time()` function, which downloads the data as a data
+frame.
+
+```{r spacetime, message=FALSE, warning=FALSE, echo=TRUE}
+get_spacetime(tableName = 'tblArgoMerge_REP',
+              varName = 'argo_merge_salinity_adj',
+              dt1='2015-05-01',
+              dt2='2015-05-30',
+              lat1=28,
+              lat2=38,
+              lon1=-71,
+              lon2=-50,
+              depth1=0,
+              depth2=100) %>% head(10) %>% kable()
+```
+
+
+## Colocalize data
+
+First of all, what does it mean to *colocalize*? Imagine a ship moving along a
+trajectory, whose location in space and time is recorded in
+latitude/longitude/time. Then, we'd like to obtain data like sea surface
+temperature or salinity, *as if* we were recording it along the ship's
+trajectory. Colocalization simply means retrieving such data manually from the
+database, by querying from the *vicinity* (a rectangle) of each lat/lon/time
+triplet of interest, and summarizing it (e.g. taking the average).
+
+The size of the vicinity is define by the user-specified "slack" in longitude,
+latitude and time. For instance, one could ask for 1 degrees of slack in
+longitude and latitude, and 6 hours of slack in time.
+
+The main function is `along_track`, which colocalizes data for one or multiple
+tables and variables at a time. The available cruises can be found by running
+the function `cruises()`. The available data tables and variable names are
+listed in the catalog (`get_catalog()`, or from
+https://cmap.readthedocs.io/en/latest/catalog/catalog.html). Here is a short
+example:
+
+```{r colocalize, message=FALSE, eval=TRUE, echo=TRUE}
+## cruise = 'Diel'
+cruise = 'MGL1704'
+targetTables = c('tblSeaFlow', 'tblPisces_NRT')
+targetVars = c('abundance_synecho', 'NO3')
+## targetVars = c('synecho_abundance', 'NO3')
+depth1 = 0
+depth2 = 5
+temporalTolerance = c(0, 10)
+latTolerance = c(0, 5)##0.25)
+lonTolerance = c(0, 5)##0.25)
+depthTolerance = c(5, 5)
+dat = along_track(cruise[1],
+                  targetTables[1],
+                  targetVars[1],
+                  depth1[1],
+                  depth2[1],
+                  temporalTolerance[1],
+                  latTolerance[1],
+                  lonTolerance[1],
+                  depthTolerance[1])
+```
+```{r colocalize-print, echo=TRUE, eval=TRUE}
+head(dat) %>% kable()
+```
+
+## Issue SQL query
+
+(For advanced users) Simons CMAP datasets are hosted in a SQL database and the
+CMAP4R R package provides the user with a number of pre-developed methods to
+extract and retrieve subsets of the data. The rest of this documentation is
+dedicated to explore and explain these methods. In addition to the pre-developed
+functions described above, you may issue custom SQL query statement and returns
+the results in form of a data frame.
+
+
+```{r manual-query, eval=TRUE}
+dat = exec_manualquery("SELECT [time], lat, lon, depth, Fe FROM tblPisces_NRT
+         WHERE
+         [time] BETWEEN '2017-06-03' AND '2017-06-03' AND
+         lat BETWEEN 10 AND 55 AND
+         lon BETWEEN -180 AND 100 AND
+         depth BETWEEN 0 AND 0.5
+         ORDER BY [time], lat, lon, depth") 
+dat %>% head(10) %>% kable()
+```
+
+<!--chapter:end:02-data-retrieval.Rmd-->
+
+# Visualization
+
+
+## Regional map
+
+Image/heatmap plot of a table variable from the **Simons CMAP** database in a given range of latitude and longitude at a fixed time and depth.
+
+Specify following parameters to retrieve the required data using **get_spacetime**.
+
++ Table Name (tableName)
++ Variables to be extracted (varName)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
+
+
+**plot_regmap** function download the data, and output a regional map plot object: **plot_ly/ggplot2** with "x axis" as "longitude" and "y axis" as "lattitude". User can modify the plot object to produce a properly annotated visualization. 
+
+
+```{r plot1, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+
+tableName <- "tblsst_AVHRR_OI_NRT"
+varName <- "sst"
+
+# Range variable [lat,lon,time,depth]
+lat1 = 10; lat2 = 70
+lon1 = -180; lon2 = -80
+dt1 = "2016-04-30"; dt2 = "2016-04-30"
+depth1 <- 0; depth2 =  0
+
+p <- plot_regmap(tableName, varName, lat1, lat2, lon1, lon2,
+                  dt1, dt2, depth1, depth2, type = "plotly")
+p
+```
+
+## Time series plot
+
+Create a timeseries plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_timeseries** to download data aggregated by time. 
+
+
+
+Specify the following  parameters to retrieve the required data from the  **Simons CMAP**. 
+
++ Table Name (tableName)
++ Variables to be extracted (varName)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
+
+
+
+
+Call **plot_ts** function to obtain **plot_ly/ggplot2** object. User can modify the plot object to produce a properly annotated visualization. 
+
+
+```{r plot2, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+# Input variable:
+tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP", "tblPisces_NRT")
+varList <- c("sst", "sla", "NO3")
+
+# selected "sst" from the table "tblSST_AVHRR_OI_NRT"
+selIndex <- 1
+tableName <- tableList[selIndex]
+varName <- varList[selIndex]
+
+# Range variable [lat,lon,time,depth]
+lat1 = 25; lat2 = 30
+lon1 = -160; lon2 = -155
+dt1 = "2016-03-29"; dt2 = "2016-05-29"
+
+# Plot -- Time series:
+p <- plot_ts(tableName, varName, lat1, lat2, lon1, lon2,
+             dt1, dt2)
+p
+```
+
+
+## Depth profile plot
+
+Create a depth profile plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_depthprofile** to download the data aggregated by depth.  
+
+
+Specify the following  parameters to retrieve the required data from the  **Simons CMAP**. 
+
++ Table Name (tableName)
++ Variables to be extracted (varName)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
++ Depth will be used as an aggregate variable
+
+
+Call **plot_depth** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
+
+
+
+```{r plot3, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+
+# Inpit variable:
+tableList <- c('tblArgoMerge_REP', 'tblPisces_NRT', 'tblDarwin_Ecosystem')
+varList <- c('argo_merge_chl_adj', 'CHL', 'CHL')
+#
+# selected argo_merge_chl_adj from tblArgoMerge_REP
+selIndex <- 1
+tableName <- tableList[selIndex]
+varName <- varList[selIndex]
+#
+# Range variable [lat,lon,time,depth]
+lat1 = 20; lat2 = 24
+lon1 = -170; lon2 = -150
+dt1 = "2014-04-25"; dt2 = "2014-04-30"
+depth1 <- 0; depth2 =  1500
+
+
+# Plot -- Depth profiles:
+p <- plot_depth(tableName, varName, lat1, lat2, lon1, lon2,
+                        dt1, dt2,depth1, depth2, "plotly")
+p
+
+```
+
+
+
+
+## XY plot
+
+Create a scatter plot of two table variables from the **Simons CMAP** database
+using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2,
+depth1, depth2). Internally, the plot function calls
+**get_timeseries/get_depthprofile/get_spacetime** to download the data. Why
+aggregate though? The two variables from the two tables might exist at different
+time/space resolutions. Because of this potential discrepancy in data
+resolution, averaging the two datasets at some resolution according to, say,
+`agg_var="time"`, by day, is a useful step before plotting a relationship
+between the two.
+
+Specify the following parameters to retrieve the required data from the **Simons
+CMAP**.
+
++ Table list (list of tableName)
++ Variable list to be extracted (list of variable name)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
++ Specify aggregate variable (time/depth/latitude/longitude)
+
+
+Call **plot_xy** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
+
+
+
+
+
+```{r plot4, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+# Input variable:
+tableList <- c("tblSST_AVHRR_OI_NRT", "tblAltimetry_REP")
+varList <- c("sst", "sla")
+
+# Range variable [lat,lon,time,depth]
+lat1 = 25; lat2 = 30
+lon1 = -160; lon2 = -155
+dt1 =  "2016-03-29"; dt2 = "2016-05-29"
+depth1 <- NULL; depth2 =  NULL
+
+# Aggregate variable
+agg_var <- "time"
+
+# xy plot
+p <- plot_xy(tableList, varList, lat1, lat2, lon1, lon2,
+               dt1, dt2, depth1, depth2, agg_var)
+p
+```
+
+
+
+
+## Histograms 
+
+Create a histogram plot of a table variable from the **Simons CMAP** database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). Internally, the plot function calls **get_spacetime** to download the data.  
+
+
+Specify the following  parameters to retrieve the required data from the  **Simons CMAP**. 
+
++ Table Name (tableName)
++ Variables to be extracted (varName)
++ Spatio-temporal range variable includes (latitude, longitude, depth, time)
+
+Call **plot_hist** function to obtain **plot_ly/ggplot2** object.  User can modify the plot object to produce a properly annotated visualization.
+
+
+
+```{r plot5, message=FALSE, warning=FALSE, echo=TRUE, eval=TRUE}
+# Inpit variable:
+tableList <- c("tblSST_AVHRR_OI_NRT", "tblArgoMerge_REP", "tblArgoMerge_REP")
+varList <- c("sst", "argo_merge_temperature_adj", "argo_merge_salinity_adj")
+
+# variable "sst" selected from "tblSST_AVHRR_OI_NRT"
+selIndex <- 1
+tableName <- tableList[selIndex]
+varName <- varList[selIndex]
+
+# Range variable [lat,lon,time,depth]
+lat1 = 20; lat2 = 24
+lon1 = -170; lon2 = -150
+dt1 = "2016-04-30"; dt2 = "2016-04-30"
+depth1 <- NULL; depth2 =  NULL
+
+p <- plot_hist(tableName, varName, lat1, lat2, lon1, lon2,
+               dt1, dt2, depth1, depth2, "plotly")
+p
+```
+
+
+<!--chapter:end:03-visualization.Rmd-->
+
+# FAQ
+
+Empty now, will be updated.
+
+**Q**: On a linux machine, my authentication becomes outdated after hibernation
+
+**A**: Under Ubuntu, the keyring is automatically locked by default while hibernating. When starting Ubuntu after hibernation, it prompts you for the keyring password.
+
+To disable this lock:
+
+Go in Applications > System Tools > Configuration Editor
+Uncheck /apps/gnome-power-manager/lock/gnome_keyring_hibernate
+Note: you can also launch the config editor with the gconf-editor command.
+
+Reference [http://positon.org/no-keyring-lock-at-hibernation](link):
+
+<!--chapter:end:04-faq.Rmd-->
+
+# Examples
+
+```{r global_options, include=FALSE}
+knitr::opts_chunk$set(fig.width=14, fig.height=8, echo=TRUE, eval=TRUE, cache=TRUE,
+                      warning=FALSE, message=FALSE)
+library(ggplot2)
+library(tidyverse)
+library(arrow)
+library(lubridate)
+library(dplyr)
+library(cmap4r)
+```
+
+## Compare in-situ (on-site) sunlight data to remote sensing (satellite) data.
+
+The intensity of sunlight is usually measured as "Photosynetheically Active
+Radiation", or PAR for short.
+
+First, we query PAR from two sources of data -- one *colocalized* from a remote
+sensing (satellite) table, and one from an in-situ (on-site) cruise data table
+in Simons CMAP.
+
+The colocalization is done as follows:
+
+```{r query1}
+tabname = "tblModis_PAR"
+varname = "PAR"
+<<<<<<< HEAD
+=======
+## set_authorization(cmap_key = "5e05c500-d68d-11e9-9d3b-4f83fcec4710")
+>>>>>>> 338fad1bab66c45800c700d11803e9a3a5faa782
+dat = along_track("MGL1704",
+                  targetTables = tabname,
+                  targetVars = varname,
+                  temporalTolerance = 1,
+                  latTolerance = 0.25,
+                  lonTolerance = 0.25,
+                  depthTolerance = depthTolerance,
+                  depth1 = 0,
+                  depth2 = 5)
+## Clean time
+dat[,"time"] = as_datetime(substr(dat[,"time"], 1,20))
+```
+
+The in-situ cruise data is queried as follows (the date range of the MGL1704
+Gradients 2 cruise are the relevant colocalization parameters here; everything
+else is intentionally broad):
+
+```{r query2}
+tabname = "tblCruise_PAR"
+varname = "par"
+dat2 = get_spacetime(tableName = tabname,
+                    varName = varname,
+                    dt1 = '2017-05-26',
+                    dt2 = '2017-06-14',
+                    lat1 = -2000,
+                    lat2 = 2000,
+                    lon1 = -2000,
+                    lon2 = 2000,
+                    depth1 = 0,
+                    depth2 = 100)
+```
+
+Now, join the two datasets and clean them:
+```{r join}
+dat = full_join(dat2, dat) %>% rename(cruise_par = par, sat_par = PAR) %>%
+  mutate(time = as_datetime(time)) %>%
+  arrange(time)
+```
+
+Then plot them together (after standardizing) in a single plot.
+
+```{r plot, fig.width=10, fig.height=5}
+plot(x = dat$time,
+     y = dat %>% select(cruise_par) %>%scale(), type='l', ylim = c(-3,3),
+     ylab = "Standardized PAR",
+     xlab = "Date")
+lines(x = dat$time,
+      y = dat %>% select(sat_par) %>%scale(), type='l', col='red')
+legend("topleft", col=c("black", "red"), lwd=2, lty = 1, legend=c("In-situ", "Remote-sensing"))
+```
+  
+We can see that remote sensing PAR is messy (probably due to factors like cloud
+cover) compared to the consistent, non-erratic daily fluctiation of in-situ PAR.
+
+<!--chapter:end:05-examples.Rmd-->
+

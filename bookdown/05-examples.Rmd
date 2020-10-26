@@ -25,6 +25,10 @@ The colocalization is done as follows:
 ```{r query1}
 tabname = "tblModis_PAR"
 varname = "PAR"
+<<<<<<< HEAD
+=======
+## set_authorization(cmap_key = "5e05c500-d68d-11e9-9d3b-4f83fcec4710")
+>>>>>>> 338fad1bab66c45800c700d11803e9a3a5faa782
 dat = along_track("MGL1704",
                   targetTables = tabname,
                   targetVars = varname,
