@@ -3,8 +3,6 @@ knitr::opts_chunk$set(echo = TRUE, fig.width=12, fig.height=8,fig.align = "cente
                       out.width = "100%")
 library(DBI)
 library(dplyr)
-apiKey = "5e05c500-d68d-11e9-9d3b-4f83fcec4710"
-## library(cmap4r)
 ```
 # Data Retrieval
 
