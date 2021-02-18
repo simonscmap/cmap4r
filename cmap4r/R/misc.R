@@ -126,9 +126,11 @@ process_response_to_tibble <- function(response, route){
     index <- pmatch(colnames(a), catalog_vartype$Variable)
     ctype <- as.character(catalog_vartype$dtype[index])
     ctype[is.na(ctype)] <- '?'
-    a = suppressMessages(
+    a = suppressWarnings({
+      suppressMessages(
       readr::read_csv(response$content, 
                       col_types = paste0(ctype, collapse = '')))
+    })
   } else if (grep("dataretrieval", route)){
     # } else if (route == "/dataretrieval/query?"){
     ## Handling JSON responses.
