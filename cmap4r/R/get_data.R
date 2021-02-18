@@ -153,19 +153,17 @@ get_section <- function(tableName, varName, lat1, lat2,
 #' @export
 #' @examples
 #' \dontrun{
-#' ## Input: Table name; variable name, space time range information
-#' tableName <- "tblHOT_Bottle" # table name
-#' varName <- "SiO4_bottle_hot" # choose variable
-#' # Range variable [lat,lon,time]
-#' lat1 = 22; lat2 = 23
-#' lon1 = -159; lon2 = -157
-#' dt1 = "1988-12-01"; dt2 = "2016-10-15"
-#'
-#' # Subset selection:
-#' tbl.subset <- get_timeseries(tableName, varName, lat1, lat2,
-#'                                 lon1, lon2, dt1, dt2)
-#' head(tbl.subset)
-#' #
+#' tbl <- get_timeseries(tableName = "tblSST_AVHRR_OI_NRT",
+#'                varName = 'SST',
+#'                dt1='2015-05-01',
+#'                dt2='2015-05-30',
+#'                lat1=28,
+#'                lat2=38,
+#'                lon1=-71,
+#'                lon2=-50,
+#'                depth1=0,
+#'                depth2=100)
+#' head(tbl)
 #' }
 get_timeseries <- function(tableName, varName, lat1, lat2,
                            lon1, lon2, dt1, dt2,
