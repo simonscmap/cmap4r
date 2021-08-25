@@ -43,11 +43,15 @@ supported in the current version.}
 
 \item{latTolerance}{numeric vector of spatial tolerance values in meridional
 direction [deg] between pairs of source and target data sets. If only one
-value is given, that would be applied to all target data sets.}
+value is given, that would be applied to all target data sets.  A "safe"
+value for this parameter can be slightly larger than the half of the target
+variable’s spatial resolution.}
 
 \item{lonTolerance}{numeric vector of spatial tolerance values in zonal
 direction [deg] between pairs of source and target data sets. If only one
-value is given, that would be applied to all target data sets.}
+value is given, that would be applied to all target data sets.  A "safe"
+value for this parameter can be slightly larger than the half of the target
+variable’s spatial resolution.}
 
 \item{depthTolerance}{numeric vector of spatial tolerance values in vertical
 direction [m] between pairs of source and target data sets. If only one

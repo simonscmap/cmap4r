@@ -1,37 +1,40 @@
-# Colocalizes the source variable (from source table) with a single target
-# long variable (from target table).  The tolerance parameters set the
-# matching boundaries between the source and target data sets.  Returns a
-# dataframe containing the source variable joined with the target variable.
-# @param spname stored procedure name that executes the matching logic.
-# @param sourceTable table name of the source data set.
-# @param sourceVariable the source variable. The target variables are matched
-#   (colocalized) with this variable.
-# @param targetTables table names of the target data sets to be matched with the source data.
-# @param targetVariables variable names to be matched with the source variable.
-# @param dt1 start date or datetime.
-# @param dt2 end date or datetime.
-# @param lat1 start latitude [degree N].
-# @param lat2 end latitude [degree N].
-# @param lon1 start longitude [degree E].
-# @param lon2 end longitude [degree E].
-# @param depth1 start depth [m].
-# @param depth2 end depth [m].
-# @param timeTolerance float list of temporal tolerance values between pairs
-#   of source and target datasets. The size and order of values in this list
-#   should match those of targetTables. If only a single integer value is
-#   given, that would be applied to all target datasets. This parameter is in
-#   day units except when the target variable represents monthly climatology
-#   data in which case it is in month units. Notice fractional values are not
-#   supported in the current version.
-# @param latTolerance float list of spatial tolerance values in meridional
-#   direction [deg] between pairs of source and target data sets. If only one
-#   value is given, that would be applied to all target data sets.
-# @param lonTolerance float list of spatial tolerance values in zonal
-#   direction [deg] between pairs of source and target data sets. If only one
-#   value is given, that would be applied to all target data sets.
-# @param depthTolerance float list of spatial tolerance values in vertical
-#   direction [m] between pairs of source and target data sets. If only one
-#   value is given, that would be applied to all target data sets.
+#' Colocalizes the source variable (from source table) with a single target
+#' long variable (from target table).  The tolerance parameters set the
+#' matching boundaries between the source and target data sets.  Returns a
+#' dataframe containing the source variable joined with the target variable.
+#'
+#' @param spname stored procedure name that executes the matching logic.
+#' @param sourceTable table name of the source data set.
+#' @param sourceVariable the source variable. The target variables are matched
+#'   (colocalized) with this variable.
+#' @param targetTables table names of the target data sets to be matched with the source data.
+#' @param targetVariables variable names to be matched with the source variable.
+#' @param dt1 start date or datetime.
+#' @param dt2 end date or datetime.
+#' @param lat1 start latitude [degree N].
+#' @param lat2 end latitude [degree N].
+#' @param lon1 start longitude [degree E].
+#' @param lon2 end longitude [degree E].
+#' @param depth1 start depth [m].
+#' @param depth2 end depth [m].
+#' @param timeTolerance float list of temporal tolerance values between pairs
+#'   of source and target datasets. The size and order of values in this list
+#'   should match those of targetTables. If only a single integer value is
+#'   given, that would be applied to all target datasets. This parameter is in
+#'   day units except when the target variable represents monthly climatology
+#'   data in which case it is in month units. Notice fractional values are not
+#'   supported in the current version.
+#' @param latTolerance float list of spatial tolerance values in meridional
+#'   direction [deg] between pairs of source and target data sets. If only one
+#'   value is given, that would be applied to all target data sets.
+#' @param lonTolerance float list of spatial tolerance values in zonal
+#'   direction [deg] between pairs of source and target data sets. If only one
+#'   value is given, that would be applied to all target data sets.
+#' @param depthTolerance float list of spatial tolerance values in vertical
+#'   direction [m] between pairs of source and target data sets. If only one
+#'   value is given, that would be applied to all target data sets.
+#'
+#' @export
 atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
                          dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2,
                          temporalTolerance, latTolerance, lonTolerance,
@@ -84,6 +87,7 @@ atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
 #' and match them with the source data set according to the the accoiated
 #' tolerance parameters.  Returns a compiled dataframe of the source and matched
 #' target data sets.
+#'
 #' @importFrom utils txtProgressBar setTxtProgressBar
 compile <- function(sourceTable,
                     sourceVar,
@@ -128,16 +132,16 @@ compile <- function(sourceTable,
   ## })
 
   ## Helper to check size (and latitude and longitude match).
-  size_ok <- function(data, df){
-    ok1 = all(sapply(df, nrow) == nrow(data))
-    ok2 = all.equal(df[[1]][["lat"]], data[["lat"]])
-    ok3 = all.equal(df[[1]][["lon"]], data[["lon"]])
+  size_ok <- function(data1, data2){
+    ok1 = all(nrow(data1) == nrow(data2))
+    ok2 = all.equal(data1[["lat"]], data2[["lat"]])
+    ok3 = all.equal(data1[["lon"]], data2[["lon"]])
     return(all(ok1, ok2, ok3))
   }
 
   pb = utils::txtProgressBar(min = 0, max = length(targetTables), style = 3)
   spName = "uspMatch"
-  df = list()
+  datalist = list()
   for(ii in 1:length(targetTables)){
 
     ## Get data using atomic_match
@@ -160,23 +164,40 @@ compile <- function(sourceTable,
                         lonTolerance[ii],
                         depthTolerance[ii])
     if(length(data) < 1){ warning(sprintf('No matching entry associated with %s.', targetVars[ii]))}
-
-    ## If all goes well, insert the colocalized data into the list (later turned
-    ## into a data frame)
-    if(ii == 1){
-      df[[ii]] = data
-    } else if(size_ok(data, df)){
-      df[[targetVars[ii]]] = cbind(data[[targetVars[ii]]])
-      df[[paste0(targetVars[ii],'_std')]] = cbind(data[[paste0(targetVars[ii],'_std')]])
-    } else {
-      stop(sprintf('The matched data frame associated with %s does not have the same size as the first target variable. Please change the tolerance variable.',
-                      targetVars[ii]))
+    if(ii > 1){
+      if(!size_ok(data, datalist[[ii-1]])){
+        stop(sprintf('The matched data frame associated with %s does not have the same size as the first target variable. Please change the tolerance for variable.',
+                     targetVars[ii]))
+      }
     }
+    datalist[[ii]] = data
   }
+  df = datalist %>% purrr::reduce(dplyr::full_join, by = c("time", "lat", "lon"))
+
+
+  ## browser()
+
+  ## datalist %>% length()
+
+  ##   ## If all goes well, insert the colocalized data into the list (later turned
+  ##   ## into a data frame)
+  ##   if(ii == 1){
+  ##     df[[ii]] = data
+  ##   } else if(size_ok(data, df)){
+  ##     df[[targetVars[ii]]] = cbind(data[[targetVars[ii]]])
+  ##     df[[paste0(targetVars[ii],'_std')]] = cbind(data[[paste0(targetVars[ii],'_std')]])
+  ##   } else {
+  ##     stop(sprintf('The matched data frame associated with %s does not have the same size as the first target variable. Please change the tolerance variable.',
+  ##                     targetVars[ii]))
+  ##   }
+  ## df %>% .[[1]] %>% summary()
+  ## df %>% .[[2]] %>% summary()
+  ## df %>% .[[3]] %>% summary()
+
   cat(fill=TRUE)
 
-  ## Format into data frame
-  df = as.data.frame(do.call(rbind, df))
+  ## ## Format into data frame
+  ## df = as.data.frame(do.call(rbind, df))
   return(df)
 }
 
@@ -210,10 +231,14 @@ compile <- function(sourceTable,
 #'   supported in the current version.
 #' @param latTolerance numeric vector of spatial tolerance values in meridional
 #'   direction [deg] between pairs of source and target data sets. If only one
-#'   value is given, that would be applied to all target data sets.
+#'   value is given, that would be applied to all target data sets.  A "safe"
+#'   value for this parameter can be slightly larger than the half of the target
+#'   variable’s spatial resolution.
 #' @param lonTolerance numeric vector of spatial tolerance values in zonal
 #'   direction [deg] between pairs of source and target data sets. If only one
-#'   value is given, that would be applied to all target data sets.
+#'   value is given, that would be applied to all target data sets.  A "safe"
+#'   value for this parameter can be slightly larger than the half of the target
+#'   variable’s spatial resolution.
 #' @param depthTolerance numeric vector of spatial tolerance values in vertical
 #'   direction [m] between pairs of source and target data sets. If only one
 #'   value is given, that would be applied to all target data sets.
@@ -246,6 +271,7 @@ along_track <- function(cruise, targetTables, targetVars, depth1, depth2,
                         temporalTolerance, latTolerance, lonTolerance,
                         depthTolerance){
   apiKey = get_api_key()
+  print(cruise)
   df = get_cruise_bounds(cruise)
   dat = compile(sourceTable='tblCruise_Trajectory',
                 sourceVar=toString(df[,'ID']),
@@ -264,3 +290,5 @@ along_track <- function(cruise, targetTables, targetVars, depth1, depth2,
                 lonTolerance=lonTolerance,
                 depthTolerance=depthTolerance)
 }
+
+

@@ -103,7 +103,7 @@ uspInterval_indicator <- function(interval){
 
 # Helper to check error (very basic for now)
 check_error <- function(response){
-  return(response$status_code==200)
+  return(response$status_code == 200)
   ## TODO: return the actual status corresponding to the status code, IF not
   ## 200.
 }
@@ -265,13 +265,20 @@ request <- function(payload, route, apiKey){
                url_safe_query)
   
   header = httr::add_headers(Authorization = paste0("Api-Key ", apiKey))
-  # print(url)
-  # print(header)
+  ## library(curl)
+  ## curlSetOpt(timeout = 2000)
+  ## set_config(httr::timeout(1E10)) ## THIS IS MAKING THE FOLLOWING ERROR.
+  ## Error in curl::handle_setopt(handle, .list = req$options) :
+  ##   A libcurl function was given a bad argument
   response = httr::GET(url, header)
-  
+  ## response = httr::GET(url, header, httr::timeout(2))
+  ## response = httr::RETRY("GET", url, header, httr::timeout(1E10))
+
+
   ## TODO: Consider using RETRY("GET", "http://invalidhostname/"), since the
   ## initial request sometimes fails.
-  
+  ## print(response)
+
   ## if(!check_error(response)) browser() ## temporary
   stopifnot(check_error(response))
   return(process_response_to_tibble(response,

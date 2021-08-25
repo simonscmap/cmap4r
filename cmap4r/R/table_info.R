@@ -309,7 +309,7 @@ get_var_stat <- function(tableName, varName){
 #'
 #' #
 #' }
-is_grid  = function(tableName, varName){
+is_grid  <- function(tableName, varName){
   apiKey = get_api_key()
   grid = TRUE
   myquery = "SELECT Spatial_Res_ID, RTRIM(LTRIM(Spatial_Resolution)) AS Spatial_Resolution FROM tblVariables "
