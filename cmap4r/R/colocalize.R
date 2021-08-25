@@ -270,8 +270,13 @@ compile <- function(sourceTable,
 along_track <- function(cruise, targetTables, targetVars, depth1, depth2,
                         temporalTolerance, latTolerance, lonTolerance,
                         depthTolerance){
+
+  ## Basic checks
+  stopifnot(length(targetTables) == length(targetVars))
+
+
+  ## Perform the colocalization
   apiKey = get_api_key()
-  print(cruise)
   df = get_cruise_bounds(cruise)
   dat = compile(sourceTable='tblCruise_Trajectory',
                 sourceVar=toString(df[,'ID']),
