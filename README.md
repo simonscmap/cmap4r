@@ -14,9 +14,9 @@ The `cmap4r` R package makes it easy for users to download, visualize, and proce
 
 
 ## Authors
-Sangwon Hyun
-Aditya Mishra
-Jacob Bien
+Sangwon Hyun,
+Aditya Mishra,
+Jacob Bien,
 Christian Müller
 
 ## Getting Started
