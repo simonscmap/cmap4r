@@ -6,7 +6,7 @@ Aditya Mishra
 Jacob Bien
 Christian Müller
 
-![](caustics_grid.ng)
+![](caustics_grid.png)
 
 
 ## Overview
