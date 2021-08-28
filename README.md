@@ -1,5 +1,16 @@
 # CMAP for R Users
 
+## Authors
+Sangwon Hyun
+Aditya Mishra
+Jacob Bien
+Christian Müller
+
+![](caustics_grid.ng)
+
+
+## Overview
+
 [Simons CMAP](https://cmap.readthedocs.io/en/latest/index.html) is an initiative
 from the [CBIOMES](https://cbiomes.org/) collaboration that provides an open
 source database service to unify, visualize, and analyze ocean data sets from
