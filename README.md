@@ -1,15 +1,6 @@
 # CMAP for R Users
 
-## Authors
-Sangwon Hyun
-Aditya Mishra
-Jacob Bien
-Christian Müller
-
 ![](caustics_grid.png)
-
-
-## Overview
 
 [Simons CMAP](https://cmap.readthedocs.io/en/latest/index.html) is an initiative
 from the [CBIOMES](https://cbiomes.org/) collaboration that provides an open
@@ -21,6 +12,12 @@ Foundation](https://www.simonsfoundation.org/).
 The `cmap4r` R package makes it easy for users to download, visualize, and process data from the CMAP database.
 
 
+
+## Authors
+Sangwon Hyun
+Aditya Mishra
+Jacob Bien
+Christian Müller
 
 ## Getting Started
 
