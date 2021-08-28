@@ -139,7 +139,31 @@ compile <- function(sourceTable,
     return(all(ok1, ok2, ok3))
   }
 
-  pb = utils::txtProgressBar(min = 0, max = length(targetTables), style = 3)
+  ## If a single tolerance value is provided although multiple variable&table
+  ## pairs are queried for, handle it!
+
+  ## 1. Check that all tolerances have the same length
+  lens = c(length(temporalTolerance),
+           length(latTolerance),
+           length(lonTolerance),
+           length(depthTolerance))
+  stopifnot(length(unique(lens)) == 1)
+  len = unique(lens)
+
+
+  ## 2. If length is 1, and there are more than one variable & table pairs to
+  ## manage, do so.
+  if(len == 1){
+    ntables = length(targetTables)
+    if(ntables > 1){
+      tempTolerance = rep(tempTolerance, ntables)
+      latTolerance = rep(latTolerance, ntables)
+      lonTolerance = rep(lonTolerance, ntables)
+      depthTolerance = rep(depthTolerance, ntables)
+    }
+  }
+
+  pb = utils::txtProgressBar(min = 0, max = length(targetTables), style = 3) ## This isn't doing much; get rid of this soon.
   spName = "uspMatch"
   datalist = list()
   for(ii in 1:length(targetTables)){
@@ -274,6 +298,7 @@ along_track <- function(cruise, targetTables, targetVars, depth1, depth2,
   ## Basic checks
   stopifnot(length(targetTables) == length(targetVars))
 
+  ## Change target tab
 
   ## Perform the colocalization
   apiKey = get_api_key()
