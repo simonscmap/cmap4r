@@ -36,7 +36,7 @@ get_cruises <- function(){
 #' #
 #' }
 get_cruise_variables <- function(cruiseName){
-  df = cruise_by_name(cruiseName)
+  df = get_cruise_by_name(cruiseName)
   exequery <- sprintf('SELECT * FROM dbo.udfCruiseVariables(%d) ',
                       df$ID[1])
   apiKey = get_api_key()
