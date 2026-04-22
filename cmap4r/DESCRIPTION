@@ -15,9 +15,22 @@ Maintainer: Aditya Mishra <amishra@flatironinstitute.org>
 URL: https://github.com/simonscmap/cmap4r
 Description: This package allows the user to download, visualize, and process data from the CMAP database using R.
 Depends: R (>= 3.3.0) , stats , utils 
-Imports: plotly, ggplot2, magrittr, keyring, assertthat, httr, jsonlite, readr, sf, mapview
+Imports: 
+    ggplot2,
+    magrittr,
+    keyring,
+    assertthat,
+    httr,
+    jsonlite,
+    readr,
+    dplyr,
+    purrr
+Suggests: 
+    sf,
+    mapview,
+    plotly
 License: GPL (>= 3.0)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.3
 NeedsCompilation: yes

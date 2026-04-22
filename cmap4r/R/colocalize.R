@@ -89,6 +89,8 @@ atomic_match <- function(spName, sourceTable, sourceVar, targetTable, targetVar,
 #' target data sets.
 #'
 #' @importFrom utils txtProgressBar setTxtProgressBar
+#' @importFrom purrr reduce
+#' @importFrom dplyr full_join
 compile <- function(sourceTable,
                     sourceVar,
                     targetTables,
@@ -124,7 +126,7 @@ compile <- function(sourceTable,
   }
 
   ## ## Testing shift_dt
-  ## test_that("Time shift is done properly", {
+  ## testthat::test_that("Time shift is done properly", {
   ##   dt = "2019-03-03"
   ##   dt = as.Date(dt)
   ##   dt_after = shift_dt(dt, 1)

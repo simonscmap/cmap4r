@@ -230,7 +230,7 @@ get_var_unit = function(tableName, varName){
 #' varResolution <- get_var_resolution(tableName, varName)
 #' varResolution
 #' #
-#'
+#' }
 get_var_resolution <- function(tableName, varName){
   return(get_var_catalog(tableName, varName)[,c('Temporal_Resolution',
                                                 'Spatial_Resolution')])
@@ -426,7 +426,7 @@ get_metadata <- function(tables, variables){
 #' ncount
 #' #
 #' }
-get_count = function(tableName, lat1 = NULL, lat2 = NULL, 
+get_count <- function(tableName, lat1 = NULL, lat2 = NULL,
                      lon1 = NULL, lon2 = NULL, 
                      dt1 = NULL, dt2 = NULL,
                      depth1 = NULL, depth2 = NULL,

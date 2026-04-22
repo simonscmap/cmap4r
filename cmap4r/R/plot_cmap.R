@@ -1,6 +1,4 @@
-
-
-#' Depth profile plot. 
+#' Depth profile plot.
 #' 
 #' Plot a variable of interest with varying depth after extracting the data (using get_depthprofile) from the Simons CMAP database using the specified space-time constraints (dt1, dt2, lat1, lat2, lon1, lon2, depth1, depth2). 
 #'
@@ -21,7 +19,7 @@
 #' @export
 #' @import magrittr
 #' @importFrom utils write.csv
-#' @importFrom plotly plot_ly layout last_plot
+## @importFrom plotly plot_ly layout last_plot (not imported but only suggested to make package lightweight)
 #' @importFrom ggplot2 ggtitle ggplot geom_point theme xlab ylab aes_string element_text
 #' @examples
 #' \donttest{
@@ -53,6 +51,11 @@ plot_depth <- function(tableName, varName, lat1, lat2,
                        depth1, depth2,
                        type = c("plotly", "ggplot")[1],
                        export_data = FALSE) {
+
+
+  if (!requireNamespace("plotly", quietly = TRUE)) {
+    stop("Package 'plotly' is required for this function. Please install it.", call. = FALSE)
+  }
 
   tbl_subset <- get_depthprofile(tableName, varName, lat1, lat2,
                                  lon1, lon2, dt1, dt2,
@@ -112,7 +115,7 @@ plot_depth <- function(tableName, varName, lat1, lat2,
 #' @return plot object of the chosen type
 #' @export
 #' @importFrom utils write.csv
-#' @importFrom plotly plot_ly layout last_plot
+## @importFrom plotly plot_ly layout last_plot (not imported but only suggested to make package lightweight)
 #' @importFrom ggplot2 ggtitle ggplot geom_point geom_line theme xlab ylab aes_string element_text
 #' @examples
 #' \donttest{
@@ -207,7 +210,7 @@ utils::globalVariables(c("..density.."))
 #' @return plot object of the chosen type, i.e., plotly/ggplot
 #' @export
 #' @importFrom utils write.csv
-#' @importFrom plotly plot_ly layout last_plot
+## @importFrom plotly plot_ly layout last_plot (not imported but only suggested to make package lightweight)
 #' @importFrom ggplot2 ggtitle ggplot xlab ylab theme geom_histogram geom_density aes_string element_text aes
 #' @examples
 #' \donttest{
@@ -305,7 +308,7 @@ plot_hist <- function(tableName, varName, lat1, lat2,
 #' @return plot object of the chosen type
 #' @export
 #' @importFrom utils write.csv
-#' @importFrom plotly plot_ly layout last_plot
+## @importFrom plotly plot_ly layout last_plot (not imported but only suggested to make package lightweight)
 #' @importFrom ggplot2 ggtitle ggplot xlab ylab theme geom_point geom_density aes_string element_text
 #' @examples
 #' \donttest{
@@ -422,7 +425,7 @@ plot_xy <- function(tableList, varList, lat1, lat2,
 #' @return plot object of the chosen type
 #' @export
 #' @importFrom utils write.csv
-#' @importFrom plotly plot_ly layout last_plot
+## @importFrom plotly plot_ly layout last_plot (not imported but only suggested to make package lightweight)
 #' @importFrom ggplot2 ggtitle ggplot xlab ylab theme geom_point geom_tile aes_string element_text
 #' @examples
 #' \donttest{
@@ -522,8 +525,8 @@ plot_regmap <- function(tableName, varName, lat1, lat2,
 #' @param depth2 positive value specifying the end depth [m]of the vertical cut. Note that depth  is 0 at surface and grows towards ocean floor. Defaults to 0 if not provided.
 #' @return required subset of the table is ordered by time, lat, lon, and depth (if exists).
 #' @export
-#' @importFrom sf st_as_sf
-#' @importFrom mapview mapview
+## ' @importFrom sf st_as_sf (not imported but only suggested to make package lightweight)
+## ' @importFrom mapview mapview (not imported but only suggested to make package lightweight)
 #' @examples
 #' \donttest{
 #' ## Input: Table name; variable name, space time range information
@@ -543,10 +546,18 @@ plot_regmap <- function(tableName, varName, lat1, lat2,
 #' plot_out
 #' #
 #' }
-plot_track = function(tableName, lat1 = NULL, lat2 = NULL, 
+plot_track <- function(tableName, lat1 = NULL, lat2 = NULL,
                       lon1 = NULL, lon2 = NULL, 
                       dt1 = NULL, dt2 = NULL,
                       depth1 = NULL, depth2 = NULL){
+  ## Check if the package is installed
+  if (!requireNamespace("sf", quietly = TRUE)) {
+    stop("Package 'sf' is required for this function. Please install it.", call. = FALSE)
+  }
+  if (!requireNamespace("mapview", quietly = TRUE)) {
+    stop("Package 'mapview' is required for this function. Please install it.", call. = FALSE)
+  }
+
   range_var <- list()
   range_var$time <- c(dt1, dt2)
   range_var$lat <- c(lat1, lat2)

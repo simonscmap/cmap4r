@@ -128,7 +128,7 @@ get_cruise_bounds <- function(cruisename){
 #' }
 get_cruise_trajectory <- function(cruisename){
   apiKey = get_api_key()
-  df = cruise_by_name(cruisename)
+  df = get_cruise_by_name(cruisename)
   myquery = sprintf("EXEC uspCruiseTrajectory %d", unlist(df[['ID']][1]))
   df = query(myquery, apiKey)
   

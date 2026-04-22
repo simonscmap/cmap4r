@@ -1,9 +1,9 @@
 # ------------------- authorization subroutines --------------------------
 
-# Check query execution
-#
-# query_out output after a query
-#
+#' Check query execution
+#'
+#' query_out output after a query
+#'
 check_authorization <- function(query_out){
   if(rawToChar(query_out$content) == "Unauthorized"){
     message("Please reset API authorization key")
@@ -22,8 +22,8 @@ get_api_key <- function(){
 # ------------------- get_metadata sub_function  --------------------
 
 
-# Returns a dataframe containing references associated with a data set.
-# datasetID ID of dataset.
+#' Returns a dataframe containing references associated with a data set.
+#' datasetID ID of dataset.
 get_references <- function(datasetID){
   apiKey = get_api_key()
   myquery = sprintf("SELECT Reference FROM dbo.udfDatasetReferences(%d)", datasetID)
@@ -32,12 +32,12 @@ get_references <- function(datasetID){
 
 
 
-# Returns a dataframe containing the associated metadata of a variable (such
-# as data source, distributor, references, and etc..). The inputs can be
-# string literals (if only one table, and variable is passed) or a list of
-# string literals.
-# table table name.
-# variable variable name.
+#' Returns a dataframe containing the associated metadata of a variable (such
+#' as data source, distributor, references, and etc..). The inputs can be
+#' string literals (if only one table, and variable is passed) or a list of
+#' string literals.
+#' table table name.
+#' variable variable name.
 get_metadata_noref <- function(table, variable){
   apiKey = get_api_key()
   myquery = sprintf("SELECT * FROM dbo.udfCatalog() WHERE Variable='%s' AND Table_Name='%s'", variable, table)
@@ -56,9 +56,9 @@ get_metadata_noref <- function(table, variable){
 
 
 
-# Check range variable format
-#
-# @param range_var output after a query
+#' Check range variable format
+#'
+#' @param range_var output after a query
 #' @import magrittr
 check_rangevar <- function(range_var) {
   if ( !any(names(range_var) %in% "lat"))
@@ -80,8 +80,8 @@ check_rangevar <- function(range_var) {
 
 
 
-# Retrieve stored procedure for extracting timeseries data aggregated at
-# weekely, monthly, quaterly, annual or none level.
+#' Retrieve stored procedure for extracting timeseries data aggregated at
+#' weekely, monthly, quaterly, annual or none level.
 #' @import magrittr
 uspInterval_indicator <- function(interval){
   if(is.null(interval)){
@@ -101,7 +101,7 @@ uspInterval_indicator <- function(interval){
 }
 
 
-# Helper to check error (very basic for now)
+#' Helper to check error (very basic for now)
 check_error <- function(response){
   return(response$status_code == 200)
   ## TODO: return the actual status corresponding to the status code, IF not
@@ -109,7 +109,7 @@ check_error <- function(response){
 }
 
 
-# Helper to get response to tibble.
+#'  Helper to get response to tibble.
 #' @importFrom  jsonlite fromJSON
 #' @importFrom readr read_csv
 #' @importFrom httr content
@@ -154,23 +154,23 @@ process_response_to_tibble <- function(response, route){
 }
 
 
-# Validating the format of sp arguments.
-# @param table (string) table name (each data set is stored in one or more
-#   than one table).
-# @param variable (string) variable short name which directly corresponds to a
-#   field name in the table.
-# @param dt1 (string of format "YYYY-MM-DDTHH:MM:SS" start date (or datetime
-#   simply as YYYY-MM-DD). Caution!! This function doesn't check for the exact
-#   format of the input, and only checks for whether it is a string. Same for
-#   \code{dt2}.
-# @param dt2 (string of format "YYYY-MM-DDTHH:MM:SS" end date (or datetime,
-#   simply as YYYY-MM_DD).
-# @param lat1 (Numeric) start latitude [degree N].
-# @param lat2 (Numeric) end latitude [degree N].
-# @param lon1 (Numeric) start longitude [degree E].
-# @param lon2 (Numeric) end longitude [degree E].
-# @param depth1 (Numeric) start depth [m].
-# @param depth2 (Numeric) end depth [m].
+#' Validating the format of sp arguments.
+#' @param table (string) table name (each data set is stored in one or more
+#'   than one table).
+#' @param variable (string) variable short name which directly corresponds to a
+#'   field name in the table.
+#' @param dt1 (string of format "YYYY-MM-DDTHH:MM:SS" start date (or datetime
+#'   simply as YYYY-MM-DD). Caution!! This function doesn't check for the exact
+#'   format of the input, and only checks for whether it is a string. Same for
+#'   \code{dt2}.
+#' @param dt2 (string of format "YYYY-MM-DDTHH:MM:SS" end date (or datetime,
+#'   simply as YYYY-MM_DD).
+#' @param lat1 (Numeric) start latitude [degree N].
+#' @param lat2 (Numeric) end latitude [degree N].
+#' @param lon1 (Numeric) start longitude [degree E].
+#' @param lon2 (Numeric) end longitude [degree E].
+#' @param depth1 (Numeric) start depth [m].
+#' @param depth2 (Numeric) end depth [m].
 #' @importFrom assertthat assert_that is.string
 validate_sp_args <- function(table,
                              variable, dt1, dt2, lat1, lat2, lon1, lon2,
@@ -205,7 +205,7 @@ query <- function(myquery, apiKey){
 
 
 
-# Returns a subset of data according to space-time constraints. (Identical function in python.)
+#' Returns a subset of data according to space-time constraints. (Identical function in python.)
 subset <- function(spName, table, variable, dt1, dt2, lat1, lat2, lon1,
                    lon2, depth1, depth2, apiKey){
   query = sprintf('EXEC %s ?, ?, ?, ?, ?, ?, ?, ?, ?, ?', spName)
